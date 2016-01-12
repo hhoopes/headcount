@@ -40,8 +40,8 @@ class DistrictRepository
   def form_symbol(string)
     string.gsub(/\W/, "").upcase.to_sym
     # binding.pry
-  end
 
+  end
   def find_by_name(search)
     search_symbol = form_symbol(search)
     districts.fetch(search_symbol)

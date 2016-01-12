@@ -77,4 +77,39 @@ class DistrictRepositoryTest < Minitest::Test
 
     assert_equal "AFD", dr.find_by_name(query)
   end
+
+
+  def test_find_all_matching_returns_possible_district_options_for_fragment_search
+    dr = DistrictRepository.new
+    output = dr.load_data({
+    :enrollment => {
+      :kindergarten => "./data/Kindergartners in full-day program.csv"
+      }
+    })
+
+    assert_equal ["CENTENNIAL R-1", "CENTER 26 JT"], dr.find_all_matching("CEN")
+  end
+
+
+    def test_find_all_matching_returns_possible_district_options_for_fragment_search_lowercase
+      dr = DistrictRepository.new
+      output = dr.load_data({
+      :enrollment => {
+        :kindergarten => "./data/Kindergartners in full-day program.csv"
+        }
+      })
+
+      assert_equal ["CENTENNIAL R-1", "CENTER 26 JT"], dr.find_all_matching("cen")
+    end
+
+    def test_find_all_matching_returns_empty_array_if_no_matches
+      dr = DistrictRepository.new
+      output = dr.load_data({
+      :enrollment => {
+        :kindergarten => "./data/Kindergartners in full-day program.csv"
+        }
+      })
+
+      assert_equal [], dr.find_all_matching("XW")
+    end
 end
