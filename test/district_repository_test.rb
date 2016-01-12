@@ -69,4 +69,15 @@ class DistrictRepositoryTest < Minitest::Test
 
       assert_equal ["CENTENNIAL R-1", "CENTER 26 JT"], dr.find_all_matching("cen")
     end
+
+    def test_find_all_matching_returns_empty_array_if_no_matches
+      dr = DistrictRepository.new
+      output = dr.load_data({
+      :enrollment => {
+        :kindergarten => "./data/Kindergartners in full-day program.csv"
+        }
+      })
+
+      assert_equal [], dr.find_all_matching("XWY")
+    end
 end
