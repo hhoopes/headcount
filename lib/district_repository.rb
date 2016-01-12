@@ -12,9 +12,7 @@ class DistrictRepository
 
   def load_data(data)
     data_info = get_data_info(data)
-
     data_csv = CSV.open data_info.fetch(:file), headers: true, header_converters: :symbol
-
     data_csv.each do |row|
       district = row[:location]
       symbol = form_symbol(district)
@@ -52,21 +50,19 @@ class DistrictRepository
     #returns either nil or an instance of District having done a case insensitive search
   end
 
-    def find_all_matching(search)
-      search_output = []
-      #returns either [] or one or more matches which contain the supplied name fragment, case insensitive
-      # binding.pry
-      formatted_search = search.gsub(/\W/, "").upcase
-      districts.find_all do |key, value|
-        #compare string to string or symbol to symbol
-        #make key to string
-        if key.to_s.include?(formatted_search)
-          search_output << value.name
-        end
+  def find_all_matching(search)
+    search_output = []
+    formatted_search = search.gsub(/\W/, "").upcase
+    districts.find_all do |key, value|
+      if key.to_s.include?(formatted_search)
+        search_output << value.name
       end
-      search_output
+    end
+    search_output
     end
   end
+
+end
 
 
 

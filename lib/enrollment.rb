@@ -23,6 +23,10 @@ class Enrollment
 
     end
 
+    def truncate_float(number)
+      number 
+    end
+
     def kindergarten_participation_in_year(year)
       #A call to this method with any unknown year should return nil.
       # The method returns a truncated three-digit floating point number representing a percentage.
