@@ -1,15 +1,15 @@
 
 class District
-  attr_reader :enrollment
+  attr_reader :enrollment, :name
 
   #an instance of this class looks like d = District.new({:name => "ACADEMY 20"})
   def initialize(district)
     # @enrollment = Enrollment.new
-    @district_name = district[:name]
+    @name = district[:name]
   end
 
   def name
-    @name = name.upcase
+    @name.upcase
     #returns the upcased string name of the district
   end
 end
