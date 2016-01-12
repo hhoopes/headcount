@@ -10,7 +10,8 @@ class DistrictRepository
   end
 
   def load_data
-    data = CSV.open "./data/Kindergartners in full-day program.csv", headers: true, header_converters: :symbol
+    data = CSV.open "../data/Kindergartners in full-day program.csv", headers: true, header_converters: :symbol
+    #i changed directory path from ./ to ../ because wouldn't work otherwise on my computer. heads up in case you get an error 
     data.each do |row|
       district = row[:location]
       @districts[district.to_sym] = District.new({:name => district})
