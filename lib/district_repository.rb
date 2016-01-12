@@ -51,14 +51,13 @@ class DistrictRepository
   end
 
   def find_all_matching(search)
-    search_output = []
-    formatted_search = search.gsub(/\W/, "").upcase
-    districts.find_all do |key, value|
-      if key.to_s.include?(formatted_search)
-        search_output << value.name
+    search_results = []
+    search_results = districts.find_all do |key, value|
+      value.name.include?(search.upcase)
+        # search_results << value.name
       end
     end
-    search_output
+    search_results
   end
 
 end
@@ -69,6 +68,7 @@ end
 #Instead of loading just one data file , we now want to specify the data directory and have it figure out what data it wants/needs:
 dr = DistrictRepository.new
 dr.load_data({ :enrollment => {  :kindergarten => "./data/Kindergartners in full-day program.csv" }})
+
 
 # district = dr.find_by_name("ACADEMY 20")
 #When DistrictRepository created, automatically creates EnrollmentRepository. Allows us to access enrollment data for district.

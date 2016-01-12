@@ -34,7 +34,7 @@ class DistrictRepositoryTest < Minitest::Test
     dr = DistrictRepository.new
     dr.load_data({
     :enrollment => {
-      :kindergarten => "./data/Kindergartners in full-day program.csv"
+      :kindergarten => "./data/subsets/kindergarten_enrollment.csv"
       }
     })
     query = "Colorado"
@@ -81,7 +81,7 @@ class DistrictRepositoryTest < Minitest::Test
       :kindergarten => "./data/Kindergartners in full-day program.csv"
       }
     })
-
+    
     assert_equal ["CENTENNIAL R-1", "CENTER 26 JT"], dr.find_all_matching("CEN")
   end
 
