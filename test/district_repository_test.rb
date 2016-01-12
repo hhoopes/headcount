@@ -11,20 +11,9 @@ class DistrictRepositoryTest < Minitest::Test
     assert repo.instance_of?(DistrictRepository)
   end
 
-  def test_load_data_method_takes_csv_and_creates_district_instance
-    skip
-    dr = DistrictRepository.new
-    output = dr.load_data({
-    :enrollment => {
-      :kindergarten => "./data/Kindergartners in full-day program.csv"
-      }
-    })
-    assert output.instance_of?(District)
-  end
-
   def test_find_by_name_returns_nil_for_query_not_in_repo
     dr = DistrictRepository.new
-    output = dr.load_data({
+    dr.load_data({
     :enrollment => {
       :kindergarten => "./data/Kindergartners in full-day program.csv"
       }
@@ -33,16 +22,59 @@ class DistrictRepositoryTest < Minitest::Test
     assert_nil find_by_name_output
   end
 
-  def test_find_by_name_returns_district_for_district_in_repo
+  def test_data_in_and_out_is_santized_for_consistency_and_to_be_symbols
     dr = DistrictRepository.new
-    output = dr.load_data({
+    assert_equal :_JAJA, dr.form_symbol("-_ jaJA")
+    assert_equal :FFFF, dr.form_symbol("@FFff ++~")
+    assert_equal :LOWERCASE, dr.form_symbol("lowercase")
+  end
+
+  def test_find_by_name_returns_district_when_in_repo
+    dr = DistrictRepository.new
+    dr.load_data({
+    :enrollment => {
+      :kindergarten => "./data/Kindergartners in full-day program.csv"
+      }
+    })
+    query = "Colorado"
+    find_by_name_output = dr.find_by_name(query)
+
+    # assert_equal query.upcase, find_by_name_output.last.last
+    assert find_by_name_output.instance_of?(District)
+  end
+
+  def test_find_by_name_with_funky_characters_still_returns_district
+    dr = DistrictRepository.new
+    dr.load_data({
     :enrollment => {
       :kindergarten => "./data/Kindergartners in full-day program.csv"
       }
     })
 
-    find_by_name_output = dr.find_by_name("Aspen 1")
-    assert_equal "Aspen 1", find_by_name_output
+    query = "ACADEMY 20"
+    find_by_name_output = dr.find_by_name(query)
+
+    #
+    # assert_equal query.upcase, find_by_name_output.last.last
+    assert find_by_name_output.instance_of?(District)
+
+    query ="BRUSH RE-2(J)"
+    find_by_name_output = dr.find_by_name(query)
+    #
+    # assert_equal query.upcase, find_by_name_output.last.last
+    assert find_by_name_output.instance_of?(District)
   end
 
+  def test_find_by_name_is_case_insensitive
+    dr = DistrictRepository.new
+    dr.load_data({
+    :enrollment => {
+      :kindergarten => "./data/Kindergartners in full-day program.csv"
+      }
+    })
+
+    query ="brush RE-2(J)"
+
+    assert_equal "AFD", dr.find_by_name(query)
+  end
 end
