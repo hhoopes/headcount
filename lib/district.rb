@@ -1,9 +1,9 @@
 req 'csv'
-HELLO HELLO
+
 class District
-  #an instance of this class looks like d = District.new({:name => "ACADEMY 20"})
   attr_reader :enrollment
 
+  #an instance of this class looks like d = District.new({:name => "ACADEMY 20"})
   def initialize({:name => district_name})
     @enrollment = Enrollment.new
 
@@ -11,7 +11,6 @@ class District
 
   def name
     #returns the upcased string name of the district
-
   end
 
 end
