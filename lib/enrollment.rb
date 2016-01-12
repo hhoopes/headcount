@@ -2,9 +2,8 @@ require 'csv'
 
 class Enrollment
 
-
     def initialize(name_with_category)
-      #initalizes and passes in a hash within a hash
+      #initalizes and passes in a hash within a hash that gives parameters, :name => district_name, :specific_data => {year => percent}
       #example: e = Enrollment.new({:name => "ACADEMY 20", :kindergarten_participation => {2010 => 0.3915, 2011 => 0.35356, 2012 => 0.2677})
     end
 
@@ -45,15 +44,5 @@ end
 
 
 
-# data = {:name => "ACADEMY 20", :kindergarten_participation => {2010 => 0.3915, 2011 => 0.35356, 2012 => 0.2677}}
-# e = Enrollment.new({:name => "ACADEMY 20"}, :kindergarten_participation => {2010 => 0.3915, 2011 => 0.35356, 2012 => 0.2677})
-# data[:kindergarten_participation][2010]
-
 # ha.kindergarten_participation_rate_variation_trend('ACADEMY 20', :against => 'COLORADO')
 #dividing first by colorado number
-
-
-# 1] pry(main)> marina = {"friends" => {"denver" => ["stephanie", "keji"], "vail" => ["jon", "lucy"]}}
-# [2] pry(main)> marina
-# [3] pry(main)> marina["friends"]
-# [4] pry(main)> marina["friends"]["denver"]
