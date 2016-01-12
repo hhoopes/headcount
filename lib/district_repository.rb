@@ -32,7 +32,7 @@ class DistrictRepository
   end
 
   def form(string)
-    string.gsub(/\s\W/, "").to_sym
+    string.gsub(/\s\W/, "").upcase.to_sym
     #this gets rid of colons but not dashes, commas or spaces
     #my suggestion:
     #string.gsub(/\W/, "").upcase.to_sym
