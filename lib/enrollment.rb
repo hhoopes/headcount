@@ -1,6 +1,14 @@
 require 'csv'
 
 class Enrollment
+#   Enrollment: Gives access to enrollment data within that district, including:
+# |  | -- Dropout rate information
+# |  | -- Kindergarten enrollment rates
+# |  | -- Online enrollment rates
+# |  | -- Overall enrollment rates
+# |  | -- Enrollment rates by race and ethnicity
+# |  | -- High school graduation rates by race and ethnicity
+# |  | -- Special education enrollment rates
 
     def initialize(name_with_category)
       #initalizes and passes in a hash within a hash
