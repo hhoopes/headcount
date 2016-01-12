@@ -9,18 +9,44 @@ class DistrictRepository
     @districts = {}
   end
 
-  def load_data
-    data = CSV.open "../data/Kindergartners in full-day program.csv", headers: true, header_converters: :symbol
-    #i changed directory path from ./ to ../ because wouldn't work otherwise on my computer. heads up in case you get an error 
-    data.each do |row|
+  def load_data(data)
+    data_info = get_data_info(data)
+
+    data_csv = CSV.open data_info.fetch(:file), headers: true, header_converters: :symbol
+
+    data_csv.each do |row|
       district = row[:location]
-      @districts[district.to_sym] = District.new({:name => district})
-      binding.pry
-      puts districts
+      concatenated = form(district)
+      @districts[concatenated] = District.new({:name => district})
     end
   end
 
+  def get_data_info(data)
+    info = {}
+    data.each do |key, value|
+      info[:data_category] = key
+      value.each do |key, value|
+        info[:data_type] = key
+        info[:file] = value
+      end
+    end
+    info
+  end
+
+  def form(string)
+    string.gsub(/\s\W/, "").to_sym
+  end
+
   def find_by_name(district)
+    district_symbol = form(district)
+    districts.each do |key, value|
+      binding.pry
+      if key == district_symbol
+
+        value
+      else nil
+      end
+    end
     #returns either nil or an instance of District having done a case insensitive search
   end
 
@@ -29,8 +55,6 @@ class DistrictRepository
   end
 end
 
-dr = DistrictRepository.new
-dr.load_data
 
 
 #FOR ITERATION 1:
