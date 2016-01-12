@@ -27,7 +27,7 @@ class DistrictRepository
 
   def find_all_matching(search)
     #returns either [] or one or more matches which contain the supplied name fragment, case insensitive
-  endk
+  end
 end
 
 dr = DistrictRepository.new

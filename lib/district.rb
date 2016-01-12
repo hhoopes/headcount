@@ -1,7 +1,7 @@
 req 'csv'
 
 class District
-  attr_reader :enrollment
+  attr_reader :enrollment, :name, :district_name
 
   def initialize({:name => district_name})
     @enrollment = Enrollment.new
@@ -9,6 +9,7 @@ class District
   end
 
   def name
+    @name = name.upcase
     #returns the upcased string name of the district
 
   end
