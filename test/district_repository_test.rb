@@ -29,7 +29,7 @@ class DistrictRepositoryTest < Minitest::Test
     assert_equal :LOWERCASE, dr.form_symbol("lowercase")
   end
 
-  def test_find_by_name_returns_district_when_in_repo
+  def test_find_by_name_returns_district_object
     dr = DistrictRepository.new
     dr.load_data({
     :enrollment => {
@@ -39,7 +39,6 @@ class DistrictRepositoryTest < Minitest::Test
     query = "Colorado"
     find_by_name_output = dr.find_by_name(query)
 
-    # assert_equal query.upcase, find_by_name_output.last.last
     assert find_by_name_output.instance_of?(District)
   end
 
@@ -52,17 +51,12 @@ class DistrictRepositoryTest < Minitest::Test
     })
 
     query = "ACADEMY 20"
-    find_by_name_output = dr.find_by_name(query)
-
-    #
-    # assert_equal query.upcase, find_by_name_output.last.last
-    assert find_by_name_output.instance_of?(District)
+    assert dr.find_by_name(query).instance_of?(District)
+    assert_equal "ACADEMY 20", dr.find_by_name(query).name
 
     query ="BRUSH RE-2(J)"
-    find_by_name_output = dr.find_by_name(query)
-    #
-    # assert_equal query.upcase, find_by_name_output.last.last
-    assert find_by_name_output.instance_of?(District)
+    assert dr.find_by_name(query).instance_of?(District)
+    assert_equal "BRUSH RE-2(J)", dr.find_by_name(query).name
   end
 
   def test_find_by_name_is_case_insensitive
@@ -75,7 +69,7 @@ class DistrictRepositoryTest < Minitest::Test
 
     query ="brush RE-2(J)"
 
-    assert_equal "AFD", dr.find_by_name(query)
+    assert_equal "BRUSH RE-2(J)", dr.find_by_name(query).name
   end
 
 

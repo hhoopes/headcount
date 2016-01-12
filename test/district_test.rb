@@ -11,9 +11,8 @@ class DistrictTest < Minitest::Test
     assert d.instance_of?(District)
   end
 
-  def test_can_instantiate_district_object_with_name_data_with_upcase
-    skip
+  def test_instantiate_district_object_with_name_data_with_upcase
     d = District.new({:name =>"academy 20"})
-    assert_equal "Academy 20", d.name
+    assert_equal "academy 20".upcase, d.name
   end
 end

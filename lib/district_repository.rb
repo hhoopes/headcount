@@ -44,15 +44,29 @@ class DistrictRepository
   end
   def find_by_name(search)
     search_symbol = form_symbol(search)
-    districts.fetch(search_symbol)
+    if districts.has_key?(search_symbol)
+      districts.fetch(search_symbol)
+    else nil
+    end
 
     #returns either nil or an instance of District having done a case insensitive search
   end
 
-  def find_all_matching(search)
-    #returns either [] or one or more matches which contain the supplied name fragment, case insensitive
+    def find_all_matching(search)
+      search_output = []
+      #returns either [] or one or more matches which contain the supplied name fragment, case insensitive
+      # binding.pry
+      formatted_search = search.gsub(/\W/, "").upcase
+      districts.find_all do |key, value|
+        #compare string to string or symbol to symbol
+        #make key to string
+        if key.to_s.include?(formatted_search)
+          search_output << value.name
+        end
+      end
+      search_output
+    end
   end
-end
 
 
 
