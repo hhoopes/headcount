@@ -11,9 +11,7 @@ class DistrictRepository
 
   def load_data(data)
     data_info = get_data_info(data)
-
     data_csv = CSV.open data_info.fetch(:file), headers: true, header_converters: :symbol
-
     data_csv.each do |row|
       district = row[:location]
       concatenated = form(district)
@@ -35,24 +33,40 @@ class DistrictRepository
 
   def form(string)
     string.gsub(/\s\W/, "").to_sym
+    #this gets rid of colons but not dashes, commas or spaces
+    #my suggestion:
+    #string.gsub(/\W/, "").upcase.to_sym
   end
 
   def find_by_name(district)
     district_symbol = form(district)
-    districts.each do |key, value|
-      binding.pry
+    districts.detect do |key, value|
       if key == district_symbol
-
-        value
+        #that specific instance of value
+        key
       else nil
       end
     end
+    #is this case sensitive
     #returns either nil or an instance of District having done a case insensitive search
   end
 
   def find_all_matching(search)
+    search_output = []
     #returns either [] or one or more matches which contain the supplied name fragment, case insensitive
+    # binding.pry
+    search_symbol = form(search)
+    search_string = search_symbol.to_s
+    districts.find_all { |key, value|
+    # binding.pry
+       key.to_s.include?(search_string) }
+      #compare string to string or symbol to symbol
+      # make key to string
+      # if
+      # end
+    # end
   end
+
 end
 
 
