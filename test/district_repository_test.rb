@@ -78,6 +78,6 @@ class DistrictRepositoryTest < Minitest::Test
         }
       })
 
-      assert_equal [], dr.find_all_matching("XWY")
+      assert_equal [], dr.find_all_matching("XW")
     end
 end
