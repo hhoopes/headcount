@@ -60,6 +60,7 @@ class DistrictRepositoryTest < Minitest::Test
 
 
     def test_find_all_matching_returns_possible_district_options_for_fragment_search_lowercase
+      skip 
       dr = DistrictRepository.new
       output = dr.load_data({
       :enrollment => {

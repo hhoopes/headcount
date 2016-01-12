@@ -57,14 +57,14 @@ class DistrictRepository
     # binding.pry
     search_symbol = form(search)
     search_string = search_symbol.to_s
-    districts.find_all { |key, value|
-    # binding.pry
-       key.to_s.include?(search_string) }
+    districts.find_all do |key, value|
       #compare string to string or symbol to symbol
-      # make key to string
-      # if
-      # end
-    # end
+      #make key to string
+      if key.to_s.include?(search_string)
+        search_output << key.to_s
+      end
+    end
+    search_output
   end
 
 end
