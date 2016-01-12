@@ -59,7 +59,6 @@ class DistrictRepository
       end
     end
     search_output
-    end
   end
 
 end
