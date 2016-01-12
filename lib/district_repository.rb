@@ -1,6 +1,7 @@
 $LOAD_PATH.unshift(File.expand_path("../lib", __dir__))
 require "csv"
 require 'district'
+require 'pry'
 
 class DistrictRepository
   attr_reader :districts
@@ -14,14 +15,17 @@ class DistrictRepository
     data_csv = CSV.open data_info.fetch(:file), headers: true, header_converters: :symbol
     data_csv.each do |row|
       district = row[:location]
-      concatenated = form(district)
-      @districts[concatenated] = District.new({:name => district})
+      symbol = form_symbol(district)
+      @districts[symbol] = District.new({:name => district})
+      #eventually change symbol and the initialization to an if statement based on get_data_info
     end
+
   end
 
-  def get_data_info(data)
+  def get_data_info(argument)
+    #get file and category info out of load_data calls
     info = {}
-    data.each do |key, value|
+    argument.each do |key, value|
       info[:data_category] = key
       value.each do |key, value|
         info[:data_type] = key
@@ -31,23 +35,15 @@ class DistrictRepository
     info
   end
 
-  def form(string)
-    string.gsub(/\s\W/, "").upcase.to_sym
-    #this gets rid of colons but not dashes, commas or spaces
-    #my suggestion:
-    #string.gsub(/\W/, "").upcase.to_sym
+  def form_symbol(string)
+    string.gsub(/\W/, "").upcase.to_sym
+    # binding.pry
   end
 
-  def find_by_name(district)
-    district_symbol = form(district)
-    districts.detect do |key, value|
-      if key == district_symbol
-        #that specific instance of value
-        key
-      else nil
-      end
-    end
-    #is this case sensitive
+  def find_by_name(search)
+    search_symbol = form_symbol(search)
+    districts.fetch(search_symbol)
+
     #returns either nil or an instance of District having done a case insensitive search
   end
 
@@ -73,8 +69,9 @@ end
 
 #FOR ITERATION 1:
 #Instead of loading just one data file , we now want to specify the data directory and have it figure out what data it wants/needs:
-# dr = DistrictRepository.new
-# dr.load_data({ :enrollment => {  :kindergarten => "./data/Kindergartners in full-day program.csv" }})
+dr = DistrictRepository.new
+dr.load_data({ :enrollment => {  :kindergarten => "./data/Kindergartners in full-day program.csv" }})
+
 # district = dr.find_by_name("ACADEMY 20")
 #When DistrictRepository created, automatically creates EnrollmentRepository. Allows us to access enrollment data for district.
 #district.enrollment.kindergarten_participation_in_year(2010) # => 0.391

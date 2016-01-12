@@ -9,7 +9,7 @@ class District
   end
 
   def name
-    @name.upcase
+    district.fetch(:name).upcase
     #returns the upcased string name of the district
   end
 end
