@@ -56,8 +56,9 @@ class EnrollmentRepository
   end
 
   def new_enrollment(data_collection)
-    if @enrollment_exists(district)
-      @enrollment.participation.merge!(participation_by_year)
+    search = @enrollment_exists(district)
+    unless search == nil
+      @enrollment.participation.merge!({year => data})
     else @enrollment << Enrollment.new({:name => district, :kindergarten_participation => { year => data }})
       # doing a conditional that checks if enrollment exists, updates it by updating the existing enrollment object
       #if it doesn't exist create new enrollment object
@@ -69,8 +70,8 @@ class EnrollmentRepository
      @enrollment.detect do |enrollment_instance|
        enrollment_instance.name == district
      end
-       if true returns enrollment_data
-         if false returns nil
+      #  if true returns enrollment_data
+        #  if false returns nil
    end
 
   def find_by_name(search)
