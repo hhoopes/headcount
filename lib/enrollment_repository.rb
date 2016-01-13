@@ -1,3 +1,4 @@
+$LOAD_PATH.unshift(File.expand_path("../lib", __dir__))
 require 'enrollment'
 require 'district_repository'
 require 'csv'
@@ -14,13 +15,13 @@ class EnrollmentRepository
     data_info = get_data_info(data)
     data_csv = CSV.open data_info.fetch(:file), headers: true, header_converters: :symbol
     data_csv.each do |row|
+      rows.map { |row| [row.fetch(:key), row.fetch(:value)] }.map(&:to_h)
       district = row[:location]
       data = row[:data]
       year = row[:timeframe]
       symbol = form_symbol(district)
 
-      @enrollment[symbol] = Enrollment.new({:name => district, :kindergarten_participation => {year => data}})
-      binding.pry
+      @enrollment[symbol] = Enrollment.new({:name => district, :kindergarten_participation[year] = data })
       # @enrollment[symbol]= Enrollment.new({ :name => "ACADEMY 20",
       #                                       :kindergarten_participation => {2010 => 0.3915}
 
@@ -53,12 +54,14 @@ class EnrollmentRepository
       else nil
       end
 #organizes the data by assigning each data file to a key and thus creating a hash
-end
+  end
 end
 
 
 er = EnrollmentRepository.new
-er.load_data({ :enrollment => {  :kindergarten => "./data/Kindergartners in full-day program.csv" }})
+er.load_data({ :enrollment => {  :kindergarten => "./data/subsets/kindergarten_enrollment.csv"}})
+binding.pry
+er.find_by_name("ADAMS-ARAPAHOE")
 #initialization looks like this
 #er = EnrollmentRepository.new
 

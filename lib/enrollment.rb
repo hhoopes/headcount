@@ -3,18 +3,18 @@ require 'csv'
 class Enrollment
   attr_reader :enrollment, :name
 
-    def initialize(enrollment)
-      @name = (enrollment[:name]).upcase
-      @kindergarten_participation = enrollment[:kindergarten_participation]
-    end
+  def initialize(enrollment)
+    @name = (enrollment[:name]).upcase
+    @kindergarten_participation = enrollment[:kindergarten_participation]
+  end
 
-    def kindergarten_participation(kindergarten_data)
+  def kindergarten_participation(kindergarten_data)
       kindergarten_data.each do |row|
 
-      end
     end
+  end
 
-    def kindergarten_participation_by_year
+  def kindergarten_participation_by_year
   #This method returns a hash with years as keys and a truncated three-digit floating point number representing a percentage for all years present in the dataset.
 
   #Example:
@@ -23,17 +23,17 @@ class Enrollment
 
     end
 
-    def truncate_float(number)
-      number
-    end
+  def truncate_float(number)
+    number.to_s.[0..4].to_f
+  end
 
-    def kindergarten_participation_in_year(year)
+  def kindergarten_participation_in_year(year)
       #A call to this method with any unknown year should return nil.
       # The method returns a truncated three-digit floating point number representing a percentage.
       # Example:
       # enrollment.kindergarten_participation_in_year(2010) # => 0.391
 
-    end
+  end
 
 end
 
