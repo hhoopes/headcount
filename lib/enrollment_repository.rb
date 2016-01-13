@@ -8,51 +8,28 @@ class EnrollmentRepository
   attr_reader :enrollment
 
   def initialize
-    @enrollment = {}
+    @enrollment = []
   end
 
-  def parse_file(enrollment_data)
-      CSV.open data_info.fetch(:file), headers: true, header_converters: :symbol
-  end
-
+  # #{
+  # :enrollment => {
+  #   :kindergarten => "./data/subsets/kindergarten_enrollment.csv"
+  #   }
+  # }
   def load_data(data)
-    data_csv = parse_file(enrollment_data)
-    symbol = data_assignment(data_csv)
-    new_enrollment(symbol)
-  end
-
-  def data_assignment(data_csv)
-      data_csv.each do |row|
-      rows.map { |row| [row.fetch(:key), row.fetch(:value)] }.map(&:to_h)
-      district = row[:location]
-      data = row[:data]
-      year = row[:timeframe]
-      form_symbol(district)
-    end
-  end
-
-  def new_enrollment(symbol)
-      @enrollment[symbol] = Enrollment.new({:name => district, :kindergarten_participation => { year => data }})
-  end
-
-  def enrollment_exists
-    @enrollment.detect
-      @enrollment == districts
-      if true returns enrollment_data
-        if false returns nil
-
+    data_csv = parse_file(data)
+    extracted_data = data_assignment(data_csv)
+    new_enrollment(extracted_data)
 
   end
 
-   def create_enrollment
-     enrollment_exists unless nil
-     enrollment.participation.merge?(participation_by_year)
-   else @enrollments << Enrollment.new
-    # doing a conditional that checks if enrollment exists, updates it by updating the existing enrollment object
-    #if it doesn't exist create new enrollment object
-    #merge!
+  def parse_file(data)
+    data_info = get_data_info(data)
+    data = CSV.open "./data/subsets/kindergarten_enrollment.csv", headers: true, header_converters: :symbol
+    # data_info.fetch
+    data
+  end
 
-   end
   def get_data_info(argument)
     #get file and category info out of load_data calls
     info = {}
@@ -66,14 +43,56 @@ class EnrollmentRepository
     info
   end
 
-  def form_symbol(string)
-    string.gsub(/\W/, "").upcase.to_sym
+  def data_assignment(data_csv)
+      data_csv.each do |row|
+      # row.map { |row| [row.fetch(:key), row.fetch(:value)] }.map(&:to_h)
+      district = row[:location]
+      data = row[:data]
+      year = row[:timeframe]
+  end
   end
 
+  def enrollment_exists?
+    @enrollment_exists
+  end
+
+  def new_enrollment(data_collection)
+    @enrollment_exists unless nil
+     @enrollment.participation.merge!(participation_by_year)
+     else @enrollment << Enrollment.new
+      # doing a conditional that checks if enrollment exists, updates it by updating the existing enrollment object
+      #if it doesn't exist create new enrollment object
+      #merge!
+      # ({:name => district, :kindergarten_participation => { year => data }})
+  end
+
+  def enrollment_exists
+    # @enrollment.detect
+    #   @enrollment == districts
+    #   if true returns enrollment_data
+    #     if false returns nil
+  end
+
+  def get_data_info(argument)
+    #get file and category info out of load_data calls
+    info = {}
+    argument.each do |key, value|
+      info[:data_category] = key
+      value.each do |key, value|
+        info[:data_type] = key
+        info[:file] = value
+      end
+    end
+    info
+  end
+
+  # def form_symbol(string)
+  #   string.gsub(/\W/, "").upcase.to_sym
+  # end
+
   def find_by_name(search)
-      search_symbol = form_symbol(search)
-      if enrollment.has_key?(search_symbol)
-         enrollment.fetch(search_symbol)
+      if enrollment.has_key?(search)
+         enrollment.fetch(search)
 
       else nil
       end

@@ -7,30 +7,18 @@ class DistrictRepository
   attr_reader :districts
 
   def initialize
-    @districts = {}
-  end
-
-  def parse_file(data)
-    data_info = get_data_info(data)
-    CSV.open data_info.fetch(:file), headers: true, header_converters: :symbol
+    @districts = []
   end
 
   def load_data(data)
      data_csv = parse_file(data)
-     symbol = data_assignment(data_csv)
-     new_districts(symbol)
+     district = data_assignment(data_csv)
+     new_districts(district)
     end
 
-  def data_assignment(data_csv)
-    data_csv.each do |row|
-     district = row[:location]
-     form_symbol(district)
-     end
-   end
-
-  def new_districts(symbol)
-    @districts[symbol] = District.new({:name => district})
-    #assigning new objects of district for each district name
+  def parse_file(data)
+    data_info = get_data_info(data)
+    CSV.open data_info.fetch(:file), headers: true, header_converters: :symbol
   end
 
   def get_data_info(argument)
@@ -46,21 +34,30 @@ class DistrictRepository
     info
   end
 
-  def form_symbol(string)
-    string.gsub(/\W/, "").upcase.to_sym
+  def data_assignment(data_csv)
+    data_csv.each do |row|
+     district = row[:location]
+     end
+   end
+
+  def new_districts(district)
+    @districts << District.new({:name => district})
+    #assigning new objects of district for each district name
   end
 
+  # def form_symbol(string)
+  #   string.gsub(/\W/, "").upcase.to_sym
+  # end
+
   def find_by_name(search)
-    search_symbol = form_symbol(search)
-    if districts.has_key?(search_symbol)
-      districts.fetch(search_symbol)
+    if districts.has_key?(search)
+      districts.fetch(search)
     else nil
     end
     #returns either nil or an instance of District having done a case insensitive search
   end
 
   def find_all_matching(search)
-
     search_results = []
     districts.each do |key, value|
       if value.name.include?(search.upcase)
@@ -76,8 +73,8 @@ end
 
 #FOR ITERATION 1:
 #Instead of loading just one data file , we now want to specify the data directory and have it figure out what data it wants/needs:
-dr = DistrictRepository.new
-dr.load_data({ :enrollment => {  :kindergarten => "./data/Kindergartners in full-day program.csv" }})
+# dr = DistrictRepository.new
+# dr.load_data({ :enrollment => {  :kindergarten => "./data/Kindergartners in full-day program.csv" }})
 
 
 # district = dr.find_by_name("ACADEMY 20")
