@@ -4,15 +4,16 @@ require 'csv'
 require 'pry'
 
 class EnrollmentRepository
-  attr_reader :enrollment, :participation, :participation_by_year
+  attr_reader :enrollment, :participation, :participation_by_year, :year, :district, :data
 
   def initialize
     @enrollment = []
   end
 
-  # #{
+  #
+  # {
   # :enrollment => {
-  #   :kindergarten => "./data/subsets/kindergarten_enrollment.csv"
+  #    => "./data/subsets/kindergarten_enrollment.csv"
   #   }
   # }
   def load_data(request)
@@ -23,7 +24,7 @@ class EnrollmentRepository
   end
 
   def parse_file(data)
-    # data_info = get_data_info(data)
+    file = get_data_info(data)
     data = CSV.open file, headers: true, header_converters: :symbol
     # data_info.fetch
     data
@@ -33,43 +34,42 @@ class EnrollmentRepository
   #   #get file and category info out of load_data calls
     file = ""
     argument.each do |key, value|
-  #     info[:data_category] = key
+      # info[:data_category] = key
       value.each do |key, value|
-  #       info[:data_type] = key
+        # info[:data_type] = key
         file = value
       end
     end
-  #   info
-  # end
+    file
+  end
 
   def data_assignment(data_csv)
       data_csv.each do |row|
-      row.map { |row| [row.fetch(:key), row.fetch(:value)] }.map(&:to_h)
+        binding.pry
       district = row[:location]
       data = row[:data]
       year = row[:timeframe]
     end
   end
 
-  def enrollment_exists?
-    @enrollment_exists
-  end
-
   def new_enrollment(data_collection)
-    search = @enrollment_exists(district)
-    unless search == nil
+    if enrollment_exists?(district)
       @enrollment.participation.merge!({year => data})
-    else @enrollment << Enrollment.new({:name => district, :kindergarten_participation => { year => data }})
+    else
+      @enrollment << Enrollment.new({:name => district, :kindergarten_participation => { year => data }})
       # doing a conditional that checks if enrollment exists, updates it by updating the existing enrollment object
       #if it doesn't exist create new enrollment object
       #merge!
       #
-  end
+    end
+   end
 
-   def enrollment_exists(district)
-     @enrollment.detect do |enrollment_instance|
+   def enrollment_exists?(district)
+     result = @enrollment.detect do |enrollment_instance|
        enrollment_instance.name == district
      end
+     !result.empty?
+
       #  if true returns enrollment_data
         #  if false returns nil
    end
