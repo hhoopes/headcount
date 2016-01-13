@@ -4,19 +4,13 @@ class Enrollment
   attr_reader :enrollment, :name
 
     def initialize(enrollment)
-      @name = enrollment[:name]
-      #initalizes and passes in a hash within a hash that gives parameters, :name => district_name, :specific_data => {year => percent}
-      #example: e = Enrollment.new({:name => "ACADEMY 20", :kindergarten_participation => {2010 => 0.3915, 2011 => 0.35356, 2012 => 0.2677})
-    end
-
-    def name
-      enrollment.fetch(:name).upcase
+      @name = (enrollment[:name]).upcase
+      @kindergarten_participation = enrollment[:kindergarten_participation]
     end
 
     def kindergarten_participation(kindergarten_data)
       kindergarten_data.each do |row|
-        district = row[:location]
-        puts district
+
       end
     end
 

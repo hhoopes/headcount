@@ -4,7 +4,7 @@ require 'csv'
 require 'pry'
 
 class EnrollmentRepository
-  attr_reader :enrollment, :districts
+  attr_reader :enrollment
 
   def initialize
     @enrollment = {}
@@ -14,11 +14,16 @@ class EnrollmentRepository
     data_info = get_data_info(data)
     data_csv = CSV.open data_info.fetch(:file), headers: true, header_converters: :symbol
     data_csv.each do |row|
-      @district = row[:data]
+      district = row[:location]
+      data = row[:data]
       year = row[:timeframe]
-      symbol = form_symbol(@district)
-      #I don't really understand line 20
-      @enrollment[symbol] = Enrollment.new({:name => district})
+      symbol = form_symbol(district)
+
+      @enrollment[symbol] = Enrollment.new({:name => district, :kindergarten_participation => {year => data}})
+      binding.pry
+      # @enrollment[symbol]= Enrollment.new({ :name => "ACADEMY 20",
+      #                                       :kindergarten_participation => {2010 => 0.3915}
+
       #eventually change symbol and the initialization to an if statement based on get_data_info
     end
   end
@@ -41,10 +46,10 @@ class EnrollmentRepository
   end
 
   def find_by_name(search)
-    # binding.pry
       search_symbol = form_symbol(search)
-      if @district.has_key?(search_symbol)
-        enrollment.fetch(search_symbol)
+      if enrollment.has_key?(search_symbol)
+         enrollment.fetch(search_symbol)
+
       else nil
       end
 #organizes the data by assigning each data file to a key and thus creating a hash

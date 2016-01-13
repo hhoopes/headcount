@@ -1,7 +1,6 @@
 
 $LOAD_PATH.unshift(File.expand_path("../lib", __dir__))
 require 'minitest'
-# require './test/test_helper'
 require 'enrollment_repository'
 require 'enrollment'
 require 'pry'
@@ -18,7 +17,7 @@ class EnrollmentRepositoryTest < Minitest::Test
     er = EnrollmentRepository.new
     er.load_data({
     :enrollment => {
-      :kindergarten => "./data/Kindergartners in full-day program.csv"
+      :kindergarten => "./data/subsets/kindergarten_enrollment.csv"
       }
     })
     find_by_name_output = er.find_by_name("Marshmallows")
@@ -36,29 +35,26 @@ class EnrollmentRepositoryTest < Minitest::Test
 
 
   end
+  #if give two lines of data will it overwrite previous entries
+  #if two years and onlyl get one back, know its overwrite it
 
-  def test_find_by_name_returns_enrollment_when_in_repo
-    #??????????????????
-    skip
+  def test_find_by_name_returns_an_instance_of_enrollment
     er = EnrollmentRepository.new
     er.load_data({
     :enrollment => {
-      :kindergarten => "./data/Kindergartners in full-day program.csv"
+      :kindergarten => "./data/subsets/kindergarten_enrollment.csv"
       }
     })
-    query = "ADAMS-ARAPAHOE"
-    find_by_name_output = er.find_by_name(query)
+    query = "JEFFERSON COUNTY R-1"
 
-    # assert_equal query.upcase, find_by_name_output.last.last
-    assert find_by_name_output.instance_of?(Enrollment)
+    assert_equal Enrollment, er.find_by_name(query).class
   end
 
   def test_find_by_name_with_funky_characters_still_returns_district
-    skip
     er = EnrollmentRepository.new
     er.load_data({
     :enrollment => {
-      :kindergarten => "./data/Kindergartners in full-day program.csv"
+      :kindergarten => "./data/subsets/kindergarten_enrollment.csv"
       }
     })
     query = "ACADEMY 20"
@@ -75,16 +71,16 @@ class EnrollmentRepositoryTest < Minitest::Test
   end
 
   def test_find_by_name_is_case_insensitive
-    # skip
     er = EnrollmentRepository.new
     er.load_data({
     :enrollment => {
-      :kindergarten => "./data/Kindergartners in full-day program.csv"
+      :kindergarten => "./data/subsets/kindergarten_enrollment.csv"
       }
     })
     query ="brush RE-2(J)"
 
-    assert_equal [0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1], er.find_by_name(query)
+    assert er.find_by_name(query).instance_of? Enrollment
+    assert_equal "BRUSH RE-2(J)", er.find_by_name(query).name
   end
 
 end
