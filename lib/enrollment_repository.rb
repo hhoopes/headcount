@@ -1,14 +1,59 @@
+require 'enrollment'
+require 'district_repository'
+require 'csv'
+require 'pry'
+
 class EnrollmentRepository
+  attr_reader :enrollment, :districts
+
+  def initialize
+    @enrollment = {}
+  end
   #top level interface to query (search) for information by district name
-
-
-  def find_by_name
-    # returns either nil or an instance of Enrollment having done a case insensitive search
+  def load_data(data)
+    data_info = get_data_info(data)
+    data_csv = CSV.open data_info.fetch(:file), headers: true, header_converters: :symbol
+    data_csv.each do |row|
+      @district = row[:data]
+      year = row[:timeframe]
+      symbol = form_symbol(@district)
+      #I don't really understand line 20
+      @enrollment[symbol] = Enrollment.new({:name => district})
+      #eventually change symbol and the initialization to an if statement based on get_data_info
+    end
   end
 
+  def get_data_info(argument)
+    #get file and category info out of load_data calls
+    info = {}
+    argument.each do |key, value|
+      info[:data_category] = key
+      value.each do |key, value|
+        info[:data_type] = key
+        info[:file] = value
+      end
+    end
+    info
+  end
+
+  def form_symbol(string)
+    string.gsub(/\W/, "").upcase.to_sym
+  end
+
+  def find_by_name(search)
+    # binding.pry
+      search_symbol = form_symbol(search)
+      if @district.has_key?(search_symbol)
+        enrollment.fetch(search_symbol)
+      else nil
+      end
 #organizes the data by assigning each data file to a key and thus creating a hash
 end
+end
 
+
+er = EnrollmentRepository.new
+er.load_data({ :enrollment => {  :kindergarten => "./data/Kindergartners in full-day program.csv" }})
 #initialization looks like this
 #er = EnrollmentRepository.new
 

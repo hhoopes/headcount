@@ -16,7 +16,7 @@ class DistrictRepositoryTest < Minitest::Test
     dr = DistrictRepository.new
     dr.load_data({
     :enrollment => {
-      :kindergarten => "./data/Kindergartners in full-day program.csv"
+      :kindergarten => "./data/subsets/kindergarten_enrollment.csv"
       }
     })
     find_by_name_output = dr.find_by_name("Marshmallows")
@@ -47,7 +47,7 @@ class DistrictRepositoryTest < Minitest::Test
     dr = DistrictRepository.new
     dr.load_data({
     :enrollment => {
-      :kindergarten => "./data/Kindergartners in full-day program.csv"
+      :kindergarten => "./data/subsets/kindergarten_enrollment.csv"
       }
     })
 
@@ -64,7 +64,7 @@ class DistrictRepositoryTest < Minitest::Test
     dr = DistrictRepository.new
     dr.load_data({
     :enrollment => {
-      :kindergarten => "./data/Kindergartners in full-day program.csv"
+      :kindergarten => "./data/subsets/kindergarten_enrollment.csv"
       }
     })
 
@@ -78,10 +78,10 @@ class DistrictRepositoryTest < Minitest::Test
     dr = DistrictRepository.new
     output = dr.load_data({
     :enrollment => {
-      :kindergarten => "./data/Kindergartners in full-day program.csv"
+      :kindergarten => "./data/subsets/kindergarten_enrollment.csv"
       }
     })
-    
+
     assert_equal ["CENTENNIAL R-1", "CENTER 26 JT"], dr.find_all_matching("CEN")
   end
 
@@ -90,7 +90,7 @@ class DistrictRepositoryTest < Minitest::Test
       dr = DistrictRepository.new
       output = dr.load_data({
       :enrollment => {
-        :kindergarten => "./data/Kindergartners in full-day program.csv"
+        :kindergarten => "./data/subsets/kindergarten_enrollment.csv"
         }
       })
 
@@ -101,7 +101,7 @@ class DistrictRepositoryTest < Minitest::Test
       dr = DistrictRepository.new
       output = dr.load_data({
       :enrollment => {
-        :kindergarten => "./data/Kindergartners in full-day program.csv"
+        :kindergarten => "./data/subsets/kindergarten_enrollment.csv"
         }
       })
 

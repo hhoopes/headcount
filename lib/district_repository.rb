@@ -11,6 +11,7 @@ class DistrictRepository
   end
 
   def load_data(data)
+    # binding.pry
     data_info = get_data_info(data)
     data_csv = CSV.open data_info.fetch(:file), headers: true, header_converters: :symbol
     data_csv.each do |row|
@@ -37,9 +38,8 @@ class DistrictRepository
 
   def form_symbol(string)
     string.gsub(/\W/, "").upcase.to_sym
-    # binding.pry
-
   end
+
   def find_by_name(search)
     search_symbol = form_symbol(search)
     if districts.has_key?(search_symbol)
@@ -51,14 +51,14 @@ class DistrictRepository
   end
 
   def find_all_matching(search)
-    search_results = []
-    search_results = districts.find_all do |key, value|
-      value.name.include?(search.upcase)
-        # search_results << value.name
-      end
+      search_results = []
+      districts.each do |key, value|
+        if value.name.include?(search.upcase)
+            search_results << value.name
+          end
+        end
+      search_results
     end
-    search_results
-  end
 
 end
 
