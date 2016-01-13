@@ -36,10 +36,11 @@ class EnrollmentRepositoryTest < Minitest::Test
 
 
   end
+  #if give two lines of data will it overwrite previous entries
+  #if two years and onlyl get one back, know its overwrite it
 
-  def test_find_by_name_returns_enrollment_when_in_repo
-    #??????????????????
-    skip
+  def test_find_by_name_returns_an_instance_of_enrollment
+
     er = EnrollmentRepository.new
     er.load_data({
     :enrollment => {
@@ -50,7 +51,7 @@ class EnrollmentRepositoryTest < Minitest::Test
     find_by_name_output = er.find_by_name(query)
 
     # assert_equal query.upcase, find_by_name_output.last.last
-    assert find_by_name_output.instance_of?(Enrollment)
+    assert_equal Enrollment, find_by_name_output.class
   end
 
   def test_find_by_name_with_funky_characters_still_returns_district

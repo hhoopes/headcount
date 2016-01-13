@@ -5,11 +5,7 @@ class District
   #an instance of this class looks like d = District.new({:name => "ACADEMY 20"})
   def initialize(district)
     # @enrollment = Enrollment.new
-    @name = district[:name]
+    @name = (district[:name]).upcase
   end
 
-  def name
-    @name.upcase
-    #returns the upcased string name of the district
-  end
 end

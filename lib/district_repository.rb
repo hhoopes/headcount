@@ -52,11 +52,11 @@ class DistrictRepository
 
   def find_all_matching(search)
     search_results = []
-    search_results = districts.find_all do |key, value|
-      value.name.include?(search.upcase)
-        # search_results << value.name
+    districts.each do |key, value|
+      if value.name.include?(search.upcase)
+          search_results << value.name
+        end
       end
-    end
     search_results
   end
 
