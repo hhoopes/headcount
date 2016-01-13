@@ -2,10 +2,10 @@
 require 'csv'
 
 class EnrollmentRepository
-  attr_reader :districts
+  attr_reader :enrollment
 
   def initialize
-  @districts = {}
+  @enrollment = {}
   end
   #top level interface to query (search) for information by district name
   def load_data(data)
@@ -13,8 +13,9 @@ class EnrollmentRepository
     data_csv = CSV.open data_info.fetch(:file), headers: true, header_converters: :symbol
     data_csv.each do |row|
       district = row[:data]
+      year = row[:timeframe]
       symbol = form_symbol(district)
-      @districts[symbol] = District.new({:name => district})
+      @enrollment[symbol] = District.new({:name => district})
       #eventually change symbol and the initialization to an if statement based on get_data_info
     end
   end
@@ -37,12 +38,13 @@ class EnrollmentRepository
   end
 
   def find_by_name(search)
-    # returns either nil or an instance of Enrollment having done a case insensitive search
-    search_symbol = form_symbol(search)
-    districts.fetch(search_symbol)
-  end
-
+      search_symbol = form_symbol(search)
+      if enrollment.has_key?(search_symbol)
+        enrollment.fetch(search_symbol)
+      else nil
+      end
 #organizes the data by assigning each data file to a key and thus creating a hash
+end
 end
 
 #initialization looks like this

@@ -3,6 +3,7 @@ $LOAD_PATH.unshift(File.expand_path("../lib", __dir__))
 require 'minitest'
 # require './test/test_helper'
 require 'enrollment_repository'
+require 'enrollment'
 require 'pry'
 
 class EnrollmentRepositoryTest < Minitest::Test
@@ -25,16 +26,19 @@ class EnrollmentRepositoryTest < Minitest::Test
   end
 
   def test_data_in_and_out_is_santized_for_consistency_and_to_be_symbols
-    skip
     er = EnrollmentRepository.new
     assert_equal :_JAJA, er.form_symbol("-_ jaJA")
     assert_equal :FFFF, er.form_symbol("@FFff ++~")
     assert_equal :LOWERCASE, er.form_symbol("lowercase")
   end
 
+  def test_load_data_works
+
+
+  end
+
   def test_find_by_name_returns_enrollment_when_in_repo
     #??????????????????
-    skip
     er = EnrollmentRepository.new
     er.load_data({
     :enrollment => {
