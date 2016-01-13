@@ -11,6 +11,7 @@ class DistrictRepository
   end
 
   def load_data(data)
+    # binding.pry
     data_info = get_data_info(data)
     data_csv = CSV.open data_info.fetch(:file), headers: true, header_converters: :symbol
     data_csv.each do |row|
@@ -41,7 +42,10 @@ class DistrictRepository
 
   def find_by_name(search)
     search_symbol = form_symbol(search)
-    districts.fetch(search_symbol)
+    if enrollment.has_key?(search_symbol)
+      enrollment.fetch(search_symbol)
+    else nil
+    end
 
     #returns either nil or an instance of District having done a case insensitive search
   end

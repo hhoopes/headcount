@@ -39,6 +39,7 @@ class EnrollmentRepositoryTest < Minitest::Test
 
   def test_find_by_name_returns_enrollment_when_in_repo
     #??????????????????
+    skip
     er = EnrollmentRepository.new
     er.load_data({
     :enrollment => {
@@ -74,7 +75,7 @@ class EnrollmentRepositoryTest < Minitest::Test
   end
 
   def test_find_by_name_is_case_insensitive
-    skip
+    # skip
     er = EnrollmentRepository.new
     er.load_data({
     :enrollment => {

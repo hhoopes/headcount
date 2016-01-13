@@ -1,21 +1,24 @@
- require 'district_repository'
+require 'enrollment'
+require 'district_repository'
 require 'csv'
+require 'pry'
 
 class EnrollmentRepository
-  attr_reader :enrollment
+  attr_reader :enrollment, :districts
 
   def initialize
-  @enrollment = {}
+    @enrollment = {}
   end
   #top level interface to query (search) for information by district name
   def load_data(data)
     data_info = get_data_info(data)
     data_csv = CSV.open data_info.fetch(:file), headers: true, header_converters: :symbol
     data_csv.each do |row|
-      district = row[:data]
+      @district = row[:data]
       year = row[:timeframe]
-      symbol = form_symbol(district)
-      @enrollment[symbol] = District.new({:name => district})
+      symbol = form_symbol(@district)
+      #I don't really understand line 20
+      @enrollment[symbol] = Enrollment.new({:name => district})
       #eventually change symbol and the initialization to an if statement based on get_data_info
     end
   end
@@ -38,8 +41,9 @@ class EnrollmentRepository
   end
 
   def find_by_name(search)
+    # binding.pry
       search_symbol = form_symbol(search)
-      if enrollment.has_key?(search_symbol)
+      if @district.has_key?(search_symbol)
         enrollment.fetch(search_symbol)
       else nil
       end
@@ -47,6 +51,9 @@ class EnrollmentRepository
 end
 end
 
+
+er = EnrollmentRepository.new
+er.load_data({ :enrollment => {  :kindergarten => "./data/Kindergartners in full-day program.csv" }})
 #initialization looks like this
 #er = EnrollmentRepository.new
 
