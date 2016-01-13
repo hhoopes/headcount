@@ -1,4 +1,3 @@
-
 $LOAD_PATH.unshift(File.expand_path("../lib", __dir__))
 require 'minitest'
 require 'enrollment_repository'
@@ -31,12 +30,6 @@ class EnrollmentRepositoryTest < Minitest::Test
     assert_equal :LOWERCASE, er.form_symbol("lowercase")
   end
 
-  def test_load_data_works
-
-
-  end
-  #if give two lines of data will it overwrite previous entries
-  #if two years and onlyl get one back, know its overwrite it
 
   def test_find_by_name_returns_an_instance_of_enrollment
     er = EnrollmentRepository.new

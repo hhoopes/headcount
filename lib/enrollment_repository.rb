@@ -36,10 +36,18 @@ class EnrollmentRepository
   end
 
   def enrollment_exists
-    #runs method that exists
+    @enrollment.detect
+      @enrollment == districts
+      if true returns enrollment_data
+        if false returns nil
+
+
   end
 
    def create_enrollment
+     enrollment_exists unless nil
+     enrollment.participation.merge?(participation_by_year)
+   else @enrollments << Enrollment.new
     # doing a conditional that checks if enrollment exists, updates it by updating the existing enrollment object
     #if it doesn't exist create new enrollment object
     #merge!
