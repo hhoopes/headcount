@@ -1,7 +1,6 @@
-$LOAD_PATH.unshift(File.expand_path("../lib", __dir__))
 require 'minitest'
 # require 'test/test_helper'
-require 'district'
+require_relative '../lib/district'
 require 'pry'
 
 class DistrictTest < Minitest::Test

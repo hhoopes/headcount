@@ -9,8 +9,11 @@ class Enrollment
   end
 
   def kindergarten_participation(kindergarten_data)
-      # kindergarten_data.each do |row|
-        @participation = {1920 => .433}
+    # kindergarten_data.each do |row|
+    binding.pry
+    hash = {1920 => 0.433}
+    @participation = hash.key.truncate_float
+
     # end
   end
 
@@ -19,8 +22,8 @@ class Enrollment
   #Example:
 # enrollment.kindergarten_participation_by_year
 # => { 2010 => 0.391, 2011 => 0.353, 2012 => 0.267, }
-     @participation_by_year = {1923 => .433}
-    end
+     @participation_by_year = {1923 => 0.433}
+  end
 
   def truncate_float(number)
     number = number.to_f

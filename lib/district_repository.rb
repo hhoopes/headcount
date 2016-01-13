@@ -1,6 +1,5 @@
-$LOAD_PATH.unshift(File.expand_path("../lib", __dir__))
 require "csv"
-require 'district'
+require_relative 'district'
 require 'pry'
 
 class DistrictRepository
@@ -10,8 +9,8 @@ class DistrictRepository
     @districts = []
   end
 
-  def load_data(data)
-     data_csv = parse_file(data)
+  def load_data(request) #new instances of district start here
+     data_csv = parse_file(request)
      district = data_assignment(data_csv)
      new_districts(district)
     end

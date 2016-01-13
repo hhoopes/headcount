@@ -1,11 +1,10 @@
-$LOAD_PATH.unshift(File.expand_path("../lib", __dir__))
-require 'enrollment'
-require 'district_repository'
+require_relative './enrollment'
+require_relative './district_repository'
 require 'csv'
 require 'pry'
 
 class EnrollmentRepository
-  attr_reader :enrollment
+  attr_reader :enrollment, :participation, :participation_by_year
 
   def initialize
     @enrollment = []
@@ -16,40 +15,40 @@ class EnrollmentRepository
   #   :kindergarten => "./data/subsets/kindergarten_enrollment.csv"
   #   }
   # }
-  def load_data(data)
-    data_csv = parse_file(data)
-    extracted_data = data_assignment(data_csv)
+  def load_data(request)
+    file = parse_file(request)
+    extracted_data = data_assignment(file)
     new_enrollment(extracted_data)
 
   end
 
   def parse_file(data)
-    data_info = get_data_info(data)
-    data = CSV.open "./data/subsets/kindergarten_enrollment.csv", headers: true, header_converters: :symbol
+    # data_info = get_data_info(data)
+    data = CSV.open file, headers: true, header_converters: :symbol
     # data_info.fetch
     data
   end
 
   def get_data_info(argument)
-    #get file and category info out of load_data calls
-    info = {}
+  #   #get file and category info out of load_data calls
+    file = ""
     argument.each do |key, value|
-      info[:data_category] = key
+  #     info[:data_category] = key
       value.each do |key, value|
-        info[:data_type] = key
-        info[:file] = value
+  #       info[:data_type] = key
+        file = value
       end
     end
-    info
-  end
+  #   info
+  # end
 
   def data_assignment(data_csv)
       data_csv.each do |row|
-      # row.map { |row| [row.fetch(:key), row.fetch(:value)] }.map(&:to_h)
+      row.map { |row| [row.fetch(:key), row.fetch(:value)] }.map(&:to_h)
       district = row[:location]
       data = row[:data]
       year = row[:timeframe]
-  end
+    end
   end
 
   def enrollment_exists?
@@ -57,43 +56,26 @@ class EnrollmentRepository
   end
 
   def new_enrollment(data_collection)
-    @enrollment_exists unless nil
-     @enrollment.participation.merge!(participation_by_year)
-     else @enrollment << Enrollment.new
+    if @enrollment_exists(district)
+      @enrollment.participation.merge!(participation_by_year)
+    else @enrollment << Enrollment.new({:name => district, :kindergarten_participation => { year => data }})
       # doing a conditional that checks if enrollment exists, updates it by updating the existing enrollment object
       #if it doesn't exist create new enrollment object
       #merge!
-      # ({:name => district, :kindergarten_participation => { year => data }})
+      #
   end
 
-  def enrollment_exists
-    # @enrollment.detect
-    #   @enrollment == districts
-    #   if true returns enrollment_data
-    #     if false returns nil
-  end
-
-  def get_data_info(argument)
-    #get file and category info out of load_data calls
-    info = {}
-    argument.each do |key, value|
-      info[:data_category] = key
-      value.each do |key, value|
-        info[:data_type] = key
-        info[:file] = value
-      end
-    end
-    info
-  end
-
-  # def form_symbol(string)
-  #   string.gsub(/\W/, "").upcase.to_sym
-  # end
+   def enrollment_exists(district)
+     @enrollment.detect do |enrollment_instance|
+       enrollment_instance.name == district
+     end
+       if true returns enrollment_data
+         if false returns nil
+   end
 
   def find_by_name(search)
       if enrollment.has_key?(search)
          enrollment.fetch(search)
-
       else nil
       end
 #organizes the data by assigning each data file to a key and thus creating a hash
@@ -101,12 +83,12 @@ class EnrollmentRepository
 end
 
 
-er = EnrollmentRepository.new
-er.load_data({ :enrollment => {  :kindergarten => "./data/subsets/kindergarten_enrollment.csv"}})
-binding.pry
-er.find_by_name("ADAMS-ARAPAHOE")
-#initialization looks like this
-#er = EnrollmentRepository.new
+# er = EnrollmentRepository.new
+# er.load_data({ :enrollment => {  :kindergarten => "./data/subsets/kindergarten_enrollment.csv"}})
+# binding.pry
+# er.find_by_name("ADAMS-ARAPAHOE")
+# initialization looks like this
+# er = EnrollmentRepository.new
 
 # functionality is that it will use a filter to find specific enrollment information. In this case, info about Academy 20's kindergarten enrollment for all years
 #er.load_data({

@@ -1,7 +1,6 @@
-$LOAD_PATH.unshift(File.expand_path("../lib", __dir__))
 require 'minitest'
-require 'enrollment_repository'
-require 'enrollment'
+require './lib/enrollment_repository'
+require './lib/enrollment'
 require 'pry'
 
 class EnrollmentRepositoryTest < Minitest::Test
