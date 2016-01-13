@@ -11,6 +11,7 @@ class EnrollmentRepository
   end
   #top level interface to query (search) for information by district name
   def load_data(data)
+    binding.pry
     data_info = get_data_info(data)
     data_csv = CSV.open data_info.fetch(:file), headers: true, header_converters: :symbol
     data_csv.each do |row|
