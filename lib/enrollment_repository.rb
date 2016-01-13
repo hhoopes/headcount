@@ -10,25 +10,41 @@ class EnrollmentRepository
   def initialize
     @enrollment = {}
   end
-  #top level interface to query (search) for information by district name
+
+  def parse_file(enrollment_data)
+      CSV.open data_info.fetch(:file), headers: true, header_converters: :symbol
+  end
+
   def load_data(data)
-    data_info = get_data_info(data)
-    data_csv = CSV.open data_info.fetch(:file), headers: true, header_converters: :symbol
-    data_csv.each do |row|
+    data_csv = parse_file(enrollment_data)
+    symbol = data_assignment(data_csv)
+    new_enrollment(symbol)
+  end
+
+  def data_assignment(data_csv)
+      data_csv.each do |row|
       rows.map { |row| [row.fetch(:key), row.fetch(:value)] }.map(&:to_h)
       district = row[:location]
       data = row[:data]
       year = row[:timeframe]
-      symbol = form_symbol(district)
-
-      @enrollment[symbol] = Enrollment.new({:name => district, :kindergarten_participation[year] = data })
-      # @enrollment[symbol]= Enrollment.new({ :name => "ACADEMY 20",
-      #                                       :kindergarten_participation => {2010 => 0.3915}
-
-      #eventually change symbol and the initialization to an if statement based on get_data_info
+      form_symbol(district)
     end
   end
 
+  def new_enrollment(symbol)
+      @enrollment[symbol] = Enrollment.new({:name => district, :kindergarten_participation => { year => data }})
+  end
+
+  def enrollment_exists
+    #runs method that exists
+  end
+
+   def create_enrollment
+    # doing a conditional that checks if enrollment exists, updates it by updating the existing enrollment object
+    #if it doesn't exist create new enrollment object
+    #merge!
+
+   end
   def get_data_info(argument)
     #get file and category info out of load_data calls
     info = {}

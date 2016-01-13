@@ -10,17 +10,27 @@ class DistrictRepository
     @districts = {}
   end
 
-  def load_data(data)
-    # binding.pry
+  def parse_file(data)
     data_info = get_data_info(data)
-    data_csv = CSV.open data_info.fetch(:file), headers: true, header_converters: :symbol
-    data_csv.each do |row|
-      district = row[:location]
-      symbol = form_symbol(district)
-      @districts[symbol] = District.new({:name => district})
-      #eventually change symbol and the initialization to an if statement based on get_data_info
+    CSV.open data_info.fetch(:file), headers: true, header_converters: :symbol
+  end
+
+  def load_data(data)
+     data_csv = parse_file(data)
+     symbol = data_assignment(data_csv)
+     new_districts(symbol)
     end
 
+  def data_assignment(data_csv)
+    data_csv.each do |row|
+     district = row[:location]
+     form_symbol(district)
+     end
+   end
+
+  def new_districts(symbol)
+    @districts[symbol] = District.new({:name => district})
+    #assigning new objects of district for each district name
   end
 
   def get_data_info(argument)
@@ -46,7 +56,6 @@ class DistrictRepository
       districts.fetch(search_symbol)
     else nil
     end
-
     #returns either nil or an instance of District having done a case insensitive search
   end
 
