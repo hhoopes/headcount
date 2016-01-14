@@ -20,7 +20,6 @@ class EnrollmentRepository
   end
 
   def load_enrollment(data_csv)
-    # binding.pry
     data_csv.each do |row|
       district = row[:location]
       data = row[:data]

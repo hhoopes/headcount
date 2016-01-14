@@ -6,6 +6,7 @@ require 'pry'
 class EnrollmentRepositoryTest < Minitest::Test
 
   def test_instantiates_an_enrollment_class
+    skip
     enroll_repo = EnrollmentRepository.new
     assert enroll_repo.instance_of?(EnrollmentRepository)
   end
@@ -22,6 +23,7 @@ class EnrollmentRepositoryTest < Minitest::Test
   # end
 
   def parse_file_returns_an_instance_of_CSV
+    skip
     er = EnrollmentRepository.new
     parsed = er.parse_file(:enrollment=>{:kindergarten=>"./data/subsets/kindergarten_enrollment.csv"})
     assert parsed.instance_of?(CSV)
@@ -49,7 +51,7 @@ class EnrollmentRepositoryTest < Minitest::Test
   # end
 
   def test_find_by_name_returns_nil_for_query_not_in_repo
-    # skip
+     skip
     er = EnrollmentRepository.new
     er.load_data({
     :enrollment => {
@@ -62,6 +64,7 @@ class EnrollmentRepositoryTest < Minitest::Test
 
 
   def test_find_by_name_returns_an_instance_of_enrollment
+    skip
     er = EnrollmentRepository.new
     er.load_data({
     :enrollment => {
@@ -74,6 +77,7 @@ class EnrollmentRepositoryTest < Minitest::Test
   end
 
   def test_find_by_name_with_funky_characters_still_returns_district
+    skip
     er = EnrollmentRepository.new
     er.load_data({
     :enrollment => {
@@ -94,6 +98,7 @@ class EnrollmentRepositoryTest < Minitest::Test
   end
 
   def test_find_by_name_is_case_insensitive
+    skip
     er = EnrollmentRepository.new
     er.load_data({
     :enrollment => {
@@ -103,6 +108,19 @@ class EnrollmentRepositoryTest < Minitest::Test
     query ="brush RE-2(J)"
     assert er.find_by_name(query).instance_of? Enrollment
     assert_equal "BRUSH RE-2(J)", er.find_by_name(query).name
+  end
+
+
+  def test_load_data_will_take_second_data_file
+    er = EnrollmentRepository.new
+    er.load_data({
+      :enrollment => {
+      :kindergarten => "./data/Kindergartners in full-day program.csv",
+      :high_school_graduation => "./data/High school graduation rates.csv"
+      }
+    })
+    find_by_name_hash = er.find_by_name("ACADEMY 20")
+    assert find_by_name_hash.high_school_graduation
   end
 
 end
