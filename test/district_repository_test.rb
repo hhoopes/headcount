@@ -4,7 +4,6 @@ require './lib/district_repository'
 require 'pry'
 
 class DistrictRepositoryTest < Minitest::Test
-
   def test_instantiates_a_repository_class
     dr = DistrictRepository.new
     assert dr.instance_of?(DistrictRepository)
@@ -12,59 +11,28 @@ class DistrictRepositoryTest < Minitest::Test
 
   def test_instantiating_district_repo_also_creates_enrollment_repository
     dr = DistrictRepository.new
-    assert dr.enrollment.instance_of? EnrollmentRepository
-
+    assert dr.enrollment_repo.instance_of? EnrollmentRepository
   end
 
   def test_load_data_takes_a_data_request_and_returns_an_array_of_district_instances_and_names
     dr = DistrictRepository.new
     array = dr.load_data({
-    :enrollment => {
-      :kindergarten => "./data/subsets/kindergarten_enrollment.csv"
+      :enrollment => {
+        :kindergarten => "./data/subsets/kindergarten_enrollment.csv"
       }
     })
-    popped_element = array.pop
-    assert popped_element.instance_of?(District)
-  end
-
-  def test_parse_file_returns_an_instance_of_CSV
-    dr = DistrictRepository.new
-    parsed = dr.parse_file(:enrollment=>{:kindergarten=>"./data/subsets/kindergarten_enrollment.csv"})
-    assert parsed.instance_of?(CSV)
-  end
-
-  def test_assign_data_returns_an_array_of_district_names
-    dr = DistrictRepository.new
-    names = dr.data_assignment([
-      {location: 'a'},
-      {location: 'b'},
-      {location: 'a'},
-    ])
-    assert_equal ['a', 'b'], names
+    district = array.last
+    assert district.instance_of?(District)
   end
 
   def test_loading_district_to_repo_adds_it_to_array
     dr = DistrictRepository.new
-    assert dr.initial_districts_array.empty?
-    output1 = dr.add_new_district_to_array(["Colorado"])
+    assert_equal 0, dr.initial_districts_array.length
+    dr.ensure_district_exists("Colorado")
     assert_equal 1, dr.initial_districts_array.length
-
-    output2 = dr.add_new_district_to_array(["ACADEMY 20"])
-
-    assert_equal 2, dr.initial_districts_array.length
-  end
-
-  def test_loading_district_overwrites_same_name
-    dr = DistrictRepository.new
-    output1 = dr.add_new_district_to_array(["Colorado"])
-    assert_equal 1, dr.initial_districts_array.length
-
-    output2 = dr.add_new_district_to_array(["Colorado"])
-
+    dr.ensure_district_exists("Colorado")
     assert_equal 1, dr.initial_districts_array.length
   end
-
-
 
   def test_find_by_name_returns_nil_for_query_not_in_repo
     dr = DistrictRepository.new

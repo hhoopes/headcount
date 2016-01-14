@@ -10,13 +10,21 @@ class EnrollmentRepository
     @initial_enrollments_array = []
   end
 
+  def names
+    initial_enrollments_array.map do |enrollment|
+      enrollment.name
+    end
+  end
+
   def load_data(request_with_file_and_data_info)
     csv_data = parse_file(request_with_file_and_data_info)
     load_enrollment(csv_data)
   end
 
   def parse_file(request)
-    CSV.open request[:enrollment][:kindergarten], headers: true,header_converters: :symbol
+    CSV.open request[:enrollment][:kindergarten],
+             headers: true,
+             header_converters: :symbol
   end
 
   def load_enrollment(data_csv)
@@ -27,7 +35,10 @@ class EnrollmentRepository
       if enrollment = find_by_name(district)
         enrollment.kindergarten_participation.merge!({year => data})
       else
-        @initial_enrollments_array << Enrollment.new({:name => district, :kindergarten_participation => { year => data }})
+        @initial_enrollments_array << Enrollment.new({
+          :name => district,
+          :kindergarten_participation => { year => data }
+        })
       end
     end
   end
