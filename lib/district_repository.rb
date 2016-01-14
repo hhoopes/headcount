@@ -3,10 +3,11 @@ require_relative 'district'
 require 'pry'
 
 class DistrictRepository
-  attr_reader :initial_districts_array
+  attr_reader :initial_districts_array, :enrollment
 
   def initialize
     @initial_districts_array = []
+    @enrollment = EnrollmentRepository.new
   end
 
   def load_data(request_with_file_and_data_info)

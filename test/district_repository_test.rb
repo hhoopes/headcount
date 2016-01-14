@@ -10,6 +10,12 @@ class DistrictRepositoryTest < Minitest::Test
     assert dr.instance_of?(DistrictRepository)
   end
 
+  def test_instantiating_district_repo_also_creates_enrollment_repository
+    dr = DistrictRepository.new
+    assert dr.enrollment.instance_of? EnrollmentRepository
+
+  end
+
   def test_load_data_takes_a_data_request_and_returns_an_array_of_district_instances_and_names
     dr = DistrictRepository.new
     array = dr.load_data({
