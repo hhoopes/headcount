@@ -33,8 +33,8 @@ class DistrictRepository
         initial_districts_array << District.new({:name =>
         d_name})
       end
-      binding.pry
     end
+    initial_districts_array
   end
 
   def find_by_name(d_name)

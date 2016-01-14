@@ -6,13 +6,19 @@ require 'pry'
 class DistrictRepositoryTest < Minitest::Test
 
   def test_instantiates_a_repository_class
-    repo = DistrictRepository.new
-    assert repo.instance_of?(DistrictRepository)
+    dr = DistrictRepository.new
+    assert dr.instance_of?(DistrictRepository)
   end
 
   def test_load_data_takes_a_data_request_and_returns_an_array_of_district_instances_and_names
-    repo = DistrictRepository.new
-
+    dr = DistrictRepository.new
+    array = dr.load_data({
+    :enrollment => {
+      :kindergarten => "./data/subsets/kindergarten_enrollment.csv"
+      }
+    })
+    popped_element = array.pop
+    assert popped_element.instance_of?(District)
   end
 
   def parse_file_returns_an_instance_of_CSV
