@@ -4,8 +4,6 @@ class HeadcountAnalyst
 
   end
 
-  def
-
   def kindergarten_participation_rate_variation(district1, against_district)
     district2 = against_district.fetch(:against)
     calculate_average(district1, district2)

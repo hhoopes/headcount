@@ -6,6 +6,7 @@ require 'pry'
 class HeadcountAnalystTest < Minitest::Test
 
   def test_new_headcount_analyst_requires_instance_of_district_repo
+    skip
     dr = DistrictRepository.new
     dr.load_data({:enrollment => {:kindergarten => "./data/subsets/kindergarten_enrollment.csv"}})
     ha = HeadcountAnalyst.new(dr)
@@ -21,3 +22,5 @@ class HeadcountAnalystTest < Minitest::Test
     ha.kindergarten_participation_rate_variation()
 
     end
+
+  end

@@ -33,7 +33,6 @@ class DistrictRepository
         initial_districts_array << District.new({:name =>
         d_name})
       end
-      binding.pry
     end
   end
 
