@@ -21,12 +21,12 @@ class DistrictRepositoryTest < Minitest::Test
     assert_nil find_by_name_output
   end
 
-  def test_data_in_and_out_is_santized_for_consistency_and_to_be_symbols
-    dr = DistrictRepository.new
-    assert_equal :_JAJA, dr.form_symbol("-_ jaJA")
-    assert_equal :FFFF, dr.form_symbol("@FFff ++~")
-    assert_equal :LOWERCASE, dr.form_symbol("lowercase")
-  end
+  # def test_data_in_and_out_is_santized_for_consistency_and_to_be_symbols
+  #   dr = DistrictRepository.new
+  #   assert_equal :_JAJA, dr.form_symbol("-_ jaJA")
+  #   assert_equal :FFFF, dr.form_symbol("@FFff ++~")
+  #   assert_equal :LOWERCASE, dr.form_symbol("lowercase")
+  # end
 
   def test_find_by_name_returns_district_object
     dr = DistrictRepository.new
