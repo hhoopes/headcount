@@ -45,17 +45,34 @@ class DistrictRepositoryTest < Minitest::Test
     assert_nil find_by_name_output
   end
 
+  meta omg: true
   def test_find_by_name_returns_district_object
-    dr = DistrictRepository.new
-    dr.load_data({
-    :enrollment => {
-      :kindergarten => "./data/subsets/kindergarten_enrollment.csv"
-      }
-    })
-    query = "Colorado"
-    find_by_name_output = dr.find_by_name(query)
+    start = Time.now
+    100.times do
+      dr = DistrictRepository.new
+      dr.load_data({
+        :enrollment => {
+          :kindergarten => "./data/subsets/kindergarten_enrollment.csv"
+        }
+      })
+      query = "Colorado"
+      find_by_name_output = dr.find_by_name(query)
 
-    assert find_by_name_output.instance_of?(District)
+      assert find_by_name_output.instance_of?(District)
+    end
+    puts "TIME WITH CSVS: #{Time.now - start}s"
+  end
+
+  meta omg: true
+  def test_find_by_name_returns_district_object_no_csvs
+    start = Time.now
+    100.times do
+      dr = DistrictRepository.new(['Colorado', 'ACADEMY 20'])
+      assert dr.find_by_name('Colorado').instance_of?(District)
+      assert dr.find_by_name('ACADEMY 20').instance_of?(District)
+      refute dr.find_by_name('ACADEMY 30').instance_of?(District)
+    end
+    puts "TIME WITHOUT CSVS: #{Time.now - start}s"
   end
 
   def test_find_by_name_with_funky_characters_still_returns_district

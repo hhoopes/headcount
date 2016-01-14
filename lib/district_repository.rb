@@ -6,8 +6,13 @@ require 'pry'
 class DistrictRepository
   attr_reader :initial_districts_array, :enrollment_repo
 
-  def initialize
+  def initialize(district_names = [])
     @initial_districts_array = []
+
+    district_names.each do |name|
+      ensure_district_exists name
+    end
+
     @enrollment_repo = EnrollmentRepository.new
   end
 
