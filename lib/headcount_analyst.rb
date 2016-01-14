@@ -1,11 +1,14 @@
 class HeadcountAnalyst
 
-  def initialize(dr)
-   #initaliziation looks like this: ha = HeadcountAnalyst.new(dr)
+  def initialize(district_repository)
+
   end
 
+  def
 
-  def kindergarten_participation_rate_variation
+  def kindergarten_participation_rate_variation(district1, against_district)
+    district2 = against_district.fetch(:against)
+    calculate_average(district1, district2)
     #finds the variance between two districts
     #Example: ha.kindergarten_participation_rate_variation('ACADEMY 20', :against => 'YUMA SCHOOL DISTRICT 1') # => 1.234
   end
