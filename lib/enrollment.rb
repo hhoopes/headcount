@@ -19,17 +19,19 @@ class Enrollment
 # enrollment.kindergarten_participation_by_year
 # => { 2010 => 0.391, 2011 => 0.353, 2012 => 0.267, }
 
+  def kindergarten_participation_in_year(year)
+    search = nil
+    kindergarten_participation.each do |key, value|
+      if key == year
+        search = value
+      end
+    end
+    truncate_float(search) if !search.nil?
+  end
+
   def truncate_float(number)
     sprintf("%.3f", number).to_f
   end
-
-  def kindergarten_participation_in_year(year)
-      #A call to this method with any unknown year should return nil.
-      # The method returns a truncated three-digit floating point number representing a percentage.
-      # Example:
-      # enrollment.kindergarten_participation_in_year(2010) # => 0.391
-  end
-
 #   Enrollment: Gives access to enrollment data within that district, including:
 # |  | -- Dropout rate information
 # |  | -- Kindergarten enrollment rates

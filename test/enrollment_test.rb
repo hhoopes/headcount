@@ -17,7 +17,6 @@ class EnrollmentTest < Minitest::Test
   end
 
   def test_enrollment_data_is_truncated_at_3_decimals
-    # e = Enrollment.new
       e = Enrollment.new({:name => "ACADEMY 20", :kindergarten_participation => {2010 => 0.3915, 2011 => 0.35356, 2012 => 0.2677}})
 
     assert_equal 0.268, e.truncate_float(0.2677)
@@ -31,5 +30,15 @@ class EnrollmentTest < Minitest::Test
     result = {2010=>0.3915, 2011=>0.35356, 2012=>0.2677, 2006=>0.523, 1800=>0.325}
 
     assert_equal result, e.kindergarten_participation
+  end
+
+  def test_kindergarten_participation_in_year_returns_single_value_for_year_and_nil_for_failed_searches
+    e = Enrollment.new({:name => "Bazcocks", :kindergarten_participation => {2010 => 0.3915, 2011 => 0.35356, 2012 => 0.2677, 2006 => 0.523, 1800 => 0.3252}})
+
+    participation = e.kindergarten_participation_in_year(1800)
+    participation2 = e.kindergarten_participation_in_year(1825)
+
+    assert_equal 0.325, participation
+    assert_nil participation2
   end
 end
