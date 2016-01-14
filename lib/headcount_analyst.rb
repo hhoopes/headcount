@@ -1,5 +1,7 @@
+require 'district_repository'
+
 class HeadcountAnalyst
-  attr_reader district_repository
+  attr_reader :district_repository
 
   def initialize(district_repository)
     @district_repository = district_repository
@@ -7,7 +9,6 @@ class HeadcountAnalyst
 
   def kindergarten_participation_rate_variation(district1, against_district)
     district2 = against_district.fetch(:against)
-    binding.pry
     fetched1 = fetch_district(district1)
     fetched2 = fetch_district(district2)
     average1 = calculate_average_rate(fetched1)
