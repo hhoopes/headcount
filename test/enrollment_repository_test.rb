@@ -22,13 +22,6 @@ class EnrollmentRepositoryTest < Minitest::Test
     assert_nil find_by_name_output
   end
 
-  def test_data_in_and_out_is_santized_for_consistency_and_to_be_symbols
-    er = EnrollmentRepository.new
-    assert_equal :_JAJA, er.form_symbol("-_ jaJA")
-    assert_equal :FFFF, er.form_symbol("@FFff ++~")
-    assert_equal :LOWERCASE, er.form_symbol("lowercase")
-  end
-
 
   def test_find_by_name_returns_an_instance_of_enrollment
     er = EnrollmentRepository.new
@@ -70,7 +63,6 @@ class EnrollmentRepositoryTest < Minitest::Test
       }
     })
     query ="brush RE-2(J)"
-
     assert er.find_by_name(query).instance_of? Enrollment
     assert_equal "BRUSH RE-2(J)", er.find_by_name(query).name
   end

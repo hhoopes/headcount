@@ -19,6 +19,6 @@ class EnrollmentTest < Minitest::Test
   def test_enrollment_data_is_truncated_at_3_decimals
     e = Enrollment.new({:name => "ACADEMY 20", :kindergarten_participation => {2010 => 0.3915, 2011 => 0.35356, 2012 => 0.2677}})
     num =  e.kindergarten_participation_by_year
-    assert num.to_s.split(".")[1].length < 4
+    assert num.values.first.to_s.split(".")[1].length < 4
   end
 end

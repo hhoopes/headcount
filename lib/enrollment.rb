@@ -4,15 +4,15 @@ class Enrollment
   attr_reader :enrollment, :name, :participation, :participation_by_year
 
   def initialize(enrollment = {})
+    @participation = {}
     @name = (enrollment[:name]).upcase
     @kindergarten_participation = enrollment[:kindergarten_participation]
   end
 
   def kindergarten_participation(kindergarten_data)
     # kindergarten_data.each do |row|
-    binding.pry
     hash = {1920 => 0.433}
-    @participation = hash.key.truncate_float
+    @participation = hash
 
     # end
   end
