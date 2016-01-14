@@ -10,6 +10,22 @@ class DistrictRepositoryTest < Minitest::Test
     assert repo.instance_of?(DistrictRepository)
   end
 
+  def test_load_data_takes_a_data_request_and_returns_an_array_of_district_instances_and_names
+    repo = DistrictRepository.new
+
+  end
+
+  def parse_file_returns_an_instance_of_CSV
+    dr = DistrictRepository.new
+    parsed = dr.parse_file(:enrollment=>{:kindergarten=>"./data/subsets/kindergarten_enrollment.csv"})
+    assert parsed.instance_of?(CSV)
+  end
+
+  # def assign_data_returns_an_array_of_district_names
+  #   dr = DistrictRepository.new
+  #   dr.assign_data("<#CSV io_type:File io_path:""./data/subsets/kindergarten_enrollment.csv"" encoding:UTF-8 lineno:0 col_sep:"," row_sep:"\n" quote_char:"\"" "headers"":true""")
+  # end
+
   def test_loading_district_to_repo_adds_it_to_array
     dr = DistrictRepository.new
     assert dr.initial_districts_array.empty?
