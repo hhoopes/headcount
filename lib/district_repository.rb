@@ -9,15 +9,14 @@ class DistrictRepository
     @districts = []
   end
 
-  def load_data(request) #new instances of district start here
+  def load_data(request)
      data_csv = parse_file(request)
      district = data_assignment(data_csv)
      new_districts(district)
     end
 
-  def parse_file(data)
-    data_info = get_data_info(data)
-    CSV.open data_info.fetch(:file), headers: true, header_converters: :symbol
+  def parse_file(request)
+    CSV.open request[:enrollment][:kindergarten], headers: true,header_converters: :symbol
   end
 
   def get_data_info(argument)
