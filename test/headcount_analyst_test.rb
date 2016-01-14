@@ -4,7 +4,6 @@ require 'headcount_analyst'
 require 'pry'
 
 class HeadcountAnalystTest < Minitest::Test
-
   def test_new_headcount_analyst_requires_instance_of_district_repo
     dr = DistrictRepository.new
     dr.load_data({:enrollment => {:kindergarten => "./data/subsets/kindergarten_enrollment.csv"}})
@@ -13,11 +12,12 @@ class HeadcountAnalystTest < Minitest::Test
   end
 
   def test_kindergarten_participation_rate_variation_takes_input_of_2_districts_and_returns_variance
+    skip
     dr = DistrictRepository.new
-    dr.load_data({:enrollment => {:kindergarten => "./data/subsets/kindergarten_enrollment.csv"}})
+    dr.load_data({:enrollment => { :kindergarten => "./data/subsets/kindergarten_enrollment.csv"}})
     ha = HeadcountAnalyst.new(dr)
 
-    ha.kindergarten_participation_rate_variation('ACADEMY 20', :against => 'CANON CITY RE-1')
-
-    end
+    variation = ha.kindergarten_participation_rate_variation('ACADEMY 20', :against => 'CANON CITY RE-1')
+    assert_equal ??, variation
   end
+end
