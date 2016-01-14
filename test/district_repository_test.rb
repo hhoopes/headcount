@@ -10,6 +10,29 @@ class DistrictRepositoryTest < Minitest::Test
     assert repo.instance_of?(DistrictRepository)
   end
 
+  def test_loading_district_to_repo_adds_it_to_array
+    dr = DistrictRepository.new
+    assert dr.initial_districts_array.empty?
+    output1 = dr.add_new_district_to_array(["Colorado"])
+    assert_equal 1, dr.initial_districts_array.length
+
+    output2 = dr.add_new_district_to_array(["ACADEMY 20"])
+
+    assert_equal 2, dr.initial_districts_array.length
+  end
+
+  def test_loading_district_overwrites_same_name
+    dr = DistrictRepository.new
+    output1 = dr.add_new_district_to_array(["Colorado"])
+    assert_equal 1, dr.initial_districts_array.length
+
+    output2 = dr.add_new_district_to_array(["Colorado"])
+
+    assert_equal 1, dr.initial_districts_array.length
+  end
+
+
+
   def test_find_by_name_returns_nil_for_query_not_in_repo
     dr = DistrictRepository.new
     dr.load_data({
@@ -98,4 +121,37 @@ class DistrictRepositoryTest < Minitest::Test
 
       assert_equal [], dr.find_all_matching("XW")
     end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 end

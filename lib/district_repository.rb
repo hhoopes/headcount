@@ -10,22 +10,22 @@ class DistrictRepository
   end
 
   def load_data(request_with_file_and_data_info)
-     data_csv = parse_file(request_with_file_and_data_info)
-     district_names = data_assignment(data_csv)
-     new_initial_districts_array(district_names)
-    end
+    data_csv = parse_file(request_with_file_and_data_info)
+    district_names = assign_data(data_csv)
+    add_new_district_to_array(district_names)
+  end
 
-    def parse_file(request)
-      CSV.open request[:enrollment][:kindergarten], headers: true,header_converters: :symbol
-    end
+  def parse_file(request)
+    CSV.open request[:enrollment][:kindergarten], headers: true,header_converters: :symbol
+  end
 
-    def data_assignment(data_csv)
-      data_csv.map do |row|
-        row[:location]
-      end.uniq
-    end
+  def assign_data(data_csv)
+    data_csv.map do |row|
+      row[:location]
+    end.uniq
+  end
 
-  def new_initial_districts_array(district_names)
+  def add_new_district_to_array(district_names)
     district_names.each do |d_name|
       if find_by_name(d_name)
         next
