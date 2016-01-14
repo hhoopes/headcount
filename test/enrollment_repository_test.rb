@@ -49,7 +49,6 @@ class EnrollmentRepositoryTest < Minitest::Test
   # end
 
   def test_find_by_name_returns_nil_for_query_not_in_repo
-    # skip
     er = EnrollmentRepository.new
     er.load_data({
     :enrollment => {
@@ -103,6 +102,20 @@ class EnrollmentRepositoryTest < Minitest::Test
     query ="brush RE-2(J)"
     assert er.find_by_name(query).instance_of? Enrollment
     assert_equal "BRUSH RE-2(J)", er.find_by_name(query).name
+  end
+
+
+  def test_load_data_will_take_second_data_file
+    skip
+    er = EnrollmentRepository.new
+    er.load_data({
+      :enrollment => {
+      :kindergarten => "./data/Kindergartners in full-day program.csv",
+      :high_school_graduation => "./data/High school graduation rates.csv"
+      }
+    })
+    find_by_name_hash = er.find_by_name("ACADEMY 20")
+    assert find_by_name_hash.high_school_graduation
   end
 
 end
