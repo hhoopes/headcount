@@ -4,10 +4,10 @@ require 'csv'
 require 'pry'
 
 class EnrollmentRepository
-  attr_reader :enrollments
+  attr_reader :initial_enrollments_array
 
   def initialize
-    @enrollments = []
+    @initial_enrollments_array = []
   end
 
   def load_data(request_with_file_and_data_info)
@@ -20,24 +20,21 @@ class EnrollmentRepository
   end
 
   def load_enrollment(data_csv)
+    # binding.pry
     data_csv.each do |row|
       district = row[:location]
       data = row[:data]
       year = row[:timeframe]
       if enrollment = find_by_name(district)
         enrollment.kindergarten_participation.merge!({year => data})
-        #enrollment_exists? returns an enrollment instance or nil, assign that returned value to the local variable 'enrollment' and then execute our if/ else logic on it.
       else
-        @enrollments << Enrollment.new({:name => district, :kindergarten_participation => { year => data }})
+        @initial_enrollments_array << Enrollment.new({:name => district, :kindergarten_participation => { year => data }})
       end
     end
   end
-      # doing a conditional that checks if enrollment exists, updates it by updating the existing enrollment object
-      #if it doesn't exist create new enrollment object
-      #merge!
 
   def find_by_name(d_name)
-    enrollments.detect do |enrollment_instance|
+    initial_enrollments_array.detect do |enrollment_instance|
       enrollment_instance.name.upcase == d_name.upcase
     end
   end

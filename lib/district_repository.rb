@@ -34,6 +34,7 @@ class DistrictRepository
         d_name})
       end
     end
+    initial_districts_array
   end
 
   def find_by_name(d_name)
