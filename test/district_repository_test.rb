@@ -27,16 +27,21 @@ class DistrictRepositoryTest < Minitest::Test
     assert popped_element.instance_of?(District)
   end
 
-  def parse_file_returns_an_instance_of_CSV
+  def test_parse_file_returns_an_instance_of_CSV
     dr = DistrictRepository.new
     parsed = dr.parse_file(:enrollment=>{:kindergarten=>"./data/subsets/kindergarten_enrollment.csv"})
     assert parsed.instance_of?(CSV)
   end
 
-  # def assign_data_returns_an_array_of_district_names
-  #   dr = DistrictRepository.new
-  #   dr.assign_data("<#CSV io_type:File io_path:""./data/subsets/kindergarten_enrollment.csv"" encoding:UTF-8 lineno:0 col_sep:"," row_sep:"\n" quote_char:"\"" "headers"":true""")
-  # end
+  def test_assign_data_returns_an_array_of_district_names
+    dr = DistrictRepository.new
+    names = dr.data_assignment([
+      {location: 'a'},
+      {location: 'b'},
+      {location: 'a'},
+    ])
+    assert_equal ['a', 'b'], names
+  end
 
   def test_loading_district_to_repo_adds_it_to_array
     dr = DistrictRepository.new
@@ -88,8 +93,8 @@ class DistrictRepositoryTest < Minitest::Test
   def test_find_by_name_with_funky_characters_still_returns_district
     dr = DistrictRepository.new
     dr.load_data({
-    :enrollment => {
-      :kindergarten => "./data/subsets/kindergarten_enrollment.csv"
+      :enrollment => {
+        :kindergarten => "./data/subsets/kindergarten_enrollment.csv"
       }
     })
 
@@ -97,7 +102,7 @@ class DistrictRepositoryTest < Minitest::Test
     assert dr.find_by_name(query).instance_of?(District)
     assert_equal "ACADEMY 20", dr.find_by_name(query).name
 
-    query ="BRUSH RE-2(J)"
+    query = "BRUSH RE-2(J)"
     assert dr.find_by_name(query).instance_of?(District)
     assert_equal "BRUSH RE-2(J)", dr.find_by_name(query).name
   end
@@ -106,7 +111,7 @@ class DistrictRepositoryTest < Minitest::Test
     dr = DistrictRepository.new
     dr.load_data({
     :enrollment => {
-      :kindergarten => "./data/subsets/kindergarten_enrollment.csv"
+        :kindergarten => "./data/subsets/kindergarten_enrollment.csv"
       }
     })
 
@@ -149,72 +154,4 @@ class DistrictRepositoryTest < Minitest::Test
 
       assert_equal [], dr.find_all_matching("XW")
     end
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 end
