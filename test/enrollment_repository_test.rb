@@ -73,22 +73,17 @@ class EnrollmentRepositoryTest < Minitest::Test
   end
 
   def test_find_by_name_with_funky_characters_still_returns_district
+    # skip
+    #do we want to create a method that does this, add a feature that does this in load_data or just delete the test?
     er = EnrollmentRepository.new
     er.load_data({
     :enrollment => {
       :kindergarten => "./data/subsets/kindergarten_enrollment.csv"
       }
     })
-    query = "ACADEMY 20"
-    find_by_name_output = er.find_by_name(query)
-
-    # assert_equal query.upcase, find_by_name_output.last.last
-    assert find_by_name_output.instance_of?(Enrollment)
-
     query ="BRUSH RE-2(J)"
     find_by_name_output = er.find_by_name(query)
-    #
-    # assert_equal query.upcase, find_by_name_output.last.last
+
     assert find_by_name_output.instance_of?(Enrollment)
   end
 
@@ -107,6 +102,7 @@ class EnrollmentRepositoryTest < Minitest::Test
 
   def test_load_data_will_take_second_data_file
     skip
+    #Return to the EnrollmentRepository to add support for a second data file:
     er = EnrollmentRepository.new
     er.load_data({
       :enrollment => {

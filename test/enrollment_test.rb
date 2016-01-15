@@ -42,16 +42,17 @@ class EnrollmentTest < Minitest::Test
     assert_nil participation2
   end
 
-  # def test_graduation_date_by_year_returns_single_hash_with_annual_data_of_grad_percent
-  #   skip
-  #   #Academy 20 is passed in somewhere
-  #   #is the enrollment passed in to initialize Enrollment class, the same enrollment in enrollment-repo that we changed the name
-  #   assert_equal { 2010 => 0.895, 2011 => 0.895, 2012 => 0.889, 2013 => 0.913, 2014 => 0.898}, enrollment.graduation_rate_by_year
-  # end
-
-  def test_graduation_date_in_year_returns_
+  def test_graduation_date_by_year_returns_single_hash_with_annual_data_of_grad_percent
     skip
-    #output is floating num or string?
+    #Academy 20 is passed in somewhere
+    #is the enrollment passed in to initialize Enrollment class, the same enrollment in enrollment-repo that we changed the name
+    hash = {2010 => 0.895, 2011 => 0.895, 2012 => 0.889, 2013 => 0.913, 2014 => 0.898}
+    assert_equal hash, enrollment.graduation_rate_by_year
+  end
+
+  def test_graduation_date_in_year_returns_truncated_percent
+    skip
+
     assert_equal 0.895, enrollment.graduation_rate_in_year(2010)
   end
 

@@ -45,7 +45,7 @@ class DistrictRepositoryTest < Minitest::Test
     assert_nil find_by_name_output
   end
 
-  meta omg: true
+  # meta omg: true
   def test_find_by_name_returns_district_object
     start = Time.now
     100.times do
