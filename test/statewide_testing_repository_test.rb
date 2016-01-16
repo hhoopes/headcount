@@ -23,7 +23,7 @@ class StatewideTestingRepositoryTest < Minitest::Test
   assert_equal  str = str.find_by_name("ACADEMY 20")
 
 Edge cases:
-LNE instead of Percent, percent out of order, 
+LNE instead of Percent, percent out of order, #Value! as percent (Bethune)
   #3rd grade
   # ACADEMY 20,Math,2008,Percent,0.857
   # ACADEMY 20,Math,2009,Percent,0.824
