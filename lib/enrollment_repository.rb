@@ -12,7 +12,7 @@ class EnrollmentRepository
 
   def names
     initial_enrollments_array.map do |enrollment|
-      enrollment.name
+      enrollment.name.upcase
     end
   end
 

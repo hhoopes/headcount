@@ -25,16 +25,22 @@ class DistrictRepository
   end
 
   def ensure_district_exists(d_name)
+    d_name = d_name.upcase
     if find_by_name(d_name)
       return
     else
       initial_districts_array << District.new({:name => d_name})
+      create_relationship(initial_districts_array.last)
     end
+  end
+
+  def create_relationship(d_object)
+    d_object.enrollment = enrollment_repo.find_by_name(d_object.name)
   end
 
   def find_by_name(d_name)
     initial_districts_array.detect do |district_instance|
-      district_instance.name.upcase == d_name.upcase
+      district_instance.name == d_name.upcase
     end
   end
 
