@@ -5,11 +5,13 @@ require 'pry'
 
 class StatewideTestingRepositoryTest < Minitest::Test
   def statewide_testing_repository_is_initialized
+    skip
     str = StatewideTestRepository.new
     assert str.instance_of?(StatewideTestRepository)
   end
 
   def statewide_testing_repository_loads_data_gives_testing_information_for_multiple_categories_within_a_school
+    skip
     str = StatewideTestRepository.new
     str.load_data({
       :statewide_testing => {
@@ -21,9 +23,12 @@ class StatewideTestingRepositoryTest < Minitest::Test
       }
     })
   assert_equal  str = str.find_by_name("ACADEMY 20")
+  end
 
-Edge cases:
-LNE instead of Percent, percent out of order, #Value! as percent (Bethune)
+end
+
+# Edge cases:
+# LNE instead of Percent, percent out of order, #Value! as percent (Bethune)
   #3rd grade
   # ACADEMY 20,Math,2008,Percent,0.857
   # ACADEMY 20,Math,2009,Percent,0.824
@@ -169,6 +174,3 @@ LNE instead of Percent, percent out of order, #Value! as percent (Bethune)
  # ACADEMY 20,Native American,2014,Percent,0.00724
  # ACADEMY 20,Two or more,2014,Percent,0.00859
  # ACADEMY 20,White,2014,Percent,0.00856
-  end
-
-end
