@@ -16,22 +16,13 @@ class DistrictRepositoryTest < Minitest::Test
 
   def test_load_data_takes_a_data_request_and_returns_an_array_of_district_instances_and_names
     dr = DistrictRepository.new
-    array = dr.load_data({
+    dr.load_data({
       :enrollment => {
         :kindergarten => "./data/subsets/kindergarten_enrollment.csv"
       }
     })
-    district = array.last
+    district = dr.initial_districts_array.last
     assert district.instance_of?(District)
-  end
-
-  def test_loading_district_to_repo_adds_it_to_array
-    dr = DistrictRepository.new
-    assert_equal 0, dr.initial_districts_array.length
-    dr.ensure_district_exists("Colorado")
-    assert_equal 1, dr.initial_districts_array.length
-    dr.ensure_district_exists("Colorado")
-    assert_equal 1, dr.initial_districts_array.length
   end
 
   def test_find_by_name_returns_nil_for_query_not_in_repo

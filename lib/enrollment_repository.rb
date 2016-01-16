@@ -10,37 +10,46 @@ class EnrollmentRepository
     @initial_enrollments_array = []
   end
 
-  def names
-    initial_enrollments_array.map do |enrollment|
-      enrollment.name.upcase
-    end
+  def load_data(request_hash)
+    key_and_file = get_key_and_file(request_hash)
+    load_enrollment(key_and_file)
   end
 
-  def load_data(request_with_file_and_data_info)
-    csv_data = parse_file(request_with_file_and_data_info)
-    load_enrollment(csv_data)
+  def get_key_and_file(hash)
+    hash.fetch(:enrollment)
   end
 
-  def parse_file(request)
-    CSV.open request[:enrollment][:kindergarten],
+  def parse_file(file)
+    CSV.open file,
              headers: true,
              header_converters: :symbol
   end
 
-  def load_enrollment(data_csv)
+  def load_enrollment(key_and_file)
+    d_bundle = []
+    data_csv = parse_file(key_and_file.fetch(:kindergarten))
     data_csv.each do |row|
-      district = row[:location]
+      d_name = row[:location]
       data = row[:data]
       year = row[:timeframe]
-      if enrollment = find_by_name(district)
-        enrollment.kindergarten_participation.merge!({year => data})
+
+      if find_by_name(d_name)
+        d_object = find_by_name(d_name)
+
+
+        d_object.kindergarten_participation.merge!({year => data})
+
+          # d_object.enrollment[:kindergarten_participation] = {year => data}
       else
-        @initial_enrollments_array << Enrollment.new({
-          :name => district,
+        new_instance = Enrollment.new({
+          :name => d_name,
           :kindergarten_participation => { year => data }
-        })
+          })
+        @initial_enrollments_array << new_instance
+        d_bundle << [d_name, new_instance]
       end
     end
+    d_bundle
   end
 
   def find_by_name(d_name)
