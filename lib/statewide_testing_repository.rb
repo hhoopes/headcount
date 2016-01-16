@@ -38,6 +38,8 @@ class StatewideTestingRepository
 # })
 # str = str.find_by_name("ACADEMY 20")
 # # => <StatewideTest>
+
+#Note to Heidi: data_category_info is referencing the symbol section of our request. like :third_grade 
   def data_category(data_category_info)
     if data_category_info.include?("third_grade")
       file = "./data/subsets/third_grade_proficient.csv"
