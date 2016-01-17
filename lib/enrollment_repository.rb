@@ -34,8 +34,7 @@ class EnrollmentRepository
       d_name = row[:location]
       data = row[:data].to_f
       year = row[:timeframe]
-
-      if find_by_name(d_name) #district exists, merge data
+      if find_by_name(d_name) &&  find_by_name(d_name).enrollment #district exists, merge data
         d_object = find_by_name(d_name)
         d_object.enrollment.merge!({data_type => {year => data}})
       else # district doesn't exist, create instance
