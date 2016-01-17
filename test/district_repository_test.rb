@@ -25,6 +25,14 @@ class DistrictRepositoryTest < Minitest::Test
     assert district.instance_of?(District)
   end
 
+  def test_can_load_district_from_array_of_data
+    dr = DistrictRepository.new(["Colorado"])
+    refute dr.initial_districts_array.empty?
+
+    dr.create_district_from_array("District 520")
+    assert_equal 2, dr.initial_districts_array.length
+  end
+
   def test_find_by_name_returns_nil_for_query_not_in_repo
     dr = DistrictRepository.new
     dr.load_data({
@@ -54,7 +62,6 @@ class DistrictRepositoryTest < Minitest::Test
     puts "TIME WITH CSVS: #{Time.now - start}s"
   end
 
-  meta omg: true
   def test_find_by_name_returns_district_object_no_csvs
     start = Time.now
     100.times do

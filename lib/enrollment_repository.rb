@@ -30,7 +30,7 @@ class EnrollmentRepository
     data_csv = parse_file(key_and_file.fetch(:kindergarten))
     data_csv.each do |row|
       d_name = row[:location]
-      data = row[:data]
+      data = row[:data].to_f
       year = row[:timeframe]
 
       if find_by_name(d_name) #district exists, merge data
