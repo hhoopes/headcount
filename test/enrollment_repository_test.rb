@@ -95,7 +95,7 @@ class EnrollmentRepositoryTest < Minitest::Test
 
 
   def test_load_data_will_take_second_data_file
-    skip
+     skip
     er = EnrollmentRepository.new
     er.load_data({
       :enrollment => {
