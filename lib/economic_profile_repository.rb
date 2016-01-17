@@ -11,12 +11,20 @@ class EconomicProfileRepository
   end
 
   def load_data(request_hash)
+	    request_hash.each do | data_category, file_type|
+		  key_and_file = get_key_and_file(file_type)
+    	load_enrollment(key_and_file)
+    end
     key_and_file = get_key_and_file(request_hash)
     load_enrollment(key_and_file)
   end
 
   def get_key_and_file(hash)
-    hash.fetch(:data_category)
+    @file_paths = hash.map do | key, value|
+    hash.fetch(key)
+    end
+    #assign labels that can be used later
+    #finds value with the key, data_category
   end
 
   def parse_file(file)
@@ -27,7 +35,7 @@ class EconomicProfileRepository
 
   def load_enrollment(key_and_file)
     d_bundle = []
-    data_csv = parse_file(key_and_file.fetch(:data_category))
+    data_csv = parse_file(@file_paths)
     data_csv.each do |row|
       d_name = row[:location]
       data = row[:data]

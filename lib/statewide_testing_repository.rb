@@ -59,7 +59,7 @@ class StatewideTestingRepository
 
   def load_enrollment(key_and_file)
     d_bundle = []
-    data_csv = parse_file(key_and_file.fetch(:data_category)
+    data_csv = parse_file(key_and_file.fetch(:data_category))
     # data_csv = parse_file(key_and_file.fetch(:kindergarten))
     data_csv.each do |row|
       d_name = row[:location]
@@ -70,7 +70,7 @@ class StatewideTestingRepository
         d_object = find_by_name(d_name)
 
 
-        d_object.kindergarten_participation.merge!({year => data})
+        d_object.data_category_hash.merge!({year => data})
 
       else
         new_instance = Enrollment.new({
