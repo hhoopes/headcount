@@ -8,6 +8,8 @@ class District
   end
 
   def link_data(data_object, data_key)
+    #When passed a new instance of data associated with this district,
+    #assigns that data object to the instance variable in the district
     case data_key
       when :enrollment
         @enrollment = data_object

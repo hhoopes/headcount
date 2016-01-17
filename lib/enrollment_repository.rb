@@ -11,13 +11,15 @@ class EnrollmentRepository
   end
 
   def load_data(request_hash) #entry point for directly creating a repo
-    key_and_file = get_key_and_file(request_hash)
-    load_enrollment(key_and_file)
+    request_hash.fetch(:enrollment).each do | data_type, file |
+    # key_and_file = get_key_and_file(request_hash)
+      load_enrollment(data_type, file)
+    end
   end
 
-  def get_key_and_file(hash) #method to sync up two different load methods
-    hash.fetch(:enrollment)
-  end
+  # def get_key_and_file(hash) #method to sync up two different load methods
+  #   hash.fetch(:enrollment)
+  # end
 
   def parse_file(file)
     CSV.open file,
@@ -25,9 +27,9 @@ class EnrollmentRepository
              header_converters: :symbol
   end
 
-  def load_enrollment(key_and_file) #entry point for district repo
+  def load_enrollment(data_type, file) #entry point for district repo
     d_bundle = []
-    data_csv = parse_file(key_and_file.fetch(:kindergarten))
+    data_csv = parse_file(file)
     data_csv.each do |row|
       d_name = row[:location]
       data = row[:data].to_f
@@ -35,11 +37,11 @@ class EnrollmentRepository
 
       if find_by_name(d_name) #district exists, merge data
         d_object = find_by_name(d_name)
-        d_object.kindergarten_participation.merge!({year => data})
+        d_object.enrollment.merge!({data_type => {year => data}})
       else # district doesn't exist, create instance
         new_instance = Enrollment.new({
           :name => d_name,
-          :kindergarten_participation => { year => data }
+          data_type => { year => data }
           })
         @initial_enrollments_array << new_instance
         d_bundle << [d_name, new_instance] #add data to send back to district repo
