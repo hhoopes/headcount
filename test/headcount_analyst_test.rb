@@ -12,12 +12,11 @@ class HeadcountAnalystTest < Minitest::Test
   end
 
   def test_kindergarten_participation_rate_variation_takes_input_of_2_districts_and_returns_variance
-    skip
     dr = DistrictRepository.new
     dr.load_data({:enrollment => { :kindergarten => "./data/subsets/kindergarten_enrollment.csv"}})
     ha = HeadcountAnalyst.new(dr)
 
     variation = ha.kindergarten_participation_rate_variation('ACADEMY 20', :against => 'CANON CITY RE-1')
-    assert_equal ??, variation
+    assert_equal 0.579, variation
   end
 end

@@ -10,43 +10,36 @@ class EnrollmentRepositoryTest < Minitest::Test
     assert enroll_repo.instance_of?(EnrollmentRepository)
   end
 
-  # def test_load_data_takes_a_data_request_and_returns_an_array_of_district_instances_and_names
-  #   er = EnrollmentRepository.new
-  #   array = er.load_data({
-  #   :enrollment => {
-  #     :kindergarten => "./data/subsets/kindergarten_enrollment.csv"
-  #     }
-  #   })
-  #   popped_element = array.pop
-  #   assert popped_element.instance_of?(Enrollment)
-  # end
-
   def parse_file_returns_an_instance_of_CSV
     er = EnrollmentRepository.new
     parsed = er.parse_file(:enrollment=>{:kindergarten=>"./data/subsets/kindergarten_enrollment.csv"})
     assert parsed.instance_of?(CSV)
   end
 
-  # def test_loading_district_to_repo_adds_it_to_array
-  #   er = EnrollmentRepository.new
-  #   assert er.initial_enrollments_array.empty?
-  #   output1 = er.load_enrollment(["Colorado"])
-  #   assert_equal 1, er.initial_enrollments_array.length
-  #
-  #   output2 = er.load_enrollment(["ACADEMY 20"])
-  #
-  #   assert_equal 2, er.initial_enrollments_array.length
-  # end
 
-  # def test_loading_district_overwrites_same_name
-  #   er = EnrollmentRepository.new
-  #   output1 = er.load_enrollment(["Colorado"])
-  #   assert_equal 1, er.initial_enrollments_array.length
-  #
-  #   output2 = er.load_enrollment(["Colorado"])
-  #
-  #   assert_equal 1, er.initial_enrollments_array.length
-  # end
+
+  def test_adding_more_data_for_same_district_doesnt_overwite_first
+  end
+
+  def test_can_create_enrollment_repo_from_direct_hash_data
+    skip(msg = "Will work once we extract a new method in load_enrollment that takes over from the if-loop on")
+    er = EnrollmentRepository.new #won't be this method
+    data1 = er.load_enrollment({
+        :name => "Colorado",
+        :enrollment => {:kindergarten =>
+          {2013 => 0.23}}
+        })
+    assert_equal 1, er.initial_enrollments_array.length
+
+    data2 = er.load_enrollment({
+        :name => "Colorado",
+        :enrollment => {:kindergarten =>
+          {2014 => 0.33}}
+        })
+    output = ""
+    assert_equal 1, er.initial_enrollments_array.length
+    assert_equal output, er.kindergarten_participation_by_year
+  end
 
   def test_find_by_name_returns_nil_for_query_not_in_repo
     er = EnrollmentRepository.new
@@ -81,14 +74,10 @@ class EnrollmentRepositoryTest < Minitest::Test
     })
     query = "ACADEMY 20"
     find_by_name_output = er.find_by_name(query)
-
-    # assert_equal query.upcase, find_by_name_output.last.last
     assert find_by_name_output.instance_of?(Enrollment)
 
     query ="BRUSH RE-2(J)"
     find_by_name_output = er.find_by_name(query)
-    #
-    # assert_equal query.upcase, find_by_name_output.last.last
     assert find_by_name_output.instance_of?(Enrollment)
   end
 

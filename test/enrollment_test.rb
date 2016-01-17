@@ -25,15 +25,27 @@ class EnrollmentTest < Minitest::Test
   end
 
   def test_kindergarten_participation_by_year_returns_single_hash_with_data
-    e = Enrollment.new({:name => "Snort Splat", :kindergarten_participation => {2010 => 0.3915, 2011 => 0.35356, 2012 => 0.2677, 2006 => 0.523, 1800 => 0.325}})
-
-    result = {2010=>0.3915, 2011=>0.35356, 2012=>0.2677, 2006=>0.523, 1800=>0.325}
-
-    assert_equal result, e.kindergarten_participation
+    data = {
+      2010=>0.3915,
+      2011=>0.35356,
+      2012=>0.2677,
+      2006=>0.523,
+      1800=>0.325}
+    e = Enrollment.new({
+        :name => "Academy for Nerds",
+        :kindergarten_participation => data})
+    assert_equal data, e.kindergarten_participation
   end
 
   def test_kindergarten_participation_in_year_returns_single_value_for_year_and_nil_for_failed_searches
-    e = Enrollment.new({:name => "Bazcocks", :kindergarten_participation => {2010 => 0.3915, 2011 => 0.35356, 2012 => 0.2677, 2006 => 0.523, 1800 => 0.3252}})
+    e = Enrollment.new({
+        :name => "Hogwarts",
+        :kindergarten_participation => {
+            2010 => 0.3915,
+            2011 => 0.35356,
+            2012 => 0.2677,
+            2006 => 0.523,
+            1800 => 0.3252}})
 
     participation = e.kindergarten_participation_in_year(1800)
     participation2 = e.kindergarten_participation_in_year(1825)
