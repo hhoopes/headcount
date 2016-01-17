@@ -9,18 +9,17 @@ class EconomicProfileRepository
   def initialize
     @initial_eco_array = []
   end
-
+#based on load_data in district repo, the first key of request_hash is gone
   def load_data(request_hash)
-	    request_hash.each do | data_category, file_type|
-		  key_and_file = get_key_and_file(file_type)
-    	load_enrollment(key_and_file)
+	    request_hash.fetch(:economic_profile).each do | data_category, file|
+    	load_enrollment(data_category, file)
     end
-    key_and_file = get_key_and_file(request_hash)
-    load_enrollment(key_and_file)
+    # key_and_file = get_key_and_file(request_hash)
+    # load_enrollment(key_and_file)
   end
 
   def get_key_and_file(hash)
-    @file_paths = hash.map do | key, value|
+    hash.map do | key, value|
     hash.fetch(key)
     end
     #assign labels that can be used later
@@ -33,9 +32,9 @@ class EconomicProfileRepository
              header_converters: :symbol
   end
 
-  def load_enrollment(key_and_file)
+  def load_enrollment(data_category, file)
     d_bundle = []
-    data_csv = parse_file(@file_paths)
+    data_csv = parse_file(file)
     data_csv.each do |row|
       d_name = row[:location]
       data = row[:data]
@@ -45,21 +44,22 @@ class EconomicProfileRepository
         d_object = find_by_name(d_name)
 
 
-        d_object.data_hash.merge!({year => data})
+        d_object.economic_profile.merge!({key => {year => data})
 
           # d_object.enrollment[:kindergarten_participation] = {year => data}
       else
-        new_instance = Enrollment.new({
+        new_instance = EconomicProfile.new({
           :name => d_name,
           :data_category => { year => data }
           })
+          #method if this is the key this is the data category
         @initial_eco_array << new_instance
         d_bundle << [d_name, new_instance]
       end
     end
     d_bundle
   end
-
+#district.economic_profile.key => data
   def find_by_name(d_name)
     initial_eco_array.detect do |eco_instance|
       eco_instance.name.upcase == d_name.upcase

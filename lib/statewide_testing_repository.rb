@@ -39,23 +39,6 @@ class StatewideTestingRepository
 # str = str.find_by_name("ACADEMY 20")
 # # => <StatewideTest>
 
-#Note to Heidi: data_category_info is referencing the symbol section of our request. like :third_grade
-  def data_category(data_category_info)
-    if data_category_info.include?("third_grade")
-      file = "./data/subsets/third_grade_proficient.csv"
-    elsif data_category_info.include?("eighth_grade")
-      file = "./data/subsets/eighth_grade_proficient.csv"
-    elsif data_category_info.include?("math")
-      file = "./data/subsets/math_by_race.csv"
-    elsif data_category_info.include?("reading")
-      file = "./data/subsets/reading_by_race.csv"
-    elsif data_category_info.include?("writing")
-      file = "./data/subsets/writing_by_race"
-    else
-      nil
-    end
-    parse_file(file)
-  end
 
   def load_enrollment(key_and_file)
     d_bundle = []
@@ -70,7 +53,7 @@ class StatewideTestingRepository
         d_object = find_by_name(d_name)
 
 
-        d_object.data_category_hash.merge!({year => data})
+        d_object.statewide_testing_hash.merge!({year => data})
 
       else
         new_instance = Enrollment.new({
