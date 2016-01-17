@@ -10,12 +10,12 @@ class EnrollmentRepository
     @initial_enrollments_array = []
   end
 
-  def load_data(request_hash)
+  def load_data(request_hash) #entry point for directly creating a repo
     key_and_file = get_key_and_file(request_hash)
     load_enrollment(key_and_file)
   end
 
-  def get_key_and_file(hash)
+  def get_key_and_file(hash) #method to sync up two different load methods
     hash.fetch(:enrollment)
   end
 
@@ -25,7 +25,7 @@ class EnrollmentRepository
              header_converters: :symbol
   end
 
-  def load_enrollment(key_and_file)
+  def load_enrollment(key_and_file) #entry point for district repo
     d_bundle = []
     data_csv = parse_file(key_and_file.fetch(:kindergarten))
     data_csv.each do |row|
@@ -33,20 +33,16 @@ class EnrollmentRepository
       data = row[:data]
       year = row[:timeframe]
 
-      if find_by_name(d_name)
+      if find_by_name(d_name) #district exists, merge data
         d_object = find_by_name(d_name)
-
-
         d_object.kindergarten_participation.merge!({year => data})
-
-          # d_object.enrollment[:kindergarten_participation] = {year => data}
-      else
+      else # district doesn't exist, create instance
         new_instance = Enrollment.new({
           :name => d_name,
           :kindergarten_participation => { year => data }
           })
         @initial_enrollments_array << new_instance
-        d_bundle << [d_name, new_instance]
+        d_bundle << [d_name, new_instance] #add data to send back to district repo
       end
     end
     d_bundle
@@ -57,9 +53,8 @@ class EnrollmentRepository
       enrollment_instance.name.upcase == d_name.upcase
     end
   end
-#organizes the data by assigning each data file to a key and thus creating a hash
 end
-# functionality is that it will use a filter to find specific enrollment information. In this case, info about Academy 20's kindergarten enrollment for all years
+
 
 #er.load_data({
 #   :enrollment => {
