@@ -44,10 +44,10 @@ class EnrollmentRepositoryTest < Minitest::Test
   def test_find_by_name_returns_nil_for_query_not_in_repo
     er = EnrollmentRepository.new
     er.load_data({
-    :enrollment => {
-      :kindergarten => "./data/subsets/kindergarten_enrollment.csv"
-      }
-    })
+      :enrollment => {
+        :kindergarten => "./data/subsets/kindergarten_enrollment.csv"
+        }
+      })
     find_by_name_output = er.find_by_name("Marshmallows")
     assert_nil find_by_name_output
   end

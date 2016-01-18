@@ -44,7 +44,6 @@ class DistrictRepositoryTest < Minitest::Test
     assert_nil find_by_name_output
   end
 
-  meta omg: true
   def test_find_by_name_returns_district_object
     start = Time.now
     100.times do
@@ -90,6 +89,7 @@ class DistrictRepositoryTest < Minitest::Test
     assert_equal "BRUSH RE-2(J)", dr.find_by_name(query).name
   end
 
+meta weird: true
   def test_find_by_name_is_case_insensitive
     dr = DistrictRepository.new
     dr.load_data({
@@ -97,7 +97,6 @@ class DistrictRepositoryTest < Minitest::Test
         :kindergarten => "./data/subsets/kindergarten_enrollment.csv"
       }
     })
-
     query ="brush RE-2(J)"
 
     assert_equal "BRUSH RE-2(J)", dr.find_by_name(query).name
@@ -116,25 +115,25 @@ class DistrictRepositoryTest < Minitest::Test
   end
 
 
-    def test_find_all_matching_returns_possible_district_options_for_fragment_search_lowercase
-      dr = DistrictRepository.new
-      output = dr.load_data({
-      :enrollment => {
-        :kindergarten => "./data/subsets/kindergarten_enrollment.csv"
-        }
-      })
+  def test_find_all_matching_returns_possible_district_options_for_fragment_search_lowercase
+    dr = DistrictRepository.new
+    output = dr.load_data({
+    :enrollment => {
+      :kindergarten => "./data/subsets/kindergarten_enrollment.csv"
+      }
+    })
 
-      assert_equal ["CENTENNIAL R-1", "CENTER 26 JT"], dr.find_all_matching("cen")
-    end
+    assert_equal ["CENTENNIAL R-1", "CENTER 26 JT"], dr.find_all_matching("cen")
+  end
 
-    def test_find_all_matching_returns_empty_array_if_no_matches
-      dr = DistrictRepository.new
-      output = dr.load_data({
-      :enrollment => {
-        :kindergarten => "./data/subsets/kindergarten_enrollment.csv"
-        }
-      })
+  def test_find_all_matching_returns_empty_array_if_no_matches
+    dr = DistrictRepository.new
+    output = dr.load_data({
+    :enrollment => {
+      :kindergarten => "./data/subsets/kindergarten_enrollment.csv"
+      }
+    })
 
-      assert_equal [], dr.find_all_matching("XW")
-    end
+    assert_equal [], dr.find_all_matching("XW")
+  end
 end

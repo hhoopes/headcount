@@ -29,7 +29,6 @@ class HeadcountAnalyst
   end
 
   def calculate_average_rate(d_object)
-    binding.pry
     if d_object.enrollment.kindergarten
       data = d_object.enrollment.kindergarten.values
       data.inject(0) do |memo, datum|

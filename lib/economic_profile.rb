@@ -1,3 +1,11 @@
+class EconomicProfile
+  attr_reader :name
+  def initialize(economic_profile = {})
+    @name = (economic_profile[:name]).upcase
+  end
+end
+
+
 # |-- Economic Profile: Gives access to economic information within the district, including:
 # |  | -- Median household income
 # |  | -- Rates of school-aged children living below the poverty line
