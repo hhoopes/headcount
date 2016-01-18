@@ -26,7 +26,6 @@ class HeadcountAnalystTest < Minitest::Test
 
   def test_kindergarten_participation_rate_variation_trend_tests_for_the_variation_each_year
     skip
-
       dr = DistrictRepository.new
       dr.load_data({:enrollment => { :kindergarten => "./data/subsets/kindergarten_enrollment.csv"}})
       ha = HeadcountAnalyst.new(dr)
@@ -37,8 +36,8 @@ class HeadcountAnalystTest < Minitest::Test
   end
 
   # meta ha:true
-  def test_kindergarten_participation_against_hs_graduation_gives_correct_number
-    skip 
+  def test_kindergarten_participation_against_hs_graduation_for_two_districts_gives_correct_number
+    skip
     dr = DistrictRepository.new
     dr.load_data({:enrollment => {:kindergarten => "./data/subsets/kindergarten_enrollment.csv", :high_school_graduation => "./data/subsets/high_school_enrollment.csv"}})
     ha = HeadcountAnalyst.new(dr)
@@ -46,20 +45,28 @@ class HeadcountAnalystTest < Minitest::Test
     assert_equal 1.234, ha.kindergarten_participation_against_high_school_graduation('ACADEMY 20')
   end
 
-  def test_does_correlation_show_hs_graduation
+  def test_shows_if_hs_graduation_has_correlation_for_two_districts
     dr = DistrictRepository.new
     dr.load_data({:enrollment => {:kindergarten => "./data/subsets/kindergarten_enrollment.csv", :high_school_graduation => "./data/subsets/high_school_enrollment.csv"}})
     ha = HeadcountAnalyst.new(dr)
 
-    assert ha.kindergarten_participation_correlates_with_high_school_graduation(for: 'ACADEMY 20')
+    assert ha.kindergarten_participation_correlates_with_high_school_graduation(for: 'STATEWIDE')
   end
+
+    def test_shows_if_hs_graduation_has_correlation_for_two_districts
+      dr = DistrictRepository.new
+      dr.load_data({:enrollment => {:kindergarten => "./data/subsets/kindergarten_enrollment.csv", :high_school_graduation => "./data/subsets/high_school_enrollment.csv"}})
+      ha = HeadcountAnalyst.new(dr)
+
+      assert ha.kindergarten_participation_correlates_with_high_school_graduation(for: 'ACADEMY 20')
+    end
 
     def test_shows_false_if_there_is_no_correlation
       skip
       dr = DistrictRepository.new
       dr.load_data({:enrollment => {:kindergarten => "./data/subsets/kindergarten_enrollment.csv", :high_school_graduation => "./data/subsets/high_school_enrollment.csv"}})
       ha = HeadcountAnalyst.new(dr)
-
+      #might not be refute but hoping to find something that does give me a refute
       refute ha.kindergarten_participation_correlates_with_high_school_graduation(for: 'CENTENNIAL')
     end
 

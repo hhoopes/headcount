@@ -63,11 +63,18 @@ class HeadcountAnalyst
   def kindergarten_participation_correlates_with_high_school_graduation(d_hash)
     #this might be totally wrong
     d_name = d_hash.fetch(:for)
+    if d_name == "STATEWIDE"
+      d_name = 'Colorado'
+      if state_variation > 0.7
+        true
+      end
+    else
        kindergarten_variation = kindergarten_participation_against_high_school_graduation(d_name)
        if kindergarten_variation > 0.6 || kindergarten_variation < 1.5 && high_school_variation > 0.6 || high_school_variation < 1.5
 
          true
        end
+     end
      end
 
   def truncate_float(number)
