@@ -1,17 +1,27 @@
 class Enrollment
-  attr_reader :enrollment, :name
-  attr_accessor  :kindergarten_participation, :high_school_graduation
+  attr_reader :name, :data
 
-  def initialize(enrollment = {})
-    @name = (enrollment[:name]).upcase
-    @kindergarten_participation
-    @high_school_graduation
+  def initialize(data = {})
+    @data = data
+    @name = (@data[:name]).upcase
+  end
+
+  def kindergarten_participation
+    if data.has_key?(:kindergarten_participation)
+      data.fetch(:kindergarten_participation)
+    end
+  end
+
+  def high_school_graduation
+    if data.has_key?(:high_school_graduation)
+      data.fetch(:high_school_graduation)
+    end
   end
 
   def kindergarten_participation_by_year
-    kindergarten_participation.map do |year, data|
-      [year, truncate_float(data)]
-    end.to_h
+    kindergarten_participation.each do |year, data|
+      kindergarten_participation[year] = truncate_float(data)
+    end
   end
 
   def kindergarten_participation_in_year(year)

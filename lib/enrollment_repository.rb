@@ -30,13 +30,13 @@ class EnrollmentRepository
       d_name = row[:location].upcase
       data = row[:data].to_f
       year = row[:timeframe].to_i
-      d_object = find_by_name(d_name)
-      if d_object
+      e_object = find_by_name(d_name)
+      if e_object
         case data_type
         when :kindergarten_participation
-          add_kindergarten(d_object, data, year)
+          add_kindergarten(e_object, data, year)
         when :graduation
-          add_graduation(d_object, data, year)
+          add_graduation(e_object, data, year)
         end
       else # district doesn't exist, create instance
         create_new_enrollment(data_type, d_name, year, data)
@@ -44,28 +44,25 @@ class EnrollmentRepository
     end
   end
 
-  def add_kindergarten(d_object, data, year)
-
-    if d_object.kindergarten_participation.nil?
-      d_object.kindergarten_participation = {year => data}
+  def add_kindergarten(e_object, data, year)
+    if e_object.kindergarten_participation.nil?
+      e_object.kindergarten_participation = {year => data}
     else #need to merge
-      d_object.kindergarten_participation.merge!({year => data})
+      e_object.kindergarten_participation.merge!({year => data})
+
     end
   end
 
-  def add_graduation(d_object, data, year)
-    if d_object.graduation.nil?
-      d_object.graduation = {year => data}
+  def add_graduation(e_object, data, year)
+    if e_object.graduation.nil?
+      e_object.graduation = {year => data}
     else
       d.object.graduation.merge!({year => data})
     end
   end
 
   def create_new_enrollment(data_type, d_name, year, data)
-    new_instance = Enrollment.new({
-      :name => d_name,
-      data_type => { year => data }
-      })
+    new_instance = Enrollment.new({data_type => {year => data}, :name => d_name} )
     initial_enrollments_array << new_instance
     unlinked_enrollments << [d_name, new_instance]
   end

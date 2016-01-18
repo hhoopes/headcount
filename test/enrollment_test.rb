@@ -80,9 +80,9 @@ meta tag: true
       assert_equal grad_hash, enrollment.graduation_rate_by_year
     end
 
+meta tag:true
   def test_graduation_date_in_year_returns_percent
     enrollment = Enrollment.new({:name => "ACADEMY 20", :high_school_graduation => { 2010 => 0.895, 2011 => 0.895, 2012 => 0.889, 2013 => 0.913, 2014 => 0.898}})
-
     assert_equal 0.895, enrollment.graduation_rate_in_year(2010)
   end
 
