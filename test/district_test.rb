@@ -20,8 +20,9 @@ class DistrictTest < Minitest::Test
     refute d.enrollment
     e = Enrollment.new({:name => "ACADEMY 20", :kindergarten_participation => {2010 => 0.3915, 2011 => 0.35356, 2012 => 0.2677}})
     d.link_data(e, :enrollment)
+    hash = {2010=>0.391, 2011=>0.353, 2012=>0.267}
     assert d.enrollment
-    assert_equal [{2010=>0.392}, {2011=>0.354}, {2012=>0.268}], d.enrollment.kindergarten_participation_by_year
+    assert_equal hash, d.enrollment.kindergarten_participation_by_year
   end
 
 end

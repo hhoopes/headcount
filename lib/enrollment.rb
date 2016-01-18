@@ -2,15 +2,14 @@ class Enrollment
   attr_reader :enrollment, :name
   attr_accessor  :kindergarten_participation, :high_school_graduation
 
-  def initialize(enrollment = {}, kindergarten_participation = enrollment[:kindergarten_participation])
+  def initialize(enrollment = {})
     @name = (enrollment[:name]).upcase
-    @kindergarten_participation = enrollment[:kindergarten_participation]
-    @high_school_graduation = enrollment[:high_school_graduation]
+    @kindergarten_participation
+    @high_school_graduation
   end
 
   def kindergarten_participation_by_year
     kindergarten_participation.map do |year, data|
-      binding.pry
       [year, truncate_float(data)]
     end.to_h
   end
@@ -26,12 +25,12 @@ class Enrollment
   end
 
   def graduation_rate_by_year
-    high_school_graduation.map do |year, data|
+    high_school_graduation.each do |year, data|
+    #  binding.pry
+        [year, truncate_float(data)]
+      end.to_h
 
-      {year => truncate_float(data)}
-    #grad_hash = { 2010 => 0.895, 2011 => 0.895, 2012 => 0.889, 2013 => 0.913, 2014 => 0.898}
   end
-end
 
   def truncate_float(number)
     (number * 1000).truncate/1000.to_f
