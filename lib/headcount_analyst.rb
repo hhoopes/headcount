@@ -35,9 +35,15 @@ class HeadcountAnalyst
   end
 
   def calculate_average_rate_for_all_years(d_object1, d_object2)
+<<<<<<< HEAD
    if d_object1.enrollment.kindergarten_participation && d_object2.enrollment.kindergarten_participation
      data_hash1 = d_object1.enrollment.kindergarten_participation
      data_hash2 = d_object2.enrollment.kindergarten_participation
+=======
+   if d_object1.enrollment.kindergarten && d_object2.enrollment.kindergarten
+     data_hash1 = d_object1.enrollment.kindergarten
+     data_hash2 = d_object2.enrollment.kindergarten
+>>>>>>> 32583347fa00e7ade4b48bf954ab6a5522525a9a
        index = 0
        annual_enrollment_hash = {}
        while index < 1 && data_hash1.keys[0] == data_hash2.keys[0] && data_hash1.keys[0] != nil do

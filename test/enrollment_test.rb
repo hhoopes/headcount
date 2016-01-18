@@ -62,6 +62,7 @@ class EnrollmentTest < Minitest::Test
         assert_equal grad_hash, enrollment.kindergarten_participation
       end
 
+
   def test_graduation_date_by_year_returns_single_hash_with_annual_data_of_grad_percent
     enrollment = Enrollment.new({:name => "ACADEMY 20", :high_school_graduation => { 2010 => 0.895, 2011 => 0.895, 2012 => 0.889, 2013 => 0.913, 2014 => 0.898}})
 
@@ -73,6 +74,7 @@ meta tag: true
     def test_graduation_date_by_year_returns_single_hash_with_annual_data_of_grad_percent_using_file
       skip
       enrollment = Enrollment.new({:name => "ACADEMY 20", :high_school_graduation => "./data/subsets/high_school_enrollment.csv"})
+
 
       grad_hash = { 2010 => 0.895, 2011 => 0.895, 2012 => 0.889, 2013 => 0.913, 2014 => 0.898}
       assert_equal grad_hash, enrollment.graduation_rate_by_year
