@@ -55,18 +55,17 @@ class HeadcountAnalyst
     high_school_variation =  calculate_variation(district1, 'Colorado', :high_school_graduation)
   end
 
-    def calculate_variation(d_object1, d_name2 = 'Colorado', data_type)
+    def calculate_variation(d_name1, d_name2 = 'Colorado', data_type)
         d_object1 = get_district(d_name1)
         d_object2 = get_district(d_name2)
         average1 = calculate_average_rate(d_object1, data_type)
         average2 = calculate_average_rate(d_object2, data_type)
         truncate_float(average1/average2)
-
     end
 
   def kindergarten_participation_correlates_with_high_school_graduation(d_hash)
     d_name = d_hash.fetch(:for)
-       kindergarten_variation = kindergarten_participation_correlates_with_high_school_graduation(d_name)
+       kindergarten_variation = kindergarten_participation_against_high_school_graduation(d_name)
        if correlation > 0.6 || correlation < 1.5
          true
        end
