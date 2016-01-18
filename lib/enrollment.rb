@@ -26,8 +26,6 @@ class Enrollment
   end
 
   def graduation_rate_by_year
-        binding.pry
-
     high_school_graduation.map do |year, data|
 
       {year => truncate_float(data)}
