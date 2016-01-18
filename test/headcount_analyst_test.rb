@@ -30,4 +30,6 @@ class HeadcountAnalystTest < Minitest::Test
       variation_hash = {"2007"=>0.992, "2006"=>1.05, "2005"=>0.961, "2004"=>1.258, "2008"=>0.718, "2009"=>0.652, "2010"=>0.681, "2011"=>0.728, "2012"=>0.689, "2013"=>0.694, "2014"=>0.661}
       assert_equal variation_hash, variation
   end
+
+
 end
