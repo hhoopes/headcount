@@ -26,9 +26,14 @@ class Enrollment
   end
 
   def graduation_rate_by_year
+        binding.pry
 
+    high_school_graduation.map do |year, data|
+
+      {year => truncate_float(data)}
     #grad_hash = { 2010 => 0.895, 2011 => 0.895, 2012 => 0.889, 2013 => 0.913, 2014 => 0.898}
   end
+end
 
   def truncate_float(number)
     (number * 1000).truncate/1000.to_f
