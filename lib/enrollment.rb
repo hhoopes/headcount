@@ -9,11 +9,10 @@ class Enrollment
   end
 
   def kindergarten_participation_by_year
-    # kindergarten_participation.map do |year, data|
-    #   binding.pry
-    #   {year => truncate_float(data)}
-    # end
-    kindergarten_participation
+    kindergarten_participation.map do |year, data|
+      binding.pry
+      [year, truncate_float(data)]
+    end.to_h
   end
 
   #This method returns a hash with years as keys and a truncated three-digit floating point number representing a percentage for all years present in the dataset.
