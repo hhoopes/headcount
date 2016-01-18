@@ -47,7 +47,6 @@ class EnrollmentRepository
   end
 
   def add_kindergarten(e_object, data, year)
-    binding.pry
     e_object.data[:kindergarten_participation].merge!({year => data})
   end
 
