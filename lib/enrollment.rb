@@ -15,11 +15,6 @@ class Enrollment
     end
   end
 
-  #This method returns a hash with years as keys and a truncated three-digit floating point number representing a percentage for all years present in the dataset.
-  #Example:
-# enrollment.kindergarten_participation_by_year
-# => { 2010 => 0.391, 2011 => 0.353, 2012 => 0.267, }
-
   def kindergarten_participation_in_year(year)
     search = nil
     kindergarten.each do |key, value|
@@ -28,6 +23,11 @@ class Enrollment
       end
     end
     truncate_float(search) if !search.nil?
+  end
+
+  def graduation_rate_by_year
+
+    #grad_hash = { 2010 => 0.895, 2011 => 0.895, 2012 => 0.889, 2013 => 0.913, 2014 => 0.898}
   end
 
   def truncate_float(number)

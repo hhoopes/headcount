@@ -16,8 +16,6 @@ class EnrollmentRepositoryTest < Minitest::Test
     assert parsed.instance_of?(CSV)
   end
 
-
-
   def test_adding_more_data_for_same_district_doesnt_overwite_first
   end
 

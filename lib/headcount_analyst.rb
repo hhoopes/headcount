@@ -9,7 +9,6 @@ class HeadcountAnalyst
   end
 
   def kindergarten_participation_rate_variation(d_name1, against_district)
-    #couldn't we just d_name2 the second object
     d_name2 = against_district.fetch(:against)
     d_object1 = get_district(d_name1)
     d_object2 = get_district(d_name2)
@@ -37,7 +36,6 @@ class HeadcountAnalyst
   end
 
   def calculate_average_rate_for_all_years(d_object1, d_object2)
-    # binding.pry
    if d_object1.enrollment.kindergarten && d_object2.enrollment.kindergarten
      data_hash1 = d_object1.enrollment.kindergarten
      data_hash2 = d_object2.enrollment.kindergarten
