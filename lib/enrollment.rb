@@ -10,7 +10,6 @@ class Enrollment
 
   def kindergarten_participation_by_year
     kindergarten_participation.map do |year, data|
-      binding.pry
       [year, truncate_float(data)]
     end.to_h
   end
