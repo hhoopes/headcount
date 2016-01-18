@@ -11,7 +11,7 @@ class HeadcountAnalystTest < Minitest::Test
     ha = HeadcountAnalyst.new(dr)
     assert ha.instance_of? HeadcountAnalyst
   end
-  meta ha:true
+  # meta ha:true
   def test_kindergarten_participation_rate_variation_takes_input_of_2_districts_and_returns_variance
     dr = DistrictRepository.new
     dr.load_data({:enrollment => { :kindergarten => "./data/subsets/kindergarten_enrollment.csv"}})
@@ -20,4 +20,35 @@ class HeadcountAnalystTest < Minitest::Test
     variation = ha.kindergarten_participation_rate_variation('ACADEMY 20', :against => 'CANON CITY RE-1')
     assert_equal 0.579, variation
   end
+
+  def test_kindergarten_participation_rate_variation_trend_tests_for_the_variation_each_year
+      dr = DistrictRepository.new
+      dr.load_data({:enrollment => { :kindergarten => "./data/subsets/kindergarten_enrollment.csv"}})
+      ha = HeadcountAnalyst.new(dr)
+
+      variation = ha.kindergarten_participation_rate_variation_trend('ACADEMY 20', :against => 'COLORADO')
+      variation_hash = {2007=>0.992, 2006=>1.05, 2005=>0.961, 2004=>1.258, 2008=>0.718, 2009=>0.652, 2010=>0.681, 2011=>0.728, 2012=>0.689, 2013=>0.694, 2014=>0.661}
+      assert_equal variation_hash, variation
+  end
+
+<<<<<<< HEAD
+
+=======
+     def test_graduation_date_by_year_returns_single_hash_with_annual_data_of_grad_percent
+       enrollment = Enrollment.new({:name => "ACADEMY 20", :high_school_graduation => { 2010 => 0.895, 2011 => 0.895, 2012 => 0.889, 2013 => 0.913, 2014 => 0.898}})
+
+        grad_hash = { 2010 => 0.895, 2011 => 0.895, 2012 => 0.889, 2013 => 0.913, 2014 => 0.898}
+        assert_equal grad_hash, enrollment.graduation_rate_by_year
+
+      end
+
+      def test_graduation_date_by_year_returns_single_hash_with_annual_data_of_grad_percent_using_file
+        skip
+        enrollment = Enrollment.new({:name => "ACADEMY 20", :high_school_graduation => "./data/subsets/high_school_enrollment.csv"})
+
+        grad_hash = { 2010 => 0.895, 2011 => 0.895, 2012 => 0.889, 2013 => 0.913, 2014 => 0.898}
+        assert_equal grad_hash, enrollment.graduation_rate_by_year
+
+        end 
+>>>>>>> 32583347fa00e7ade4b48bf954ab6a5522525a9a
 end
