@@ -35,7 +35,7 @@ class EnrollmentRepository
         case data_type
         when :kindergarten_participation
           add_kindergarten(e_object, data, year)
-        when :graduation
+        when :high_school_graduation
           add_graduation(e_object, data, year)
         end
       else # district doesn't exist, create instance
@@ -45,20 +45,11 @@ class EnrollmentRepository
   end
 
   def add_kindergarten(e_object, data, year)
-    if e_object.kindergarten_participation.nil?
-      e_object.kindergarten_participation = {year => data}
-    else #need to merge
-      e_object.kindergarten_participation.merge!({year => data})
-
-    end
+    e_object.data.merge!({:kindergarten_participation => {year => data}})
   end
 
   def add_graduation(e_object, data, year)
-    if e_object.graduation.nil?
-      e_object.graduation = {year => data}
-    else
-      d.object.graduation.merge!({year => data})
-    end
+    e_object.data.merge!({:high_school_graduation => {year => data}})
   end
 
   def create_new_enrollment(data_type, d_name, year, data)
