@@ -1,4 +1,5 @@
 require_relative './enrollment'
+# require_relative './data_formatter'
 require 'csv'
 require 'pry'
 
@@ -8,6 +9,7 @@ class EnrollmentRepository
   def initialize
     @initial_enrollments_array = []
     @unlinked_enrollments = []
+    # @formatter = DataFomatter.new(:enrollment)
   end
 
   def load_data(request_hash) #entry point for directly creating a repo
@@ -45,11 +47,12 @@ class EnrollmentRepository
   end
 
   def add_kindergarten(e_object, data, year)
-    e_object.data.merge!({:kindergarten_participation => {year => data}})
+    binding.pry
+    e_object.data[:kindergarten_participation].merge!({year => data})
   end
 
   def add_graduation(e_object, data, year)
-    e_object.data.merge!({:high_school_graduation => {year => data}})
+    e_object.data[:high_school_graduation].merge!({year => data})
   end
 
   def create_new_enrollment(data_type, d_name, year, data)
