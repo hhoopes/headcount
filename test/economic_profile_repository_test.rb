@@ -12,6 +12,7 @@ class EconomicProfileRepositoryTest < Minitest::Test
   end
 
   def test_economic_information_given_when_run_load_data_for_specific_school
+    skip
     epr = EconomicProfileRepository.new
     epr.load_data({
       :economic_profile => {

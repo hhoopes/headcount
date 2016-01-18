@@ -42,9 +42,7 @@ class EconomicProfileRepository
 
       if find_by_name(d_name)
         d_object = find_by_name(d_name)
-
-
-        d_object.economic_profile.merge!({key => {year => data})
+        d_object.economic_profile.merge!({key => {year => data}})
 
           # d_object.enrollment[:kindergarten_participation] = {year => data}
       else

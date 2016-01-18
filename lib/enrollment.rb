@@ -1,16 +1,16 @@
 require 'csv'
 
 class Enrollment
-  attr_reader :enrollment, :name, :kindergarten_participation, :high_school_graduation
+  attr_reader :enrollment, :name, :kindergarten, :high_school_graduation
 
-  def initialize(enrollment = {})
+  def initialize(enrollment = {}, kindergarten = enrollment[:kindergarten])
     @name = (enrollment[:name]).upcase
-    @kindergarten_participation = enrollment[:kindergarten_participation]
+    @kindergarten = enrollment[:kindergarten]
     @high_school_graduation = enrollment[:high_school_graduation]
   end
 
   def kindergarten_participation_by_year
-    kindergarten_participation.map do |year, data|
+    kindergarten.map do |year, data|
       {year => truncate_float(data)}
     end
   end
@@ -22,7 +22,7 @@ class Enrollment
 
   def kindergarten_participation_in_year(year)
     search = nil
-    kindergarten_participation.each do |key, value|
+    kindergarten.each do |key, value|
       if key == year
         search = value
       end
