@@ -89,7 +89,6 @@ class DistrictRepositoryTest < Minitest::Test
     assert_equal "BRUSH RE-2(J)", dr.find_by_name(query).name
   end
 
-meta weird: true
   def test_find_by_name_is_case_insensitive
     dr = DistrictRepository.new
     dr.load_data({
@@ -136,4 +135,5 @@ meta weird: true
 
     assert_equal [], dr.find_all_matching("XW")
   end
+
 end

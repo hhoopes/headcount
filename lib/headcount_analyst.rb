@@ -28,8 +28,8 @@ class HeadcountAnalyst
   end
 
   def calculate_average_rate(d_object)
-    if d_object.enrollment.kindergarten
-      data = d_object.enrollment.kindergarten.values
+    if d_object.enrollment.kindergarten_participation
+      data = d_object.enrollment.kindergarten_participation.values
       data.inject(0) do |memo, datum|
         memo + datum
       end/data.size

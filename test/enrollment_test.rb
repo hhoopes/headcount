@@ -6,18 +6,18 @@ require 'pry'
 class EnrollmentTest < Minitest::Test
 
   def test_instantiates_an_enrollment_class
-    e = Enrollment.new({:name => "ACADEMY 20", :kindergarten => {2010 => 0.3915, 2011 => 0.35356, 2012 => 0.2677}})
+    e = Enrollment.new({:name => "ACADEMY 20", :kindergarten_participation => {2010 => 0.3915, 2011 => 0.35356, 2012 => 0.2677}})
     assert e.instance_of?(Enrollment)
   end
 
   def test_enrollment_has_a_method_that_returns_district_name
-    e = Enrollment.new({:name => "ACADEMY 20", :kindergarten => {2010 => 0.3915, 2011 => 0.35356, 2012 => 0.2677}})
+    e = Enrollment.new({:name => "ACADEMY 20", :kindergarten_participation => {2010 => 0.3915, 2011 => 0.35356, 2012 => 0.2677}})
 
     assert_equal "ACADEMY 20", e.name
   end
 
   def test_enrollment_data_is_truncated_at_3_decimals
-      e = Enrollment.new({:name => "ACADEMY 20", :kindergarten => {2010 => 0.3915, 2011 => 0.35356, 2012 => 0.2677}})
+      e = Enrollment.new({:name => "ACADEMY 20", :kindergarten_participation => {2010 => 0.3915, 2011 => 0.35356, 2012 => 0.2677}})
 
     assert_equal 0.268, e.truncate_float(0.2677)
     assert_equal 0.0, e.truncate_float(0.0000)
@@ -33,14 +33,14 @@ class EnrollmentTest < Minitest::Test
       1800=>0.325}
     e = Enrollment.new({
         :name => "Academy for Nerds",
-        :kindergarten => data})
-    assert_equal data, e.kindergarten
+        :kindergarten_participation => data})
+    assert_equal data, e.kindergarten_participation
   end
 
   def test_kindergarten_participation_in_year_returns_single_value_for_year_and_nil_for_failed_searches
     e = Enrollment.new({
         :name => "Hogwarts",
-        :kindergarten => {
+        :kindergarten_participation => {
             2010 => 0.3915,
             2011 => 0.35356,
             2012 => 0.2677,
@@ -78,6 +78,8 @@ class EnrollmentTest < Minitest::Test
 
     assert_equal nil, enrollment.graduation_rate_in_year(80038382)
   end
+
+
 
 
 end

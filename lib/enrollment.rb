@@ -1,17 +1,19 @@
 class Enrollment
   attr_reader :enrollment, :name
-  attr_accessor  :kindergarten, :high_school_graduation
+  attr_accessor  :kindergarten_participation, :high_school_graduation
 
-  def initialize(enrollment = {}, kindergarten = enrollment[:kindergarten])
+  def initialize(enrollment = {}, kindergarten_participation = enrollment[:kindergarten_participation])
     @name = (enrollment[:name]).upcase
-    @kindergarten = enrollment[:kindergarten]
+    @kindergarten_participation = enrollment[:kindergarten_participation]
     @high_school_graduation = enrollment[:high_school_graduation]
   end
 
   def kindergarten_participation_by_year
-    kindergarten.map do |year, data|
-      {year => truncate_float(data)}
-    end
+    # kindergarten_participation.map do |year, data|
+    #   binding.pry
+    #   {year => truncate_float(data)}
+    # end
+    kindergarten_participation
   end
 
   #This method returns a hash with years as keys and a truncated three-digit floating point number representing a percentage for all years present in the dataset.
@@ -21,7 +23,7 @@ class Enrollment
 
   def kindergarten_participation_in_year(year)
     search = nil
-    kindergarten.each do |key, value|
+    kindergarten_participation.each do |key, value|
       if key == year
         search = value
       end
@@ -30,7 +32,7 @@ class Enrollment
   end
 
   def truncate_float(number)
-    sprintf("%.3f", number).to_f
+    (number * 1000).truncate/1000.to_f
   end
 #   Enrollment: Gives access to enrollment data within that district, including:
 # |  | -- Dropout rate information
