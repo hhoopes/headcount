@@ -29,14 +29,20 @@ class EnrollmentRepository
 
   def load_enrollment(data_type, file) #entry point for district repo
     d_bundle = []
+
     data_csv = parse_file(file)
     data_csv.each do |row|
       d_name = row[:location]
       data = row[:data].to_f
       year = row[:timeframe]
-      if find_by_name(d_name) &&  find_by_name(d_name).enrollment #district exists, merge data
+      binding.pry
+      if find_by_name(d_name) && data_type = :kindergarten
+        district = find_by_name(d_name)
+        method = district.kindergarten
+
+      if find_by_name(d_name) && !method.nil? #district exists, merge data
         d_object = find_by_name(d_name)
-        d_object.enrollment.merge!({data_type => {year => data}})
+        method.merge!({year => data})
       else # district doesn't exist, create instance
         new_instance = Enrollment.new({
           :name => d_name,
@@ -45,6 +51,7 @@ class EnrollmentRepository
         @initial_enrollments_array << new_instance
         d_bundle << [d_name, new_instance] #add data to send back to district repo
       end
+    end
     end
     d_bundle
   end

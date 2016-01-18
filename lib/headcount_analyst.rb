@@ -28,11 +28,14 @@ class HeadcountAnalyst
     district_repository.find_by_name(d_name)
   end
 
-  def calculate_average_rate(district)
-    data = district.enrollment.kindergarten_participation.values
-    data.inject(0) do |memo, datum|
-      memo + datum
-    end/data.size
+  def calculate_average_rate(d_object)
+    binding.pry
+    if d_object.enrollment.kindergarten
+      data = d_object.enrollment.kindergarten.values
+      data.inject(0) do |memo, datum|
+        memo + datum
+      end/data.size
+    end
   end
 
   def truncate_float(number)

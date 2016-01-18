@@ -36,6 +36,7 @@ class DistrictRepository
 
   def catalog_repos(d_bundle, data_category) # d_bundle comes from the other repos to associate new districts with their data
     d_bundle.each do |array_pair|  #key will be refactored in to link districts to the correct repos
+      binding.pry
       d_name = array_pair.first #take the name from the array
       data_object = array_pair.last #take the object from the array
 
