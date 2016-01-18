@@ -26,10 +26,18 @@ class Enrollment
 
   def graduation_rate_by_year
     high_school_graduation.each do |year, data|
-    #  binding.pry
         [year, truncate_float(data)]
       end.to_h
+  end
 
+  def graduation_rate_in_year(year)
+    search = nil
+    high_school_graduation.each do |key, value|
+      if key == year
+        search = value
+      end
+    end
+    truncate_float(search) if !search.nil?
   end
 
   def truncate_float(number)
