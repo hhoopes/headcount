@@ -1,12 +1,12 @@
 require "csv"
 require_relative 'district'
 require_relative 'enrollment_repository'
-require_relative 'statewide_testing_repository'
+require_relative 'statewide_test_repository'
 require_relative 'economic_profile_repository'
 require 'pry'
 
 class DistrictRepository
-  attr_reader :initial_districts_array, :enrollment_repo, :testing_repo, :testing_repo
+  attr_reader :initial_districts_array, :enrollment_repo, :testing_repo
 
   def initialize(district_names = [])
     @initial_districts_array = []
@@ -15,7 +15,7 @@ class DistrictRepository
       create_district_from_array name
     end
 
-    @testing_repo = StatewideTestingRepository.new
+    @testing_repo = StatewideTestRepository.new
     @economic_repo = EconomicProfileRepository.new
     @enrollment_repo = EnrollmentRepository.new
   end
@@ -32,7 +32,6 @@ class DistrictRepository
     end
     catalog_repos(d_bundle, data_category)
   end
-
 
   def catalog_repos(d_bundle, data_category) # d_bundle comes from the other repos to associate new districts with their data
     d_bundle.each do |array_pair|  #key will be refactored in to link districts to the correct repos

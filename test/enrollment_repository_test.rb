@@ -16,8 +16,6 @@ class EnrollmentRepositoryTest < Minitest::Test
     assert parsed.instance_of?(CSV)
   end
 
-
-
   def test_adding_more_data_for_same_district_doesnt_overwite_first
   end
 
@@ -51,7 +49,6 @@ class EnrollmentRepositoryTest < Minitest::Test
     find_by_name_output = er.find_by_name("Marshmallows")
     assert_nil find_by_name_output
   end
-
 
   def test_find_by_name_returns_an_instance_of_enrollment
     er = EnrollmentRepository.new
@@ -93,14 +90,13 @@ class EnrollmentRepositoryTest < Minitest::Test
     assert_equal "BRUSH RE-2(J)", er.find_by_name(query).name
   end
 
-
   def test_load_data_will_take_second_data_file
-     skip
     er = EnrollmentRepository.new
     er.load_data({
       :enrollment => {
-      :kindergarten => "./data/Kindergartners in full-day program.csv",
-      :high_school_graduation => "./data/High school graduation rates.csv"
+      :high_school_graduation => "./data/subsets/graduation_tiny.csv",
+      :kindergarten => "./data/subsets/kindergarten_tiny.csv"
+
       }
     })
     find_by_name_hash = er.find_by_name("ACADEMY 20")

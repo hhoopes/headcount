@@ -1,21 +1,20 @@
 require_relative './enrollment'
-require_relative './district_repository'
 require 'csv'
 require 'pry'
 
 class EnrollmentRepository
-  attr_reader :initial_enrollments_array, :unlinked_districts
+  attr_reader :initial_enrollments_array, :unlinked_enrollments
 
   def initialize
     @initial_enrollments_array = []
-    @unlinked_districts = []
+    @unlinked_enrollments = []
   end
 
   def load_data(request_hash) #entry point for directly creating a repo
     request_hash.fetch(:enrollment).each do | data_type, file |
       load_enrollment(data_type, file)
     end
-    unlinked_districts
+    unlinked_enrollments
   end
 
   def parse_file(file)
@@ -27,7 +26,7 @@ class EnrollmentRepository
   def load_enrollment(data_type, file) #entry point for district repo
     data_csv = parse_file(file)
     data_csv.each do |row|
-      d_name = row[:location]
+      d_name = row[:location].upcase
       data = row[:data].to_f
       year = row[:timeframe]
       d_object = find_by_name(d_name)
@@ -39,12 +38,13 @@ class EnrollmentRepository
           add_graduation(d_object, data, year)
         end
       else # district doesn't exist, create instance
-        create_new_district(data_type, d_name, year, data)
+        create_new_enrollment(data_type, d_name, year, data)
       end
     end
   end
 
   def add_kindergarten(d_object, data, year)
+
     if d_object.kindergarten.nil?
       d_object.kindergarten = {year => data}
     else #need to merge
@@ -58,15 +58,16 @@ class EnrollmentRepository
     else
       d.object.graduation.merge!({year => data})
     end
+    binding.pry
   end
 
-  def create_new_district(data_type, d_name, year, data)
+  def create_new_enrollment(data_type, d_name, year, data)
     new_instance = Enrollment.new({
       :name => d_name,
       data_type => { year => data }
       })
     initial_enrollments_array << new_instance
-    unlinked_districts << [d_name, new_instance]
+    unlinked_enrollments << [d_name, new_instance]
   end
 
   def find_by_name(d_name)

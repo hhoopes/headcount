@@ -13,7 +13,7 @@ class District
     case data_key
       when :enrollment
         @enrollment = data_object
-      when :statewide_testing
+      when :statewide_test
         @statewide_testing = data_object
       when :economic_profile
         @economic_profile = data_object

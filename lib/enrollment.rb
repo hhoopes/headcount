@@ -1,7 +1,6 @@
-require 'csv'
-
 class Enrollment
-  attr_reader :enrollment, :name, :kindergarten, :high_school_graduation
+  attr_reader :enrollment, :name
+  attr_accessor  :kindergarten, :high_school_graduation
 
   def initialize(enrollment = {}, kindergarten = enrollment[:kindergarten])
     @name = (enrollment[:name]).upcase

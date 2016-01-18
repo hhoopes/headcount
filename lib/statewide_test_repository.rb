@@ -1,13 +1,12 @@
 require 'csv'
-require_relative './statewide_testing'
-require_relative './district_repository'
+require_relative './statewide_test'
 require 'pry'
 
-class StatewideTestingRepository
-  attr_reader :initial_statewide_testing_array
+class StatewideTestRepository
+  attr_reader :initial_statewide_test_array
 
   def initialize
-    @initial_statewide_testing_array = []
+    @initial_statewide_test_array = []
   end
 
   def load_data(request_hash)

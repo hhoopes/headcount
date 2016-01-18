@@ -1,6 +1,5 @@
 require_relative 'district_repository'
 
-
 class HeadcountAnalyst
   attr_reader :district_repository
 
