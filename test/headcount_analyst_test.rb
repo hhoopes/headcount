@@ -14,11 +14,13 @@ class HeadcountAnalystTest < Minitest::Test
 
   meta ha:true
   def test_kindergarten_participation_rate_variation_takes_input_of_2_districts_and_returns_variance
+    skip
     dr = DistrictRepository.new
     dr.load_data({:enrollment => { :kindergarten => "./data/subsets/kindergarten_enrollment.csv"}})
     ha = HeadcountAnalyst.new(dr)
 
     variation = ha.kindergarten_participation_rate_variation('ACADEMY 20', :against => 'COLORADO')
+
     assert_equal 0.766, variation
   end
 
@@ -36,6 +38,7 @@ class HeadcountAnalystTest < Minitest::Test
 
   # meta ha:true
   def test_kindergarten_participation_against_hs_graduation_gives_correct_number
+    skip 
     dr = DistrictRepository.new
     dr.load_data({:enrollment => {:kindergarten => "./data/subsets/kindergarten_enrollment.csv", :high_school_graduation => "./data/subsets/high_school_enrollment.csv"}})
     ha = HeadcountAnalyst.new(dr)
@@ -43,13 +46,22 @@ class HeadcountAnalystTest < Minitest::Test
     assert_equal 1.234, ha.kindergarten_participation_against_high_school_graduation('ACADEMY 20')
   end
 
-  def test_does_correlation_show_hs_graducation
+  def test_does_correlation_show_hs_graduation
     dr = DistrictRepository.new
     dr.load_data({:enrollment => {:kindergarten => "./data/subsets/kindergarten_enrollment.csv", :high_school_graduation => "./data/subsets/high_school_enrollment.csv"}})
     ha = HeadcountAnalyst.new(dr)
 
     assert ha.kindergarten_participation_correlates_with_high_school_graduation(for: 'ACADEMY 20')
   end
+
+    def test_shows_false_if_there_is_no_correlation
+      skip
+      dr = DistrictRepository.new
+      dr.load_data({:enrollment => {:kindergarten => "./data/subsets/kindergarten_enrollment.csv", :high_school_graduation => "./data/subsets/high_school_enrollment.csv"}})
+      ha = HeadcountAnalyst.new(dr)
+
+      refute ha.kindergarten_participation_correlates_with_high_school_graduation(for: 'CENTENNIAL')
+    end
 
 
 end

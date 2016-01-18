@@ -8,17 +8,14 @@ class HeadcountAnalyst
   end
 
   def kindergarten_participation_rate_variation(d_name1, against_district)
-    d_name2 = against_district.fetch(:against)
-    d_object1 = get_district(d_name1)
-    d_object2 = get_district(d_name2)
-    average1 = calculate_average_rate(d_object1)
-    average2 = calculate_average_rate(d_object2)
-    truncate_float(average1/average2)
+    d_2 = against_district.fetch(:against)
+    calculate_variation(d_name1, d_2, :kindergarten_participation)
+
   end
 
   def calculate_average_rate(d_object, data_type)
     if d_object.enrollment.data.has_key?(data_type)
-      data = d_object.enrollment.fetch(data_type.values)
+      data = d_object.enrollment.data.fetch(data_type).values
       data.inject(0) do |memo, datum|
         memo + datum
       end/data.size
@@ -64,9 +61,11 @@ class HeadcountAnalyst
     end
 
   def kindergarten_participation_correlates_with_high_school_graduation(d_hash)
+    #this might be totally wrong
     d_name = d_hash.fetch(:for)
        kindergarten_variation = kindergarten_participation_against_high_school_graduation(d_name)
-       if correlation > 0.6 || correlation < 1.5
+       if kindergarten_variation > 0.6 || kindergarten_variation < 1.5 && high_school_variation > 0.6 || high_school_variation < 1.5
+
          true
        end
      end
