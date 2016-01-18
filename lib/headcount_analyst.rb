@@ -72,7 +72,7 @@ class HeadcountAnalyst
      end
 
   def truncate_float(number)
-    sprintf("%.3f", number).to_f
+    (number * 1000).truncate/1000.to_f
   end
 
 end
