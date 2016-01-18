@@ -21,7 +21,7 @@ class HeadcountAnalystTest < Minitest::Test
     assert_equal 0.579, variation
   end
 
-  def test_kindergarten_participation_rate_varaition_trend_tests_for_the_variation_each_year
+  def test_kindergarten_participation_rate_variation_trend_tests_for_the_variation_each_year
       dr = DistrictRepository.new
       dr.load_data({:enrollment => { :kindergarten => "./data/subsets/kindergarten_enrollment.csv"}})
       ha = HeadcountAnalyst.new(dr)
