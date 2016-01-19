@@ -34,27 +34,33 @@ class StatewideTestRepository
       subject = row[:score].to_s
 
       return if formatter.bad_data.include?(percent)
-        formatted_data = {:name => d_name, data_type => {year => {subject => percent}}}
+        # formatted_data = {:name => d_name, data_type => {year => {subject => percent}}}
+        formatted_data = {subject => percent}
+
         t_object = find_by_name(d_name)
         if t_object
-          add_data(data_type, formatted_data, t_object)
+          add_data(year, data_type, formatted_data, t_object)
         else # district doesn't exist, create instance
-          create_new_statewide_test(formatted_data, d_name)
+          create_new_statewide_test(formatted_data, d_name, year, data_type)
         end
       end
     end
   end
 
-  def add_data(data_type, formatted_data, t_object)
-    if t_object.data[data_type].nil?
-      t_object.data[data_type] = formatted_data
+  def add_data(year, data_type, formatted_data, t_object)
+    if t_object.data[data_type].nil? #no data for that grade
+      t_object.data[data_type] = {year => formatted_data}
     else
-      t_object.data[data_type].merge!(formatted_data)
+      if t_object.data[data_type][year].nil? #no data for that subject
+        t_object.data[data_type].merge!({year => formatted_data})
+      else
+        t_object.data[data_type][year].merge!(formatted_data) #subject exists, merge other subjects
+      end
     end
   end
 
-  def create_new_statewide_test(data, d_name)
-    new_instance = StatewideTest.new(data)
+  def create_new_statewide_test(formatted_data, d_name, year, data_type)
+    new_instance = StatewideTest.new({:name=> d_name, data_type => {year => formatted_data}})
     initial_testing_array << new_instance
     unlinked_testing << [d_name, new_instance]
   end
