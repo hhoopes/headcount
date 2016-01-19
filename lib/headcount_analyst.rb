@@ -8,6 +8,7 @@ class HeadcountAnalyst
   end
 
   def kindergarten_participation_rate_variation(d_name1, against_district)
+    binding.pry
     d_2 = against_district.fetch(:against)
     calculate_variation(d_name1, d_2, :kindergarten_participation)
 
@@ -63,18 +64,17 @@ class HeadcountAnalyst
 
   def kindergarten_participation_correlates_with_high_school_graduation(d_hash)
     correlation = false
-    d_name = d_hash.fetch(:for)
-    #  if d_hash.keys.first == for:
+    d_name = d_hash[:for]
       if d_name.upcase == "STATEWIDE"
         results = statewide_correlation
       	if
          	statewide_correlation > 0.7
           correlation = true
      		end
-      elsif d_hash.keys.first == across
+      elsif d_hash.keys.first == :across
           d_array = d_hash.fetch(:across)
-          variation_array = d_array.map do |d_name|
-            kindergarten_participation_correlates_with_high_school_graduation(d_name)
+            variation_array = d_array.map do |d_name|
+              kindergarten_participation_correlates_with_high_school_graduation(d_name)
           end
         else #one school
             variation = kindergarten_participation_against_high_school_graduation(d_hash.keys.first)
