@@ -68,7 +68,7 @@ class HeadcountAnalyst
     correlation = false
     d_name = d_hash.fetch(:for)
     binding.pry
-     d_hash.keys.first == across:
+     if d_hash.keys.first == for:
       if d_name.upcase == "STATEWIDE"
         results = statewide_correlation
       	if
@@ -80,6 +80,10 @@ class HeadcountAnalyst
         if 0.6 < variation < 1.5
            correlation = true
         end
+      else #if key is across:
+        d_array = d_hash.fetch(:across)
+        d_array.each do |d_name|
+
       end
         correlation
    end
