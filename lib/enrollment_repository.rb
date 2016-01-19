@@ -43,14 +43,14 @@ class EnrollmentRepository
 
   def add_data(data_type, e_object, year, data)
     if e_object.data[data_type].nil?
-      e_object.data[data_type] = {data => year}
+      e_object.data[data_type] = {year => data}
     else
       e_object.data[data_type].merge!({year => data})
     end
   end
 
   def create_new_enrollment(data_type, d_name, year, data)
-    new_instance = Enrollment.new({data_type => {year => data}, :name => d_name} )
+    new_instance = Enrollment.new({:name => d_name, data_type => {year => data}})
     initial_enrollments_array << new_instance
     unlinked_enrollments << [d_name, new_instance]
   end

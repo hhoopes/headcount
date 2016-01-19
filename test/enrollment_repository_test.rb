@@ -50,6 +50,7 @@ class EnrollmentRepositoryTest < Minitest::Test
     assert_nil find_by_name_output
   end
 
+
   def test_find_by_name_returns_an_instance_of_enrollment
     er = EnrollmentRepository.new
     er.load_data({
@@ -100,6 +101,7 @@ class EnrollmentRepositoryTest < Minitest::Test
 
       }
     })
+    binding.pry
     find_by_name_hash = er.find_by_name("ACADEMY 20")
     assert find_by_name_hash.high_school_graduation
   end
