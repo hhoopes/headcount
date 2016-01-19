@@ -90,6 +90,7 @@ class EnrollmentRepositoryTest < Minitest::Test
     assert_equal "BRUSH RE-2(J)", er.find_by_name(query).name
   end
 
+  meta t:true
   def test_load_data_will_take_second_data_file
     er = EnrollmentRepository.new
     er.load_data({

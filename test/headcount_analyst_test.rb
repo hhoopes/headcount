@@ -72,7 +72,7 @@ class HeadcountAnalystTest < Minitest::Test
     end
 
     def test_whether_kindergarten_participation_correlates_with_hs_graduation
-      skip 
+      skip
      dr = DistrictRepository.new
      dr.load_data({:enrollment => {:kindergarten => "./data/subsets/kindergarten_enrollment.csv", :high_school_graduation => "./data/subsets/high_school_enrollment.csv"}})
      ha = HeadcountAnalyst.new(dr)

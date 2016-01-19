@@ -1,6 +1,14 @@
 class StatewideTest
-  def initialize(statewide_test = {})
-    @name = statewide_test[:name].upcase
+  attr_reader :name, :data
+
+  def initialize(data = {})
+    @name = data[:name].upcase
+    @data = data
+  end
+
+#key is #statewide_testing, method is statewide_test
+  def statewide_test
+    data.fetch(:statewide_testing) if data.has_key?(:statewide_testing)
   end
 end
 
