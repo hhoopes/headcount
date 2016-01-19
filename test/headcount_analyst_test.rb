@@ -47,9 +47,9 @@ class HeadcountAnalystTest < Minitest::Test
 
   def test_shows_if_hs_graduation_has_correlation_for_two_districts
     dr = DistrictRepository.new
-    dr.load_data({:enrollment => {:kindergarten => "./data/subsets/kindergarten_enrollment.csv", :high_school_graduation => "./data/subsets/high_school_enrollment.csv"}})
+    dr.load_data({:enrollment => {:kindergarten => "./data/Kindergarteners in full-day program.csv", :high_school_graduation => "./data/High school graduatio rates.csv"}})
     ha = HeadcountAnalyst.new(dr)
-
+    #this probably doesn't work but somehow is passing
     assert ha.kindergarten_participation_correlates_with_high_school_graduation(for: 'STATEWIDE')
   end
 
@@ -68,6 +68,15 @@ class HeadcountAnalystTest < Minitest::Test
       ha = HeadcountAnalyst.new(dr)
       #might not be refute but hoping to find something that does give me a refute
       refute ha.kindergarten_participation_correlates_with_high_school_graduation(for: 'CENTENNIAL')
+    end
+
+    def test_whether_kindergarten_participation_correlates_with_hs_graduation
+     dr = DistrictRepository.new
+     dr.load_data({:enrollment => {:kindergarten => "./data/subsets/kindergarten_enrollment.csv", :high_school_graduation => "./data/subsets/high_school_enrollment.csv"}})
+     ha = HeadcountAnalyst.new(dr)
+
+      assert ha.kindergarten_participation_correlates_with_high_school_graduation(
+      :across => ['ACADEMY 20', 'CANON CITY RE-1', 'CENTENNIAL', 'CENTER 26 JT'])
     end
 
 
