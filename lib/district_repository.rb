@@ -9,7 +9,6 @@ class DistrictRepository
   attr_reader :initial_districts_array, :enrollment_repo, :testing_repo
 
   def initialize(district_names = [])
-    binding.pry
     @initial_districts_array = []
 
     district_names.each do |name|
