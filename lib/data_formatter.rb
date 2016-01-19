@@ -1,12 +1,11 @@
-# class DataFormatter
-#   attr_reader data_category
-#
-#   def initialize(data_category)
-#     @data_category = data_category
-#   end
-#
-#
-#
-#
-#
-# end
+class DataFormatter
+  attr_reader :bad_data
+
+  def initialize
+    @bad_data = ["LNE", "#VALUE!", nil]
+  end
+
+
+
+
+end
