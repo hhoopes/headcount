@@ -52,25 +52,25 @@ class HeadcountAnalyst
   end
 
   def calculate_variation(d_name1, d_name2 = 'Colorado', data_type)
-      d_object1 = get_district(d_name1)
-      d_object2 = get_district(d_name2)
-      average1 = calculate_average_rate(d_object1, data_type)
-      average2 = calculate_average_rate(d_object2, data_type)
-      truncate_float(average1/average2)
+    d_object1 = get_district(d_name1)
+    d_object2 = get_district(d_name2)
+    average1 = calculate_average_rate(d_object1, data_type)
+    average2 = calculate_average_rate(d_object2, data_type)
+    truncate_float(average1/average2)
   end
 
   def kindergarten_participation_correlates_with_high_school_graduation(d_hash)
     if d_name == "STATEWIDE" || d_hash.keys == across:
       state_variation = kindergarten_participation_against_high_school_graduation(all_districts)
-        if
-          state_variation > 0.7
-            true
-        end
+    	if
+       		state_variation > 0.7
+        	true
+   		end
     else
-       if variation > 0.6 || variation < 1.5
+      variation = kindergarten_participation_against_high_school_graduation(d_hash.keys.first)
+      variation > 0.6 || variation < 1.5
          true
-       end
-       end
+    end
    end
 
   def truncate_float(number)
