@@ -47,11 +47,19 @@ class EnrollmentRepository
   end
 
   def add_kindergarten(e_object, data, year)
-    e_object.data[:kindergarten_participation].merge!({year => data})
+    if e_object.data[:kindergarten_participation].nil?
+      e_object.data[:kindergarten_participation] = {data => year}
+    else
+      e_object.data[:kindergarten_participation].merge!({year => data})
+    end
   end
 
   def add_graduation(e_object, data, year)
-    e_object.data[:high_school_graduation].merge!({year => data})
+    if e_object.data[:high_school_graduation].nil?
+      e_object.data[:high_school_graduation] = {data => year}
+    else
+      e_object.data[:high_school_graduation].merge!({year => data})
+    end
   end
 
   def create_new_enrollment(data_type, d_name, year, data)
