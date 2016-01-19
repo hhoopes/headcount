@@ -14,7 +14,6 @@ class HeadcountAnalystTest < Minitest::Test
 
   meta ha:true
   def test_kindergarten_participation_rate_variation_takes_input_of_2_districts_and_returns_variance
-    skip
     dr = DistrictRepository.new
     dr.load_data({:enrollment => { :kindergarten => "./data/subsets/kindergarten_enrollment.csv"}})
     ha = HeadcountAnalyst.new(dr)
@@ -46,6 +45,7 @@ class HeadcountAnalystTest < Minitest::Test
   end
 
   def test_shows_if_hs_graduation_has_correlation_for_two_districts
+    skip
     dr = DistrictRepository.new
     dr.load_data({:enrollment => {:kindergarten => "./data/Kindergarteners in full-day program.csv", :high_school_graduation => "./data/High school graduatio rates.csv"}})
     ha = HeadcountAnalyst.new(dr)
@@ -54,6 +54,7 @@ class HeadcountAnalystTest < Minitest::Test
   end
 
     def test_shows_if_hs_graduation_has_correlation_for_two_districts
+      skip
       dr = DistrictRepository.new
       dr.load_data({:enrollment => {:kindergarten => "./data/subsets/kindergarten_enrollment.csv", :high_school_graduation => "./data/subsets/high_school_enrollment.csv"}})
       ha = HeadcountAnalyst.new(dr)
