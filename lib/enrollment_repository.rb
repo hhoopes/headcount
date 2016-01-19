@@ -34,31 +34,18 @@ class EnrollmentRepository
       year = row[:timeframe].to_i
       e_object = find_by_name(d_name)
       if e_object
-        case data_type
-        when :kindergarten_participation
-          add_kindergarten(e_object, data, year)
-        when :high_school_graduation
-          add_graduation(e_object, data, year)
-        end
+        add_data(data_type, e_object, year, data)
       else # district doesn't exist, create instance
         create_new_enrollment(data_type, d_name, year, data)
       end
     end
   end
 
-  def add_kindergarten(e_object, data, year)
-    if e_object.data[:kindergarten_participation].nil?
-      e_object.data[:kindergarten_participation] = {data => year}
+  def add_data(data_type, e_object, year, data)
+    if e_object.data[data_type].nil?
+      e_object.data[data_type] = {data => year}
     else
-      e_object.data[:kindergarten_participation].merge!({year => data})
-    end
-  end
-
-  def add_graduation(e_object, data, year)
-    if e_object.data[:high_school_graduation].nil?
-      e_object.data[:high_school_graduation] = {data => year}
-    else
-      e_object.data[:high_school_graduation].merge!({year => data})
+      e_object.data[data_type].merge!({year => data})
     end
   end
 
