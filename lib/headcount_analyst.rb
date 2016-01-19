@@ -8,6 +8,7 @@ class HeadcountAnalyst
   end
 
   def kindergarten_participation_rate_variation(d_name1, against_district)
+    binding.pry
     d_2 = against_district.fetch(:against)
     calculate_variation(d_name1, d_2, :kindergarten_participation)
   end
@@ -62,22 +63,27 @@ class HeadcountAnalyst
     kindergarten_variation/ high_school_variation
   end
 
-
+  def calculate_variation(d_name1, d_name2 = 'Colorado', data_type)
+      d_object1 = get_district(d_name1)
+      d_object2 = get_district(d_name2)
+      average1 = calculate_average_rate(d_object1, data_type)
+      average2 = calculate_average_rate(d_object2, data_type)
+      truncate_float(average1/average2)
+  end
 
   def kindergarten_participation_correlates_with_high_school_graduation(d_hash)
     correlation = false
-    d_name = d_hash.fetch(:for)
-    #  if d_hash.keys.first == for:
+    d_name = d_hash[:for]
       if d_name.upcase == "STATEWIDE"
         results = statewide_correlation
       	if
          	statewide_correlation > 0.7
           correlation = true
      		end
-      elsif d_hash.keys.first == across:
+      elsif d_hash.keys.first == :across
           d_array = d_hash.fetch(:across)
-          variation_array = d_array.map do |d_name|
-            kindergarten_participation_correlates_with_high_school_graduation(d_name)
+            variation_array = d_array.map do |d_name|
+              kindergarten_participation_correlates_with_high_school_graduation(d_name)
           end
         else #one school
             variation = kindergarten_participation_against_high_school_graduation(d_hash.keys.first)
@@ -88,12 +94,12 @@ class HeadcountAnalyst
         correlation
    end
 
-   def statewide_correlation
-     district_num = district_repository.initial_districts_array.group_by do |district|
-        kindergarten_participation_correlates_with_high_school_graduation(for: district.name) == true
-     end
-       state_variation = district_num.fetch(true).count/ district_num.fetch(false).count
-     end
+  def statewide_correlation
+    district_num = district_repository.initial_districts_array.group_by do |district|
+      kindergarten_participation_correlates_with_high_school_graduation(for: district.name) == true
+    end
+     state_variation = district_num.fetch(true).count/ district_num.fetch(false).count
+  end
 
   def truncate_float(number)
     (number * 1000).truncate/1000.to_f
