@@ -2,8 +2,8 @@ class StatewideTest
   attr_reader :name, :data
 
   def initialize(data = {})
-    @name = data[:name].upcase
     @data = data
+    @name = (data[:name]).upcase
   end
 
 #key is #statewide_testing, method is statewide_test

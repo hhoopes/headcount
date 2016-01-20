@@ -1,17 +1,17 @@
-require_relative 'district_repository'
-​
+require_relative 'headcount_analyst'
+
 class HeadcountAnalyst
   attr_reader :district_repository
-​
+
   def initialize(district_repository)
     @district_repository = district_repository
   end
-​
+
   def kindergarten_participation_rate_variation(d_name1, against_district)
     d_2 = against_district.fetch(:against)
     calculate_variation(d_name1, d_2, :kindergarten_participation)
   end
-​
+
   def calculate_average_rate(d_object, data_type)
     if d_object.enrollment.method(data_type).call  #alternative is to look up the enrollment object and fetch the key
       data = d_object.enrollment.data.fetch(data_type).values
@@ -20,14 +20,14 @@ class HeadcountAnalyst
       end/data.size
     end
   end
-​
+
   def kindergarten_participation_rate_variation_trend(d_name1, against_district)
     d_name2 = against_district.fetch(:against)
     d_object1 = get_district(d_name1)
     d_object2 = get_district(d_name2)
     average1 = calculate_average_rate_for_all_years(d_object1, d_object2)
   end
-​
+
   def calculate_average_rate_for_all_years(d_object1, d_object2)
    if d_object1.enrollment.kindergarten_participation && d_object2.enrollment.kindergarten_participation
      data_hash1 = d_object1.enrollment.kindergarten_participation
@@ -41,18 +41,18 @@ class HeadcountAnalyst
    end
          annual_enrollment_hash
   end
-​
+
   def get_district(d_name)
     district_repository.find_by_name(d_name)
   end
-​
+  
   def kindergarten_participation_against_high_school_graduation(d_name)
     # binding.pry
     kindergarten_variation =  calculate_variation(d_name, :kindergarten_participation)
     graduation_variation =  calculate_variation(d_name, :high_school_graduation)
     kindergaten_graduation_variance = kindergarten_variation/ graduation_variation
   end
-​
+
   def calculate_variation(d_name1, data_type, d_name2 = 'Colorado')
     d_object1 = get_district(d_name1)
     d_object2 = get_district(d_name2)
@@ -60,7 +60,7 @@ class HeadcountAnalyst
     average2 = calculate_average_rate(d_object2, data_type)
     truncate_float(average1/average2)
   end
-​
+
   def kindergarten_participation_correlates_with_high_school_graduation(d_hash)
     correlation = false
     d_name = d_hash[:for]
@@ -83,16 +83,16 @@ class HeadcountAnalyst
       end
         correlation
    end
-​
+
   def statewide_correlation
     district_num = district_repository.initial_districts_array.group_by do |district|
       kindergarten_participation_correlates_with_high_school_graduation(for: district.name) == true
     end
      state_variation = district_num.fetch(true).count/ district_num.fetch(false).count
   end
-​
+
   def truncate_float(number)
     (number * 1000).truncate/1000.to_f
   end
-​
+
 end

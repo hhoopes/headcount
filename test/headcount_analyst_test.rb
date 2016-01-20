@@ -1,6 +1,6 @@
 require 'minitest'
 # require 'test/test_helper'
-require 'headcount_analyst'
+require './lib/headcount_analyst'
 require 'pry'
 
 class HeadcountAnalystTest < Minitest::Test
