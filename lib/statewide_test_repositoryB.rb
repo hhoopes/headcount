@@ -14,10 +14,21 @@ class StatewideTestRepositoryB
   end
 
   def load_data(request_hash) #take hash, return unlinked testing
-    formatted_row = formatter.format_data(request_hash) #give hash to formatter, get back a hash of data
-    binding.pry
-    # add_data/create_new_statewide_test #give hash to object
+    formatted = formatter.format_data(request_hash) #give hash to formatter, get back a hash of data
+    sort_data(formatted)
     unlinked_testing
+  end
+
+  def sort_data(data)
+    data.keys.each do |data_type|
+      data.fetch(data_type).each do |hash|
+        if find_by_name(hash.fetch(:location))
+          add_data(found, array, data_type)
+        else
+          create_new_instance(element)
+        end
+      end
+    end
   end
 
   def add_data(data_type, formatted_data, t_object)
@@ -28,7 +39,7 @@ class StatewideTestRepositoryB
     end
   end
 
-  def create_new_statewide_test(data, d_name)
+  def create_new_statewide_test(element, data_type)
     new_instance = StatewideTest.new(data)
     initial_testing_array << new_instance
     unlinked_testing << [d_name, new_instance]
