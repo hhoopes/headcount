@@ -1,4 +1,6 @@
 require 'pry'
+require 'unknown_data_error'
+
 class StatewideTest
   attr_reader :name, :data
 

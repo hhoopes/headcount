@@ -69,7 +69,7 @@ class HeadcountAnalystTest < Minitest::Test
   def test_shows_if_hs_graduation_has_correlation_for_statewide
     #  skip
     dr = DistrictRepository.new
-    dr.load_data({:enrollment => {:kindergarten => "./data/Kindergarteners in full-day program.csv", :high_school_graduation => "./data/High school graduatio rates.csv"}})
+    dr.load_data({:enrollment => {:kindergarten => "./data/Kindergartners in full-day program.csv", :high_school_graduation => "./data/High school graduation rates.csv"}})
     ha = HeadcountAnalyst.new(dr)
     #this probably doesn't work but somehow is passing
     assert ha.kindergarten_participation_correlates_with_high_school_graduation(for: 'STATEWIDE')

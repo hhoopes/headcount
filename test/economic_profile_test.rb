@@ -16,7 +16,7 @@ class EconomicProfileTest < Minitest::Test
   #       economic_profile = EconomicProfile.new(data)
   #       assert economic_profile.instance_of?(EconomicProfile)
   # end
- meta wow: true
+ meta t: true
   def test_median_household_income_given_in_method
       data = {:median_household_income => {[2005, 2009] => 50000, [2008, 2014] => 60000},
           :children_in_poverty => {2012 => 0.1845},
@@ -26,14 +26,12 @@ class EconomicProfileTest < Minitest::Test
          }
     economic_profile = EconomicProfile.new(data)
 
-
-    assert_equal 50000, economic_profile.median_household_income_in_year(2005)
+    # assert_equal 50000, economic_profile.median_household_income_in_year(2005)
 
     assert_equal 55000, economic_profile.median_household_income_in_year(2009)
   end
 
   def test_median_household_income_gives_error_if_year_does_not_exist
-    skip
     economic_profile = EconomicProfile.new(data)
 
     assert_equal UnknownDataError, economic_profile.median_household_income_in_year(1880)
