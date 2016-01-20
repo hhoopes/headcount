@@ -20,11 +20,12 @@ class DataFormatter
   end
 
   def format_data(request_hash)
-    request_hash.fetch(data_category).map do | data_type, file |
+    mapped = []
+    request_hash.fetch(data_category).each do | data_type, file |
       extracted = extract_csv(data_type, file)
-      binding.pry
-      map_data(extracted, data_type)
-      end
+      mapped = map_data(extracted, data_type)
+    end
+    mapped
   end
 
   def parse_file(file)
@@ -36,31 +37,32 @@ class DataFormatter
       row_hash = {}
       row.headers.each do |value|
         if exclude_data.include?(row[value])
-          row_hash = nil
+          row_hash = {}
           break
         end
         row_hash[value] = row[value]
        end
        row_hash
-     end
+     end.reject{|hash| hash.empty? }
   end
 
   def map_data(array_of_hashes, data_type)
-    formatted = {}
+    formatted =
     array_of_hashes.map do | hash |
       case data_type
       when :kindergarten, :kindergarten_participation, :high_school_graduation, :children_in_poverty, :title_i
-        {:name => hash[:location], data_type => {hash[:timeframe] => hash[:data]}}
+        {data_type => {hash[:timeframe] => hash[:data]}}
       when :third_grade, :eighth_grade
-        formatted = {:name => hash[:location], data_type => {hash[:timeframe] => {hash[:score] => hash[:data]}}}
+        {data_type => {hash[:timeframe] => {hash[:score] => hash[:data]}}}
       when :math, :reading, :writing
-        {:name => hash[:location], hash[:raceethnicity] => {hash[:timeframe] => {data_type => hash[:data]}}}
+        {hash[:raceethnicity] => {hash[:timeframe] => {data_type => hash[:data]}}}
       when :median_household_income
-        {:name => hash[:location], data_type => {hash[:timeframe].split => hash[:data]}}
+        {data_type => {hash[:timeframe].split => hash[:data]}}
       when :free_or_reduced_price_lunch
-        {:name => hash[:location], data_type => {hash[:timeframe] => {format_lunch(hash[:dataformat]) => hash[:data]}}}
+        {data_type => {hash[:timeframe] => {format_lunch(hash[:dataformat]) => hash[:data]}}}
       end
     end
+    [data_type, hash[:location], formatted]
   end
 
   def format_lunch(dataformat)

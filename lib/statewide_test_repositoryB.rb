@@ -19,30 +19,32 @@ class StatewideTestRepositoryB
     unlinked_testing
   end
 
-  def sort_data(data)
-    data.keys.each do |data_type|
-      data.fetch(data_type).each do |hash|
-        if find_by_name(hash.fetch(:location))
-          add_data(found, array, data_type)
+  def sort_data(formatted)
+    data_type       = formatted.first
+    formatted_hash  = formatted.last
+    formatted_hash.each do |hash|
+        t_object = find_by_name(hash.fetch(:name))
+        if t_object
+          add_data(hash, t_object, data_type)
         else
-          create_new_instance(element)
+          create_new_instance(hash)
         end
-      end
     end
   end
 
-  def add_data(data_type, formatted_data, t_object)
+  def add_data(hash, t_object, data_type)
+    binding.pry
     if t_object.data[data_type].nil?
-      t_object.data[data_type] = formatted_data
+      t_object.data[data_type] = hash
     else
-      t_object.data[data_type].merge!(formatted_data)
+      t_object.data[data_type].merge!(hash)
     end
   end
 
-  def create_new_statewide_test(element, data_type)
-    new_instance = StatewideTest.new(data)
+  def create_new_instance(element)
+    new_instance = StatewideTest.new(element)
     initial_testing_array << new_instance
-    unlinked_testing << [d_name, new_instance]
+    unlinked_testing << [element.fetch(:name), new_instance]
   end
 
   def find_by_name(d_name)
