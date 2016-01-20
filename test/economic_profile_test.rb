@@ -16,10 +16,16 @@ class EconomicProfileTest < Minitest::Test
   #       economic_profile = EconomicProfile.new(data)
   #       assert economic_profile.instance_of?(EconomicProfile)
   # end
-
+ meta wow: true
   def test_median_household_income_given_in_method
-    skip
+      data = {:median_household_income => {[2005, 2009] => 50000, [2008, 2014] => 60000},
+          :children_in_poverty => {2012 => 0.1845},
+          :free_or_reduced_price_lunch => {2014 => {:percentage => 0.023, :total => 100}},
+          :title_i => {2015 => 0.543},
+          :name => "ACADEMY 20"
+         }
     economic_profile = EconomicProfile.new(data)
+
 
     assert_equal 50000, economic_profile.median_household_income_in_year(2005)
 

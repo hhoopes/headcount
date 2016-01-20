@@ -1,13 +1,18 @@
 class EconomicProfile
-  attr_reader :name
+  attr_reader :name, :data
 
-  def initialize(economic_profile = {})
+  def initialize(data= {})
     @name = (economic_profile[:name]).upcase
+    @data - data
   end
 
-  def median_household_income_in_year
-
-
+  def median_household_income_in_year(year)
+    binding.pry
+    if data.has_key?(year)
+    data.fetch(year[:median_household_income])
+    else
+      raise UnknownDataError
+    end
   end
 
 
