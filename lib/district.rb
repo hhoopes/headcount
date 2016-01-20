@@ -4,10 +4,13 @@ class District
   #an instance of this class looks like d = District.new({:name => "ACADEMY 20"})
   def initialize(district_hash)
     @name = district_hash[:name].upcase
-    @enrollment = district_hash[:enrollment]
+    @enrollment
+    @statewide_testing
+    @economic_profile
   end
 
   def link_data(data_object, data_key)
+    # binding.pry
     #When passed a new instance of data associated with this district,
     #assigns that data object to the instance variable in the district
     case data_key

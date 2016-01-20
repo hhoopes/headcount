@@ -37,15 +37,16 @@ class DistrictRepository
     d_bundle.each do |array_pair|  #key will be refactored in to link districts to the correct repos
       d_name = array_pair.first #take the name from the array
       data_object = array_pair.last #take the object from the array
-
+      binding.pry
     existing_d_object = find_by_name(d_name) #look up a district object from the name you get
-      if existing_d_object
-        existing_d_object.link_data(data_object, data_category)
-        # existing_d_object.enrollment = d_object #set its enrollment to the enrollment object we got handed
+      if !existing_d_object
+        new_district = District.new({:name => d_name})
+        linked_district = new_district.link_data(data_object, data_category)
+        initial_districts_array << linked_district
       else
-        new_district = District.new({:name => d_name, data_category => data_object}) #give new district the data object
-        initial_districts_array << new_district #create the district and add it to our array
+        existing_d_object.link_data(data_object, data_category)
       end
+        # existing_d_object.enrollment = d_object #set its enrollment to the enrollment object we got handed
     end
   end
 

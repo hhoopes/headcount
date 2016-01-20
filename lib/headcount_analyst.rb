@@ -10,7 +10,6 @@ class HeadcountAnalyst
   def kindergarten_participation_rate_variation(d_name1, against_district)
     d_2 = against_district.fetch(:against)
     calculate_variation(d_name1, d_2, :kindergarten_participation)
-
   end
 
   def calculate_average_rate(d_object, data_type)
@@ -47,12 +46,14 @@ class HeadcountAnalyst
     district_repository.find_by_name(d_name)
   end
 
-  def kindergarten_participation_against_high_school_graduation(district1)
-    kindergarten_variation =  calculate_variation(district1, 'Colorado', :kindergarten_participation)
-    high_school_variation =  calculate_variation(district1, 'Colorado', :high_school_graduation)
+  def kindergarten_participation_against_high_school_graduation(d_name)
+    # binding.pry
+    kindergarten_variation =  calculate_variation(d_name, :kindergarten_participation)
+    graduation_variation =  calculate_variation(d_name, :high_school_graduation)
+    kindergaten_graduation_variance = kindergarten_variation/ graduation_variation
   end
 
-  def calculate_variation(d_name1, d_name2 = 'Colorado', data_type)
+  def calculate_variation(d_name1, data_type, d_name2 = 'Colorado')
     d_object1 = get_district(d_name1)
     d_object2 = get_district(d_name2)
     average1 = calculate_average_rate(d_object1, data_type)
@@ -61,21 +62,34 @@ class HeadcountAnalyst
   end
 
   def kindergarten_participation_correlates_with_high_school_graduation(d_hash)
-    #this might be totally wrong
-    d_name = d_hash.fetch(:for)
-    if d_name == "STATEWIDE"
-      d_name = 'Colorado'
-      if state_variation > 0.7
-        true
+    correlation = false
+    d_name = d_hash[:for]
+      if d_name.upcase == "STATEWIDE"
+        results = statewide_correlation
+      	if
+         	statewide_correlation > 0.7
+          correlation = true
+     		end
+      elsif d_hash.keys.first == :across
+          d_array = d_hash.fetch(:across)
+            variation_array = d_array.map do |d_name|
+              kindergarten_participation_correlates_with_high_school_graduation(d_name)
+          end
+        else #one school
+            variation = kindergarten_participation_against_high_school_graduation(d_name)
+            if 0.6 < variation < 1.5
+               correlation = true
+            end
       end
-    else
-       kindergarten_variation = kindergarten_participation_against_high_school_graduation(d_name)
-       if kindergarten_variation > 0.6 || kindergarten_variation < 1.5 && high_school_variation > 0.6 || high_school_variation < 1.5
+        correlation
+   end
 
-         true
-       end
-     end
-     end
+  def statewide_correlation
+    district_num = district_repository.initial_districts_array.group_by do |district|
+      kindergarten_participation_correlates_with_high_school_graduation(for: district.name) == true
+    end
+     state_variation = district_num.fetch(true).count/ district_num.fetch(false).count
+  end
 
   def truncate_float(number)
     (number * 1000).truncate/1000.to_f
