@@ -1,14 +1,20 @@
+require 'pry'
 class StatewideTest
   attr_reader :name, :data
 
   def initialize(data = {})
     @data = data
-    @name = (data[:name]).upcase
+    @name = data[:name].upcase
   end
 
 #key is #statewide_testing, method is statewide_test
   def statewide_test
     data.fetch(:statewide_testing) if data.has_key?(:statewide_testing)
+  end
+
+  def proficient_by_grade(grade)
+    # binding.pry
+   data.fetch(convert_grade_to_symbol[grade])
   end
 
   def convert_grade_to_symbol

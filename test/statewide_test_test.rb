@@ -7,18 +7,15 @@ class StatewideTestTest < Minitest::Test
 
   def test_statewide_test_instantiates
     str = StatewideTest.new({:name => "test"})
-    str.instance_of?(StatewideTest)
+    assert str.instance_of?(StatewideTest)
   end
 
   def test_instance_of_statewide_test_contains_all_data_from_single_method
     skip
 
   end
-
+meta twang:true
   def test_proficient_by_grade_returns_data_from_grade
-    skip
-    statewide_test = StatewideTest.new
-    actual = statewide_test.proficient_by_grade(3)
 
     expected = { 2008 => {:math => 0.857, :reading => 0.866, :writing => 0.671},
              2009 => {:math => 0.824, :reading => 0.862, :writing => 0.706},
@@ -28,9 +25,13 @@ class StatewideTestTest < Minitest::Test
              2013 => {:math => 0.855, :reading => 0.859, :writing => 0.668},
              2014 => {:math => 0.834, :reading => 0.831, :writing => 0.639}
            }
-    actual.values.zip(expected.values).each do |pair|
-    assert_in_delta pair.last, pair.first, 0.005
-    end
+
+    statewide_test = StatewideTest.new(:name => "Colorado", :third_grade => expected)
+
+    actual = statewide_test.proficient_by_grade(3)
+    assert_equal expected, actual
+    # actual.values.zip(expected.values).each do |pair|
+    # assert_in_delta pair.last, pair.first, 0.005
     end
 
   def test_proficient_by_grade_returns_error_if_wrong_year
@@ -96,11 +97,11 @@ class StatewideTestTest < Minitest::Test
     assert_equal UnknownDataError, statewide_test.proficient_for_subject_by_race_in_year(:history, :cyborg, 2012)
   end
 
-    def test_proficient_for_subject_by_race_returns_error_if_all_wrong_parameters
-      skip
-      statewide_test = StatewideTest.new
+  def test_proficient_for_subject_by_race_returns_error_if_all_wrong_parameters
+    skip
+    statewide_test = StatewideTest.new
 
-      assert_equal UnknownDataError, statewide_test.proficient_for_subject_by_race_in_year(:history, :cyborg, 200)
-    end
+    assert_equal UnknownDataError, statewide_test.proficient_for_subject_by_race_in_year(:history, :cyborg, 200)
+  end
 
 end
