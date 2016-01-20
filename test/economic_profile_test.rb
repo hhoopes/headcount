@@ -6,6 +6,7 @@ require 'pry'
 class EconomicProfileTest < Minitest::Test
 
   def test_economic_profile_creates_instance_of_economic_profile
+    skip
     epr = EconomicProfileRepository.new
     epr.instance_of?(EconomicProfileRepository)
   end

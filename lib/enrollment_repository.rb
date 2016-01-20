@@ -1,5 +1,5 @@
 require_relative './enrollment'
-# require_relative './data_formatter'
+require_relative './data_formatter'
 require 'csv'
 require 'pry'
 
@@ -9,7 +9,7 @@ class EnrollmentRepository
   def initialize
     @initial_enrollments_array = []
     @unlinked_enrollments = []
-    # @formatter = DataFomatter.new(:enrollment)
+    @formatter = DataFomatter.new(:enrollment)
   end
 
   def load_data(request_hash) #entry point for directly creating a repo

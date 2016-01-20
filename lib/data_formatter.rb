@@ -1,36 +1,44 @@
 class DataFormatter
-  attr_reader :bad_data
+  attr_reader :bad_data, :data_category, :key_list
 
-  def initialize
+  def initialize(data_category)
     @bad_data = ["LNE", "#VALUE!", nil]
+    @data_category = data_category
+    @key_list = {
+      :kindergarten                 => [:location, :data, :timeframe],
+      :high_school_graduation       => [:location, :data, :timeframe],
+      :third_grade                  => [:location, :data, :timeframe, :score],
+      :eighth_grade                 => [:location, :data, :timeframe, :score],
+      :math                         => [:location, :data, :timeframe, :raceethnicity],
+      :reading                      => [:location, :data, :timeframe, :raceethnicity],
+      :writing                      => [:location, :data, :timeframe, :raceethnicity],
+      :median_household_income      => [:location, :data, :timeframe],
+      :children_in_poverty          => [:location, :data, :timeframe, :dataformat],
+      :free_or_reduced_price_lunch  => [:location, :data, :timeframe, :dataformat, :povertylevel],
+      :title_i                      => [:location, :data, :timeframe]
+      }
   end
 
-#   request_hash.fetch(:statewide_testing).each do | data_type, file |
-#     load_testing(data_type, file)
-#   end
-#
-#     def parse_file(file)
-#       CSV.open file,
-#                headers: true,
-#                header_converters: :symbol
-#     end
-#
-# def load_testing(data_type, file) #entry point for district repo
-#   data_csv = parse_file(file)
-#   data_csv.each do |row|
-#     d_name = row[:location].upcase
-#     percent = row[:data]
-#     year = row[:timeframe].to_i
-#     subject = row[:score].to_s
-#
-#     return if formatter.bad_data.include?(percent)
-#       formatted_data = {:name => d_name, data_type => {year => {subject => percent}}}
-#       t_object = find_by_name(d_name)
-#       if t_object
-#         add_data(data_type, formatted_data, t_object)
-#       else # district doesn't exist, create instance
-#         create_new_statewide_test(formatted_data, d_name)
-#       end
-#     end
-  # end
+  def format_data(request_hash)
+    request_hash.fetch(data_category).map do | data_type, file |
+      {data_type => load_csv(data_type, file)}
+    end
+  end
+
+  def parse_file(file)
+    CSV.open file,
+             headers: true,
+             header_converters: :symbol
+  end
+
+  def load_csv(data_type, file)
+    data_csv = parse_file(file)
+    data_csv.map do |row|
+      row_hash = {}
+      row.headers.each do |value|
+        row_hash[value] = row[value]
+       end
+       row_hash
+     end
+  end
 end

@@ -3,24 +3,22 @@ require_relative './data_formatter'
 require 'csv'
 require 'pry'
 
-class StatewideTestRepository
+class StatewideTestRepositoryB
   attr_reader :initial_testing_array, :unlinked_testing, :formatter
 
 #key is #statewide_testing, method is statewide_test
   def initialize
     @initial_testing_array = []
     @unlinked_testing = []
-    @formatter = DataFormatter.new
-
-  def load_data(request_hash) #take hash, return unlinked testing
-    format_data #give hash to formatter, get back a hash of data
-    add_data/create_new_statewide_test #give hash to object
-    unlinked_testing
+    @formatter = DataFormatter.new(:statewide_testing)
   end
 
-
-
-
+  def load_data(request_hash) #take hash, return unlinked testing
+    formatted_row = formatter.format_data(request_hash) #give hash to formatter, get back a hash of data
+    binding.pry
+    # add_data/create_new_statewide_test #give hash to object
+    unlinked_testing
+  end
 
   def add_data(data_type, formatted_data, t_object)
     if t_object.data[data_type].nil?
