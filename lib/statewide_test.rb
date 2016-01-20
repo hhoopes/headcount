@@ -34,7 +34,6 @@ class StatewideTest
     end
   end
 
-
 end
 
 # |-- Statewide Testing: Gives access to testing data within the district, including:
