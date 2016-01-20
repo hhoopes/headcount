@@ -26,8 +26,9 @@ class DistrictTest < Minitest::Test
   end
 
   def test_economic_profile_instance_created
-    skip 
+    skip
     d = District.new({:name =>"ACADEMY 20"})
+    
     assert d.instance_of?(EconomicProfile)
   end
 
