@@ -1,8 +1,16 @@
 class EconomicProfile
   attr_reader :name
+
   def initialize(economic_profile = {})
     @name = (economic_profile[:name]).upcase
   end
+
+  def median_household_income_in_year
+
+
+  end
+
+
 end
 
 

@@ -26,7 +26,6 @@ class StatewideTest
   end
 
   def proficient_by_race_or_ethnicity(race)
-    binding.pry
     if data.has_key?([race])
      data.fetch([race])
     else
