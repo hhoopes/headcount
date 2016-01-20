@@ -37,6 +37,11 @@ class EconomicProfile
     all_incomes.inject(:+)/all_incomes.length
   end
 
+  def children_in_poverty_in_year(year)
+    data.fetch(:children_in_poverty)
+    binding.pry
+  end
+
 
 end
 

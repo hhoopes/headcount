@@ -45,6 +45,7 @@ meta bowz: true
     assert_equal 55000, economic_profile.median_household_income_average
   end
 
+  meta kid: true 
   #test for passing in file
   def test_children_in_poverty_gives_percent_for_year
     data = {:median_household_income => {[2005, 2009] => 50000, [2008, 2014] => 60000},
