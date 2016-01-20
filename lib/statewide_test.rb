@@ -27,10 +27,10 @@ class StatewideTest
 
   def proficient_by_race_or_ethnicity(race)
     binding.pry
-    if data.has_key?(convert_grade_to_symbol[race])
-     data.fetch(convert_grade_to_symbol[race])
+    if data.has_key?([race])
+     data.fetch([race])
     else
-      "UnknownDataError"
+       "UnknownRaceError"
     end
   end
 

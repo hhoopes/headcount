@@ -47,7 +47,7 @@ class StatewideTestTest < Minitest::Test
     statewide_test = StatewideTest.new(:name => "Colorado", :third_grade => expected)
     actual = statewide_test.proficient_by_grade(4)
 
-    assert_equal "UnknownDataError", actual
+    assert_equal "UnknownRaceError", actual
   end
 meta twang:true
   def test_proficient_by_race_or_ethnicity_gives_percent_proficiency_for_given_race
