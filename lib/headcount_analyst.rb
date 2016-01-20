@@ -8,7 +8,6 @@ class HeadcountAnalyst
   end
 
   def kindergarten_participation_rate_variation(d_name1, against_district)
-    binding.pry
     d_2 = against_district.fetch(:against)
     calculate_variation(d_name1, d_2, :kindergarten_participation)
   end
@@ -58,13 +57,15 @@ class HeadcountAnalyst
   end
 
   def kindergarten_participation_against_high_school_graduation(district1)
+    # binding.pry
     kindergarten_variation =  calculate_variation(district1, 'Colorado', :kindergarten_participation)
-    high_school_variation =  calculate_variation(district1, 'Colorado', :high_school_graduation)
-    kindergarten_variation/ high_school_variation
+    graduation_variation =  calculate_variation(district1, 'Colorado', :high_school_graduation)
+    kindergaten_graduation_variance = kindergarten_variation/ graduation_variation
   end
 
   def calculate_variation(d_name1, d_name2 = 'Colorado', data_type)
       d_object1 = get_district(d_name1)
+      # binding.pry
       d_object2 = get_district(d_name2)
       average1 = calculate_average_rate(d_object1, data_type)
       average2 = calculate_average_rate(d_object2, data_type)

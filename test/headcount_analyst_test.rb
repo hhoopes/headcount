@@ -24,19 +24,19 @@ class HeadcountAnalystTest < Minitest::Test
   end
 
   def test_kindergarten_participation_rate_variation_trend_tests_for_the_variation_each_year
-    skip
+    # skip
       dr = DistrictRepository.new
       dr.load_data({:enrollment => { :kindergarten => "./data/subsets/kindergarten_enrollment.csv"}})
       ha = HeadcountAnalyst.new(dr)
 
       variation = ha.kindergarten_participation_rate_variation_trend('ACADEMY 20', :against => 'COLORADO')
       variation_hash = {2007=>0.992, 2006=>1.05, 2005=>0.961, 2004=>1.258, 2008=>0.718, 2009=>0.652, 2010=>0.681, 2011=>0.728, 2012=>0.689, 2013=>0.694, 2014=>0.661}
-      assert_in_delta variation_hash, variation, 0.0005
+      assert_equal variation_hash, variation
   end
 
   # meta ha:true
   def test_kindergarten_participation_against_hs_graduation_for_two_districts_gives_correct_number
-    skip
+    # skip
     dr = DistrictRepository.new
     dr.load_data({:enrollment => {:kindergarten => "./data/subsets/kindergarten_enrollment.csv", :high_school_graduation => "./data/subsets/high_school_enrollment.csv"}})
     ha = HeadcountAnalyst.new(dr)
@@ -45,7 +45,7 @@ class HeadcountAnalystTest < Minitest::Test
   end
 
   def test_shows_if_hs_graduation_has_correlation_for_two_districts
-    skip
+    #  skip
     dr = DistrictRepository.new
     dr.load_data({:enrollment => {:kindergarten => "./data/Kindergarteners in full-day program.csv", :high_school_graduation => "./data/High school graduatio rates.csv"}})
     ha = HeadcountAnalyst.new(dr)
