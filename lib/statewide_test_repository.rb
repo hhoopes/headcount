@@ -34,8 +34,7 @@ class StatewideTestRepository
       subject = row[:score].to_s
 
       return if formatter.bad_data.include?(percent)
-        # formatted_data = {:name => d_name, data_type => {year => {subject => percent}}}
-        formatted_data = {subject => percent}
+          formatted_data = {subject => percent}
 
         t_object = find_by_name(d_name)
         if t_object

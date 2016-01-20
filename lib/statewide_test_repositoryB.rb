@@ -11,10 +11,11 @@ class StatewideTestRepository
     @initial_testing_array = []
     @unlinked_testing = []
     @formatter = DataFormatter.new
+  end
 
   def load_data(request_hash) #take hash, return unlinked testing
-    format_data #give hash to formatter, get back a hash of data
-    add_data/create_new_statewide_test #give hash to object
+    formatted = formatter.format_data(request_hash, :statewide_testing) #give hash to formatter, get back a hash of data
+    add_data/create_new_statewide_test(formatted)#give hash to object
     unlinked_testing
   end
 

@@ -20,6 +20,7 @@ class EnrollmentRepository
   end
 
   def parse_file(file)
+    
     CSV.open file,
              headers: true,
              header_converters: :symbol

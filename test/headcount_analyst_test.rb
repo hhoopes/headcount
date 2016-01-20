@@ -14,7 +14,6 @@ class HeadcountAnalystTest < Minitest::Test
 
   meta ha:true
   def test_kindergarten_participation_rate_variation_takes_input_of_2_districts_and_returns_variance
-    skip
     dr = DistrictRepository.new
     dr.load_data({:enrollment => { :kindergarten => "./data/subsets/kindergarten_enrollment.csv"}})
     ha = HeadcountAnalyst.new(dr)
@@ -25,14 +24,16 @@ class HeadcountAnalystTest < Minitest::Test
   end
 
   def test_kindergarten_participation_rate_variation_trend_tests_for_the_variation_each_year
-    skip
       dr = DistrictRepository.new
       dr.load_data({:enrollment => { :kindergarten => "./data/subsets/kindergarten_enrollment.csv"}})
       ha = HeadcountAnalyst.new(dr)
 
-      variation = ha.kindergarten_participation_rate_variation_trend('ACADEMY 20', :against => 'COLORADO')
-      variation_hash = {2007=>0.992, 2006=>1.05, 2005=>0.961, 2004=>1.258, 2008=>0.718, 2009=>0.652, 2010=>0.681, 2011=>0.728, 2012=>0.689, 2013=>0.694, 2014=>0.661}
-      assert_in_delta variation_hash, variation, 0.0005
+      actual = ha.kindergarten_participation_rate_variation_trend('ACADEMY 20', :against => 'COLORADO')
+      expected = {2007=>0.992, 2006=>1.05, 2005=>0.961, 2004=>1.258, 2008=>0.718, 2009=>0.652, 2010=>0.681, 2011=>0.728, 2012=>0.689, 2013=>0.694, 2014=>0.661}
+
+      actual.values.zip(expected.values).each do | pair|
+        assert_in_delta pair.last, pair.first, 0.005
+      end
   end
 
   # meta ha:true
@@ -53,32 +54,32 @@ class HeadcountAnalystTest < Minitest::Test
     assert ha.kindergarten_participation_correlates_with_high_school_graduation(for: 'STATEWIDE')
   end
 
-    def test_shows_if_hs_graduation_has_correlation_for_two_districts
-      dr = DistrictRepository.new
-      dr.load_data({:enrollment => {:kindergarten => "./data/subsets/kindergarten_enrollment.csv", :high_school_graduation => "./data/subsets/high_school_enrollment.csv"}})
-      ha = HeadcountAnalyst.new(dr)
+  def test_shows_if_hs_graduation_has_correlation_for_two_districts
+    dr = DistrictRepository.new
+    dr.load_data({:enrollment => {:kindergarten => "./data/subsets/kindergarten_enrollment.csv", :high_school_graduation => "./data/subsets/high_school_enrollment.csv"}})
+    ha = HeadcountAnalyst.new(dr)
 
-      assert ha.kindergarten_participation_correlates_with_high_school_graduation(for: 'ACADEMY 20')
-    end
+    assert ha.kindergarten_participation_correlates_with_high_school_graduation(for: 'ACADEMY 20')
+  end
 
-    def test_shows_false_if_there_is_no_correlation
-      skip
-      dr = DistrictRepository.new
-      dr.load_data({:enrollment => {:kindergarten => "./data/subsets/kindergarten_enrollment.csv", :high_school_graduation => "./data/subsets/high_school_enrollment.csv"}})
-      ha = HeadcountAnalyst.new(dr)
-      #might not be refute but hoping to find something that does give me a refute
-      refute ha.kindergarten_participation_correlates_with_high_school_graduation(for: 'CENTENNIAL')
-    end
+  def test_shows_false_if_there_is_no_correlation
+    skip
+    dr = DistrictRepository.new
+    dr.load_data({:enrollment => {:kindergarten => "./data/subsets/kindergarten_enrollment.csv", :high_school_graduation => "./data/subsets/high_school_enrollment.csv"}})
+    ha = HeadcountAnalyst.new(dr)
+    #might not be refute but hoping to find something that does give me a refute
+    refute ha.kindergarten_participation_correlates_with_high_school_graduation(for: 'CENTENNIAL')
+  end
 
-    def test_whether_kindergarten_participation_correlates_with_hs_graduation
-      skip
-     dr = DistrictRepository.new
-     dr.load_data({:enrollment => {:kindergarten => "./data/subsets/kindergarten_enrollment.csv", :high_school_graduation => "./data/subsets/high_school_enrollment.csv"}})
-     ha = HeadcountAnalyst.new(dr)
+  def test_whether_kindergarten_participation_correlates_with_hs_graduation
+    skip
+   dr = DistrictRepository.new
+   dr.load_data({:enrollment => {:kindergarten => "./data/subsets/kindergarten_enrollment.csv", :high_school_graduation => "./data/subsets/high_school_enrollment.csv"}})
+   ha = HeadcountAnalyst.new(dr)
 
-      assert ha.kindergarten_participation_correlates_with_high_school_graduation(
-      :across => ['ACADEMY 20', 'CANON CITY RE-1', 'CENTENNIAL', 'CENTER 26 JT'])
-    end
+    assert ha.kindergarten_participation_correlates_with_high_school_graduation(
+    :across => ['ACADEMY 20', 'CANON CITY RE-1', 'CENTENNIAL', 'CENTER 26 JT'])
+  end
 
 
 end

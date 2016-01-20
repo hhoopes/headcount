@@ -101,7 +101,6 @@ class EnrollmentRepositoryTest < Minitest::Test
 
       }
     })
-    binding.pry
     find_by_name_hash = er.find_by_name("ACADEMY 20")
     assert find_by_name_hash.high_school_graduation
   end
