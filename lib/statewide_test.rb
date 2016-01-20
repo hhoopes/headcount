@@ -10,6 +10,10 @@ class StatewideTest
   def statewide_test
     data.fetch(:statewide_testing) if data.has_key?(:statewide_testing)
   end
+
+  def convert_grade_to_symbol
+    {3 => :third_grade, 8 => :eighth_grade}
+  end
 end
 
 # |-- Statewide Testing: Gives access to testing data within the district, including:

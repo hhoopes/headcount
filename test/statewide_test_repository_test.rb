@@ -26,7 +26,6 @@ class StatewideTestRepositoryTest < Minitest::Test
         :third_grade => "./data/subsets/third_grade_proficient.csv",
         :eighth_grade => "./data/subsets/eighth_grade_proficient.csv"}})
     t_object = str.find_by_name("Academy 20")
-    binding.pry
     assert t_object.data.fetch(:third_grade)
     assert t_object.data.fetch(:eighth_grade)
   end
