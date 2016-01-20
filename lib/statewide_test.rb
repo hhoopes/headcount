@@ -14,12 +14,26 @@ class StatewideTest
 
   def proficient_by_grade(grade)
     # binding.pry
-   data.fetch(convert_grade_to_symbol[grade])
+    if data.has_key?(convert_grade_to_symbol[grade])
+     data.fetch(convert_grade_to_symbol[grade])
+   else
+      "UnknownDataError"
+   end
   end
 
   def convert_grade_to_symbol
     {3 => :third_grade, 8 => :eighth_grade}
   end
+
+  def proficient_by_race_or_ethnicity(race)
+    if data.has_key?(convert_grade_to_symbol[race])
+     data.fetch(convert_grade_to_symbol[race])
+    else
+      "UnknownDataError"
+    end
+  end
+
+
 end
 
 # |-- Statewide Testing: Gives access to testing data within the district, including:
