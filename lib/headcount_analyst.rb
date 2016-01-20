@@ -9,7 +9,7 @@ class HeadcountAnalyst
 
   def kindergarten_participation_rate_variation(d_name1, against_district)
     d_2 = against_district.fetch(:against)
-    calculate_variation(d_name1, d_2, :kindergarten_participation)
+    calculate_variation(d_name1, :kindergarten_participation, d_2)
   end
 
   def calculate_average_rate(d_object, data_type)
@@ -45,7 +45,7 @@ class HeadcountAnalyst
   def get_district(d_name)
     district_repository.find_by_name(d_name)
   end
-  
+
   def kindergarten_participation_against_high_school_graduation(d_name)
     # binding.pry
     kindergarten_variation =  calculate_variation(d_name, :kindergarten_participation)

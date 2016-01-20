@@ -6,7 +6,7 @@ require 'pry'
 class StatewideTestTest < Minitest::Test
 
   def test_statewide_test_instantiates
-    str = StatewideTest.new
+    str = StatewideTest.new({:name => "test"})
     str.instance_of?(StatewideTest)
   end
 
