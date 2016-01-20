@@ -152,7 +152,7 @@ class DistrictRepositoryTest < Minitest::Test
       }
     })
     district = dr.find_by_name("ACADEMY 20")
-    statewide_test = district.statewide_test
+    assert statewide_test = district.statewide_test
 
   end
 
