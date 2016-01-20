@@ -8,13 +8,12 @@ class HeadcountAnalyst
   end
 
   def kindergarten_participation_rate_variation(d_name1, against_district)
-    binding.pry
     d_2 = against_district.fetch(:against)
     calculate_variation(d_name1, d_2, :kindergarten_participation)
   end
 
   def calculate_average_rate(d_object, data_type)
-    if d_object.enrollment.data.has_key?(data_type)
+    if d_object.enrollment.method(data_type).call  #alternative is to look up the enrollment object and fetch the key
       data = d_object.enrollment.data.fetch(data_type).values
       data.inject(0) do |memo, datum|
         memo + datum

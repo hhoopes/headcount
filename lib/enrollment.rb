@@ -3,7 +3,7 @@ class Enrollment
 
   def initialize(data = {})
     @data = data
-    @name = (@data[:name]).upcase
+    @name = (data[:name]).upcase
   end
 
   def kindergarten_participation
