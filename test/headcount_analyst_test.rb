@@ -17,7 +17,6 @@ class HeadcountAnalystTest < Minitest::Test
     dr = DistrictRepository.new
     dr.load_data({:enrollment => { :kindergarten => "./data/subsets/kindergarten_enrollment.csv"}})
     ha = HeadcountAnalyst.new(dr)
-
     variation = ha.kindergarten_participation_rate_variation('ACADEMY 20', :against => 'COLORADO')
 
     assert_equal 0.766, variation

@@ -2,9 +2,9 @@ class District
   attr_reader :name, :enrollment, :statewide_testing, :economic_profile
   attr_accessor :enrollment
   #an instance of this class looks like d = District.new({:name => "ACADEMY 20"})
-  def initialize(district_hash)
-    @name = district_hash[:name].upcase
-    @enrollment = district_hash[:enrollment]
+  def initialize(data = {})
+    @name = data[:name].upcase
+    
   end
 
   def link_data(data_object, data_key)
