@@ -1,72 +1,67 @@
 require_relative './enrollment'
-# require_relative './data_formatter'
+require_relative './data_formatter'
 require 'csv'
 require 'pry'
 
 class EnrollmentRepository
-  attr_reader :initial_enrollments_array, :unlinked_enrollments
+  attr_reader :initial_enrollments_array, :unlinked_enroll, :formatter
 
   def initialize
     @initial_enrollments_array = []
-    @unlinked_enrollments = []
-    # @formatter = DataFomatter.new(:enrollment)
+    @unlinked_enroll = []
+    @formatter = DataFormatter.new
   end
 
-  def load_data(request_hash) #entry point for directly creating a repo
-    request_hash.fetch(:enrollment).each do | data_type, file |
-      load_enrollment(data_type, file)
+  def load_data(request_hash)
+    enroll = request_hash.fetch(:enrollment)
+      enroll.each do | data_type, file |
+      formatted = formatter.format_data(data_type, file)
+      sort_data(formatted)
     end
-    unlinked_enrollments
+    unlinked_enroll
   end
 
-  def parse_file(file)
-    CSV.open file,
-             headers: true,
-             header_converters: :symbol
-  end
-
-  def load_enrollment(data_type, file) #entry point for district repo
-    data_type = :kindergarten_participation if data_type == :kindergarten
-    data_csv = parse_file(file)
-    data_csv.each do |row|
-      d_name = row[:location].upcase
-      data = row[:data].to_f
-      year = row[:timeframe].to_i
-      e_object = find_by_name(d_name)
-      if e_object
-        add_data(data_type, e_object, year, data)
-      else # district doesn't exist, create instance
-        create_new_enrollment(data_type, d_name, year, data)
+  def sort_data(formatted)
+    formatted.each do |hash|
+      data_type       = hash.first
+      location        = hash[1]
+      formatted_hash  = hash.last
+      en_object = find_by_name(location)
+      if en_object
+        add_data(formatted_hash, en_object, data_type)
+      else
+        create_new_instance(formatted_hash, location, data_type)
       end
     end
   end
 
-  def add_data(data_type, e_object, year, data)
-    if e_object.data[data_type].nil?
-      e_object.data[data_type] = {year => data}
+  def add_data(hash, en_object, data_type)
+    if en_object.data[data_type].nil?
+      en_object.data[data_type] = hash
     else
-      e_object.data[data_type].merge!({year => data})
+      deep_merge!(en_object.data.fetch(data_type), hash)
     end
   end
 
-  def create_new_enrollment(data_type, d_name, year, data)
-    new_instance = Enrollment.new({:name => d_name, data_type => {year => data}})
+  def create_new_instance(hash, location, data_type)
+    new_instance = Enrollment.new({:name => location, data_type => hash})
     initial_enrollments_array << new_instance
-    unlinked_enrollments << [d_name, new_instance]
+    unlinked_enroll << [location, new_instance]
   end
 
   def find_by_name(d_name)
-    initial_enrollments_array.detect do |enrollment_instance|
-      enrollment_instance.name.upcase == d_name.upcase
+    initial_enrollments_array.detect do |e_instance|
+      e_instance.name.upcase == d_name.upcase
     end
   end
+
+  def deep_merge!(tgt_hash, src_hash)
+    tgt_hash.merge!(src_hash) { |key, oldval, newval|
+      if oldval.kind_of?(Hash) && newval.kind_of?(Hash)
+        deep_merge!(oldval, newval)
+      else
+        newval
+      end
+    }
+  end
 end
-
-
-#er.load_data({
-#   :enrollment => {
-#     :kindergarten => "./data/Kindergartners in full-day program.csv"
-#   }
-# })
-# enrollment = er.find_by_name("ACADEMY 20")
-# => <Enrollment>

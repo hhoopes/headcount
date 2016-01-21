@@ -1,75 +1,67 @@
 require_relative './economic_profile'
+require_relative './data_formatter'
 require 'csv'
 require 'pry'
 
 class EconomicProfileRepository
-  attr_reader :initial_eco_array
+  attr_reader :initial_eco_array, :unlinked_eco, :formatter
 
   def initialize
     @initial_eco_array = []
+    @unlinked_eco = []
+    @formatter = DataFormatter.new
   end
-#based on load_data in district repo, the first key of request_hash is gone
+
   def load_data(request_hash)
-	    request_hash.fetch(:economic_profile).each do | data_category, file|
-    	load_enrollment(data_category, file)
+    eco = request_hash.fetch(:economic_profile)
+      eco.each do | data_type, file |
+      formatted = formatter.format_data(data_type, file)
+      sort_data(formatted)
+      unlinked_eco
     end
-    # key_and_file = get_key_and_file(request_hash)
-    # load_enrollment(key_and_file)
   end
 
-  def get_key_and_file(hash)
-    hash.map do | key, value|
-    hash.fetch(key)
-    end
-    #assign labels that can be used later
-    #finds value with the key, data_category
-  end
-
-  def parse_file(file)
-    CSV.open file,
-             headers: true,
-             header_converters: :symbol
-  end
-
-  def load_enrollment(data_category, file)
-    d_bundle = []
-    data_csv = parse_file(file)
-    data_csv.each do |row|
-      d_name = row[:location]
-      data = row[:data]
-      year = row[:timeframe]
-
-      if find_by_name(d_name)
-        d_object = find_by_name(d_name)
-        d_object.economic_profile.merge!({key => {year => data}})
-
-          # d_object.enrollment[:kindergarten_participation] = {year => data}
+  def sort_data(formatted)
+    formatted.each do |hash|
+      data_type       = hash.first
+      location        = hash[1]
+      formatted_hash  = hash.last
+      e_object = find_by_name(location)
+      if e_object
+        add_data(formatted_hash, e_object, data_type)
       else
-        new_instance = EconomicProfile.new({
-          :name => d_name,
-          :data_category => { year => data }
-          })
-          #method if this is the key this is the data category
-        @initial_eco_array << new_instance
-        d_bundle << [d_name, new_instance]
+        create_new_instance(formatted_hash, location, data_type)
       end
     end
-    d_bundle
   end
-#district.economic_profile.key => data
+
+  def add_data(hash, e_object, data_type)
+    if e_object.data[data_type].nil?
+      e_object.data[data_type] = hash
+    else
+      deep_merge!(e_object.data.fetch(data_type), hash)
+    end
+  end
+
+  def create_new_instance(hash, location, data_type)
+    new_instance = EconomicProfile.new({:name => location, data_type => hash})
+    initial_eco_array << new_instance
+    unlinked_eco << [location, new_instance]
+  end
+
   def find_by_name(d_name)
     initial_eco_array.detect do |eco_instance|
       eco_instance.name.upcase == d_name.upcase
     end
   end
-#organizes the data by assigning each data file to a key and thus creating a hash
-end
-# functionality is that it will use a filter to find specific enrollment information. In this case, info about Academy 20's kindergarten enrollment for all years
 
-#er.load_data({
-#   :enrollment => {
-#     :kindergarten => "./data/Kindergartners in full-day program.csv"
-#   }
-# })
-# enrollment = er.find_by_name("ACADEMY 20")
-# => <Enrollment>
+  def deep_merge!(tgt_hash, src_hash)
+    tgt_hash.merge!(src_hash) { |key, oldval, newval|
+      if oldval.kind_of?(Hash) && newval.kind_of?(Hash)
+        deep_merge!(oldval, newval)
+      else
+        newval
+      end
+    }
+  end
+end

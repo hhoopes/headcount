@@ -14,7 +14,6 @@ class EconomicProfile
   end
 
   def median_household_income_in_year(year)
-    # binding.pry
     found = check_key_with_range(year, :median_household_income)
     if found.length > 0
       found.inject(0) do |sum, range|
