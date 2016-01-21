@@ -31,7 +31,6 @@ class StatewideTestRepositoryTest < Minitest::Test
   end
 
   def test_statewide_test_repository_loads_data_gives_test_information_for_multiple_categories_within_a_school
-    skip
     str = StatewideTestRepository.new
     str.load_data({
       :statewide_testing => {
@@ -55,13 +54,4 @@ class StatewideTestRepositoryTest < Minitest::Test
     assert t_object.data.fetch(:asian)
     assert_equal 3, str.initial_testing_array.length
   end
-
-  def test_data_will_return_value_even_if_value_not_a_floating_num
-    skip
-   # Edge cases:
-   # LNE instead of Percent, percent out of order, #Value! as percent (Bethune)
-
-
-  end
-
 end
