@@ -1,5 +1,6 @@
 require 'pry'
 require 'unknown_data_error'
+require 'unknown_race_error'
 
 class StatewideTest
   attr_reader :name, :data
@@ -9,18 +10,16 @@ class StatewideTest
     @name = data[:name].upcase
   end
 
-#key is #statewide_testing, method is statewide_test
   def statewide_test
     data.fetch(:statewide_testing) if data.has_key?(:statewide_testing)
   end
 
   def proficient_by_grade(grade)
-    # binding.pry
     if data.has_key?(convert_grade_to_symbol[grade])
      data.fetch(convert_grade_to_symbol[grade])
-   else
-      "UnknownDataError"
-   end
+    else
+      raise UnknownDataError
+    end
   end
 
   def convert_grade_to_symbol
@@ -28,10 +27,11 @@ class StatewideTest
   end
 
   def proficient_by_race_or_ethnicity(race)
+    binding.pry
     if data.has_key?([race])
      data.fetch([race])
     else
-       "UnknownRaceError"
+       raise UnknownRaceError
     end
   end
 

@@ -62,7 +62,6 @@ meta bowz: true
     assert_equal 55000, economic_profile.median_household_income_average
   end
 
-
 meta beta: true
   #test for passing in file
   def test_children_in_poverty_gives_percent_for_year
