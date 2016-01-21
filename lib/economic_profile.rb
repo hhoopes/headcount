@@ -31,7 +31,7 @@ class EconomicProfile
   end
 
   def children_in_poverty_in_year(year)
-    if found = check_key(year, :children_in_poverty)
+    if check_key(year, :children_in_poverty)
       truncate_float(data.fetch(:children_in_poverty)[year])
     else
       raise UnknownDataError
@@ -39,7 +39,7 @@ class EconomicProfile
   end
 
   def free_or_reduced_price_lunch_percentage_in_year(year)
-    if found = check_key(year, :free_or_reduced_price_lunch)
+    if check_key(year, :free_or_reduced_price_lunch)
       data.fetch(:free_or_reduced_price_lunch)[year][:percentage]
     else
       raise UnknownDataError
@@ -48,7 +48,7 @@ class EconomicProfile
 
   def free_or_reduced_price_lunch_number_in_year(year)
     # binding.pry
-     if found = check_key(year, :free_or_reduced_price_lunch)
+     if check_key(year, :free_or_reduced_price_lunch)
        data.fetch(:free_or_reduced_price_lunch)[year][:total]
      else
        raise UnknownDataError
@@ -56,7 +56,11 @@ class EconomicProfile
   end
 
   def title_i_in_year(year)
-    
+    if check_key(year, :title_i)
+      data.fetch(:title_i)[year]
+    else
+      raise UnknownDataError
+    end
   end
 
   def check_key(year, parameter)

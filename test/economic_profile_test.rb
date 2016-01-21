@@ -127,7 +127,8 @@ meta luv: true
     assert_raises UnknownDataError do  economic_profile.free_or_reduced_price_lunch_number_in_year(2212)
     end
   end
-meta title: true 
+  #test with another unknown year
+meta title: true
   def test_title_i_gives_correct_percent
     data = {:median_household_income => {[2005, 2009] => 50000, [2008, 2014] => 60000},
         :children_in_poverty => {2012 => 0.1845},
@@ -139,9 +140,8 @@ meta title: true
 
     assert_equal 0.543, economic_profile.title_i_in_year(2015)
   end
-
+meta titletoo: true
   def test_title_i_gives_error_for_wrong_year
-    skip
     data = {:median_household_income => {[2005, 2009] => 50000, [2008, 2014] => 60000},
         :children_in_poverty => {2012 => 0.1845},
         :free_or_reduced_price_lunch => {2014 => {:percentage => 0.023, :total => 100}},
@@ -150,7 +150,8 @@ meta title: true
        }
     economic_profile = EconomicProfile.new(data)
 
-    assert_equal UnknownDataError, economic_profile.title_i_in_year(1115)
+    assert_raises UnknownDataError do  economic_profile.title_i_in_year(1115)
+    end
   end
 
 
