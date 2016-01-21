@@ -43,7 +43,9 @@ meta s2: true
     statewide_test = StatewideTest.new(:name => "Colorado", :third_grade => expected)
     actual = statewide_test.proficient_by_grade(4)
 
-    assert_equal "UnknownDataError", actual
+    assert_raises UnknownDataError do
+       actual
+     end
   end
 meta twang:true
   def test_proficient_by_race_or_ethnicity_gives_percent_proficiency_for_given_race
@@ -67,7 +69,9 @@ meta s4: true
     statewide_test = StatewideTest.new
     actual = statewide_test.proficient_by_race_or_ethnicity(:skaterboys)
 
-    assert_equal "UnknownRaceError", actual
+    assert_raises UnknownRaceError do
+       actual
+     end
   end
 meta s5: true
   def test_proficient_for_subject_by_grade_in_year_gives_correct_percent
@@ -79,7 +83,8 @@ meta s6: true
   def test_proficient_for_subject_by_grade_in_year_gives_correct_percent
     skip
     statewide_test = StatewideTest.new(:name => "Colorado", :third_grade => expected)
-    assert_equal UnknownDataError, statewide_test.proficient_for_subject_by_grade_in_year(:science, 3, 2008)
+    assert_raises UnknownDataError do  statewide_test.proficient_for_subject_by_grade_in_year(:science, 3, 2008)
+    end
   end
 meta s7: true
   def test_proficient_for_subject_by_race_returns_correct_percent
@@ -93,14 +98,16 @@ meta s8: true
     skip
     statewide_test = StatewideTest.new(:name => "Colorado", :third_grade => expected)
 
-    assert_equal UnknownDataError, statewide_test.proficient_for_subject_by_race_in_year(:history, :asian, 2012)
+    assert_raises UnknownDataError do  statewide_test.proficient_for_subject_by_race_in_year(:history, :asian, 2012)
+    end
   end
 meta s9: true
   def test_proficient_for_subject_by_race_returns_error_if_multiple_wrong_parameters
     skip
     statewide_test = StatewideTest.new(:name => "Colorado", :third_grade => expected)
 
-    assert_equal UnknownDataError, statewide_test.proficient_for_subject_by_race_in_year(:history, :cyborg, 2012)
+    assert_raises UnknownDataError do  statewide_test.proficient_for_subject_by_race_in_year(:history, :cyborg, 2012)
+    end
   end
 meta s10: true
   def test_proficient_for_subject_by_race_returns_error_if_all_wrong_parameters

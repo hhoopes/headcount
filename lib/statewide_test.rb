@@ -9,7 +9,6 @@ class StatewideTest
     @name = data[:name].upcase
   end
 
-#key is #statewide_testing, method is statewide_test
   def statewide_test
     data.fetch(:statewide_testing) if data.has_key?(:statewide_testing)
   end
@@ -19,7 +18,7 @@ class StatewideTest
     if data.has_key?(convert_grade_to_symbol[grade])
      data.fetch(convert_grade_to_symbol[grade])
    else
-      "UnknownDataError"
+      raise UnknownDataError
    end
   end
 
@@ -31,7 +30,7 @@ class StatewideTest
     if data.has_key?([race])
      data.fetch([race])
     else
-       "UnknownRaceError"
+       raise UnknownRaceError
     end
   end
 
