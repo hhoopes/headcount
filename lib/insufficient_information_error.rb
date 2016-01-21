@@ -1,0 +1,3 @@
+class InsufficientInformationError < ArgumentError
+
+end

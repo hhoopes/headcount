@@ -12,7 +12,6 @@ class HeadcountAnalystTest < Minitest::Test
     assert ha.instance_of? HeadcountAnalyst
   end
 
-  meta mark:true
   def test_kindergarten_participation_rate_variation_takes_input_of_district_and_state_and_gives_variance
     dr = DistrictRepository.new
     dr.load_data({:enrollment => {:kindergarten => "./data/subsets/kindergarten_enrollment.csv"}})
@@ -95,7 +94,7 @@ class HeadcountAnalystTest < Minitest::Test
 
     refute ha.kindergarten_participation_correlates_with_high_school_graduation(for: 'FAKE ISD')
   end
-  
+
   def test_whether_kindergarten_participation_correlates_with_hs_graduation
    dr = DistrictRepository.new
    dr.load_data({:enrollment => {:kindergarten => "./data/subsets/kindergarten_enrollment.csv", :high_school_graduation => "./data/subsets/high_school_enrollment.csv"}})
@@ -105,5 +104,8 @@ class HeadcountAnalystTest < Minitest::Test
     :across => ['ACADEMY 20', 'CANON CITY RE-1', 'CENTENNIAL R-1', 'CENTER 26 JT'])
   end
 
+  def top_statewide_test_with_no_grade_raises_insufficient_error
+
+  end
 
 end

@@ -55,7 +55,7 @@ class HeadcountAnalyst
   def get_district(d_name)
     district_repository.find_by_name(d_name)
   end
-#possible
+
   def kindergarten_participation_against_high_school_graduation(d_name)
     kindergarten_variation  = calculate_variation(d_name, :kindergarten_participation)
     graduation_variation    = calculate_variation(d_name, :high_school_graduation)
@@ -90,6 +90,10 @@ class HeadcountAnalyst
       kindergarten_participation_correlates_with_high_school_graduation(:for => district)
     end
      district_num.fetch(true).count/ district_num.fetch(false).count
+  end
+
+  def top_statewide_test_year_over_year_growth(grade, subject =, )
+
   end
 
   def truncate_float(number)
