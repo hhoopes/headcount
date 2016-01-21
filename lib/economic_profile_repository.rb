@@ -6,7 +6,6 @@ require 'pry'
 class EconomicProfileRepository
   attr_reader :initial_eco_array, :unlinked_eco, :formatter
 
-#key is #statewide_testing, method is statewide_test
   def initialize
     @initial_eco_array = []
     @unlinked_eco = []

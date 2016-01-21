@@ -22,7 +22,7 @@ class DistrictRepository
 
   def load_data(request_hash)
     data_category = request_hash.keys.first
-    case data_category #decide which repo is responsible for new data. "Each" allows any and all required repos to get processed
+    case data_category
       when :enrollment
         d_bundle = enrollment_repo.load_data(request_hash)
       when :statewide_testing
@@ -33,25 +33,18 @@ class DistrictRepository
     catalog_repos(d_bundle, data_category)
   end
 
-  # def create_relationships(data_category)
-  #   initial_districts_array.each do |district|
-  #     district.enrollment     = er.find_by_name(district.name)
-
-
-  def catalog_repos(d_bundle, data_category) # d_bundle comes from the other repos to associate new districts with their data
-    d_bundle.each do |array_pair|  #key will be refactored in to link districts to the correct repos
-      d_name = array_pair.first #take the name from the array
-      data_object = array_pair.last #take the object from the array
-
-    existing_d_object = find_by_name(d_name) #look up a district object from the name you get
+  def catalog_repos(d_bundle, data_category)
+    d_bundle.each do |array_pair|
+      d_name = array_pair.first
+      data_object = array_pair.last
+    existing_d_object = find_by_name(d_name)
       if existing_d_object
         existing_d_object.link_data(data_object, data_category)
-        binding.pry
-        # existing_d_object.enrollment = d_object #set its enrollment to the enrollment object we got handed
       else
         new_district = District.new({:name => d_name})
-        new_district.enrollment = data_object #give new district the data object
-        initial_districts_array << new_district #create the district and add it to our array
+        # new_district.data.fetch(data_category) = data_object
+        new_district.link_data(data_object, data_category)
+        initial_districts_array << new_district
       end
     end
   end
