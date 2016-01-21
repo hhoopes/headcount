@@ -33,13 +33,13 @@ class DataFormatter
     array_of_hashes.map do | hash |
       case data_type
       when :kindergarten, :kindergarten_participation, :high_school_graduation, :children_in_poverty, :title_i
-        [data_type, hash[:location].upcase, {hash[:timeframe].to_i => hash[:data].to_f}]
+        [format_kindergarten(data_type), hash[:location].upcase, {hash[:timeframe].to_i => hash[:data].to_f}]
       when :third_grade, :eighth_grade
         [data_type, hash[:location].upcase, {hash[:timeframe].to_i => {hash[:score] => hash[:data].to_f}}]
       when :math, :reading, :writing
         # data_type = :raceethnicity
         # raceethnicity = hash.fetch(:data_type)
-        [format_ethnicity(hash[:race_ethnicity]), hash[:location].upcase, {hash[:timeframe].to_i => {math: hash[:data].to_f}}]
+        [format_ethnicity(hash[:race_ethnicity]), hash[:location].upcase, {hash[:timeframe].to_i => {data_type => hash[:data].to_f}}]
       when :median_household_income
         [data_type, hash[:location].upcase, {hash[:timeframe].split => hash[:data]}]
       when :free_or_reduced_price_lunch
@@ -60,5 +60,12 @@ class DataFormatter
 
   def format_ethnicity(ethnicity)
     ethnicity.gsub(" ", "").downcase.to_sym
+  end
+
+  def format_kindergarten(data_type)
+    if data_type == :kindergarten
+      :kindergarten_participation
+    else data_type
+    end
   end
 end
