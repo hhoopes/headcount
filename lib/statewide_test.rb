@@ -39,9 +39,9 @@ class StatewideTest
     annual_subject_data = data.fetch(grade_sym)
     years = annual_subject_data.map {|key, value| key}
     subject_data = annual_subject_data.map {|key, value| value}
-
-    if annual_subject_data != nil && subject_data[0].keys.include?(subject) && years.include?(year)
-      annual_data = data.fetch(grade_sym)[year]
+    if annual_subject_data != nil && subject_data[0].keys.include?(subject.to_s.capitalize) && years.include?(year)
+      annual_data = (data.fetch(grade_sym)[year])
+      annual_data[subject.to_s.capitalize]
     else
       raise UnknownDataError
     end
