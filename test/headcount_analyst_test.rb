@@ -1,5 +1,4 @@
 require 'minitest'
-# require 'test/test_helper'
 require './lib/headcount_analyst'
 require './lib/district_repository'
 require 'pry'
