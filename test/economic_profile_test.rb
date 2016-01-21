@@ -19,7 +19,22 @@ class EconomicProfileTest < Minitest::Test
 
     assert_equal 55000, economic_profile.median_household_income_in_year(2009)
   end
-#test for passing in file
+
+  #  meta file: true
+  #   def test_median_household_income_given_in_method_with_file
+  #       dr = DistrictRepository.new
+  #       data = dr.load_data({:median_household_income => {"./data/subsets/median_household.csv"},
+  #           :children_in_poverty => {"./data/subsets/children_in_pov.csv"}, :free_or_reduced_price_lunch => {"./data/subsets/free_or_red_price_lunch.csv"}, :title_i => {"./data/subsets/title_i_small.csv"}, :name => "ACADEMY 20"
+  #         }
+  #       })
+   #
+  #     economic_profile = EconomicProfile.new(data)
+   #
+  #     assert_equal 50000, economic_profile.median_household_income_in_year(2005)
+   #
+  #     assert_equal 55000, economic_profile.median_household_income_in_year(2009)
+  #   end
+
 #test for data that has year that falls into more than 2 ranges
 meta katz: true
   def test_median_household_income_gives_error_if_year_does_not_exist
