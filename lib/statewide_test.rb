@@ -22,10 +22,6 @@ class StatewideTest
     end
   end
 
-  def convert_grade_to_symbol
-    {3 => :third_grade, 8 => :eighth_grade}
-  end
-
   def proficient_by_race_or_ethnicity(race)
     if data.include?(race)
       data.fetch(race)
@@ -35,12 +31,11 @@ class StatewideTest
   end
 
   def proficient_for_subject_by_grade_in_year(subject, grade, year)
-    grade_sym = convert_grade_to_symbol[grade]
-    annual_subject_data = data.fetch(grade_sym)
+    annual_subject_data = data.fetch(grade)
     years = annual_subject_data.map {|key, value| key}
     subject_data = annual_subject_data.map {|key, value| value}
     if annual_subject_data != nil && subject_data[0].keys.include?(subject.to_s.capitalize) && years.include?(year)
-      annual_data = (data.fetch(grade_sym)[year])
+      annual_data = (data.fetch(grade)[year])
       annual_data[subject.to_s.capitalize]
     else
       raise UnknownDataError

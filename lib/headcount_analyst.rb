@@ -119,7 +119,7 @@ class HeadcountAnalyst
     subject = grade_subject.fetch(:subject)
     value = 0
     d =
-    binding.pry
+    
     district_repository.initial_testing_array.max_by do |district|
     last = district_repository.initial_testing_array.data.fetch(grade).keys.last
     first = district_repository.initial_testing_array.data.fetch(grade).keys.first
