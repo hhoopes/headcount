@@ -13,8 +13,18 @@ class HeadcountAnalyst
     calculate_variation(d_name1, :kindergarten_participation, d_2)
   end
 
+  def calculate_variation(d_name1, data_type, d_name2 = 'Colorado')
+    d_object1 = get_district(d_name1)
+    d_object2 = get_district(d_name2)
+    average1 = calculate_average_rate(d_object1, data_type)
+    average2 = calculate_average_rate(d_object2, data_type)
+    truncate_float(average1/average2)
+  end
+
   def calculate_average_rate(d_object, data_type)
-    if d_object.enrollment.method(data_type).call
+    binding.pry
+    if d_object.enrollment.fetch(data_type)
+
       data = d_object.enrollment.data.fetch(data_type).values
       data.inject(0) do |memo, datum|
         memo + datum
@@ -52,14 +62,6 @@ class HeadcountAnalyst
     graduation_variation =  calculate_variation(d_name, :high_school_graduation)
     kindergaten_graduation_variance = kindergarten_variation/ graduation_variation
     truncate_float(kindergaten_graduation_variance)
-  end
-
-  def calculate_variation(d_name1, data_type, d_name2 = 'Colorado')
-    d_object1 = get_district(d_name1)
-    d_object2 = get_district(d_name2)
-    average1 = calculate_average_rate(d_object1, data_type)
-    average2 = calculate_average_rate(d_object2, data_type)
-    truncate_float(average1/average2)
   end
 
   def kindergarten_participation_correlates_with_high_school_graduation(d_hash)
