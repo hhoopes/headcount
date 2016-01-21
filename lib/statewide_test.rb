@@ -35,11 +35,19 @@ class StatewideTest
   end
 
   def proficient_for_subject_by_grade_in_year(subject, grade, year)
-    data.fetch(grade)
+    grade_sym = convert_grade_to_symbol[grade]
+    annual_subject_data = data.fetch(grade_sym)
+    years = annual_subject_data.map {|key, value| key}
+    subject_data = annual_subject_data.map {|key, value| value}
+
+    if annual_subject_data != nil && subject_data[0].keys.include?(subject) && years.include?(year)
+      annual_data = data.fetch(grade_sym)[year]
+    else
+      raise UnknownDataError
+    end
   end
 
   def proficient_for_subject_by_race_in_year(subject, race, year)
-    # binding.pry
     year_and_subj = data[(race)]
     years = year_and_subj.map {|key, value| key}
     subj = year_and_subj.map {|key, value| value}

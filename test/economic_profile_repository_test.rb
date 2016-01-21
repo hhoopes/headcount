@@ -5,14 +5,13 @@ require './lib/district_repository'
 require 'pry'
 
 class EconomicProfileRepositoryTest < Minitest::Test
-#iteration 4
   def test_economic_profile_repo_instantiates_
     epr = EconomicProfileRepository.new
     assert epr.instance_of?(EconomicProfileRepository)
   end
 
   def test_economic_information_given_when_run_load_data_for_specific_school
-    skip
+    skip 
     epr = EconomicProfileRepository.new
     epr.load_data({
       :economic_profile => {
