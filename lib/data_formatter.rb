@@ -39,7 +39,7 @@ class DataFormatter
       when :math, :reading, :writing
         # data_type = :raceethnicity
         # raceethnicity = hash.fetch(:data_type)
-        [format_ethnicity(hash[:race_ethnicity]), hash[:location].upcase, {hash[:timeframe].to_i => {math: hash[:data].to_f}}]
+        [format_ethnicity(hash[:race_ethnicity]), hash[:location].upcase, {hash[:timeframe].to_i => {data_type => hash[:data].to_f}}]
       when :median_household_income
         [data_type, hash[:location].upcase, {hash[:timeframe].split => hash[:data]}]
       when :free_or_reduced_price_lunch
