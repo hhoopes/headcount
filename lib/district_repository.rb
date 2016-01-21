@@ -66,7 +66,7 @@ class DistrictRepository
   def find_all_matching(search_string)
     search_results_array = []
     initial_districts_array.each do |district|
-      if district.name.include?(search_string.upcase)
+      if district.name.upcase.include?(search_string.upcase)
           search_results_array << district.name
       end
     end

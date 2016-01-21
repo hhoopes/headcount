@@ -2,7 +2,7 @@ class DataFormatter
   attr_reader :exclude_data
 
   def initialize
-    @exclude_data = ["LNE", "#VALUE!", nil, "N/A", "NA", "Eligible for Reduced Lunch", "Eligible for Free Lunch"]
+    @exclude_data = ["LNE", "#VALUE!", nil, "NA", "Eligible for Reduced Lunch", "Eligible for Free Lunch"]
   end
 
   def format_data(data_type, file)
@@ -35,10 +35,8 @@ class DataFormatter
       when :kindergarten, :kindergarten_participation, :high_school_graduation, :children_in_poverty, :title_i
         [format_kindergarten(data_type), hash[:location].upcase, {hash[:timeframe].to_i => hash[:data].to_f}]
       when :third_grade, :eighth_grade
-        [format_number(data_type), hash[:location].upcase, {hash[:timeframe].to_i => {hash[:score].to_sym => hash[:data].to_f}}]
+        [format_number(data_type), hash[:location].upcase, {hash[:timeframe].to_i => {hash[:score].downcase.to_sym => hash[:data].to_f}}]
       when :math, :reading, :writing
-        # data_type = :raceethnicity
-        # raceethnicity = hash.fetch(:data_type)
         [format_ethnicity(hash[:race_ethnicity]), hash[:location].upcase, {hash[:timeframe].to_i => {data_type => hash[:data].to_f}}]
       when :median_household_income
         [data_type, hash[:location].upcase, {hash[:timeframe].split => hash[:data]}]

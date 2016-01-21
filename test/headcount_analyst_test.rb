@@ -11,7 +11,7 @@ class HeadcountAnalystTest < Minitest::Test
     ha = HeadcountAnalyst.new(dr)
     assert ha.instance_of? HeadcountAnalyst
   end
-meta tag:true
+
   def test_kindergarten_participation_rate_variation_takes_input_of_district_and_state_and_gives_variance
     dr = DistrictRepository.new
     dr.load_data({:enrollment => {:kindergarten => "./data/subsets/kindergarten_enrollment.csv"}})

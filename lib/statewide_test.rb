@@ -3,7 +3,7 @@ require_relative 'unknown_data_error'
 require_relative 'unknown_race_error'
 
 class StatewideTest
-  attr_reader :name, :data
+  attr_reader :name, :data, :statewide_test
 
   def initialize(data = {})
     @data = data
@@ -23,7 +23,7 @@ class StatewideTest
   end
 
   def proficient_by_race_or_ethnicity(race)
-    if data.include?(race)
+    if data.has_key?(race)
       data.fetch(race)
     else
       raise UnknownRaceError
@@ -31,25 +31,21 @@ class StatewideTest
   end
 
   def proficient_for_subject_by_grade_in_year(subject, grade, year)
-    annual_subject_data = data.fetch(grade)
-    years = annual_subject_data.map {|key, value| key}
-    subject_data = annual_subject_data.map {|key, value| value}
-    if annual_subject_data != nil && subject_data[0].keys.include?(subject.to_s.capitalize) && years.include?(year)
-      annual_data = (data.fetch(grade)[year])
-      annual_data[subject.to_s.capitalize]
+    binding.pry
+    if self.data.fetch(grade).fetch(year).fetch(subject)
+      data = data.fetch(grade).fetch(year).fetch(subject)
+    end
+    if data.class == Fixnum
+      truncate_float(data.fetch(grade).fetch(year).fetch(subject))
+      data
     else
       raise UnknownDataError
     end
   end
 
   def proficient_for_subject_by_race_in_year(subject, race, year)
-    year_and_subj = data[(race)]
-    years = year_and_subj.map {|key, value| key}
-    subj = year_and_subj.map {|key, value| value}
-    if year_and_subj != nil && subj[0].keys.include?(subject) && years.include?(year)
-
-      annual_race_data = data.fetch(race)[year][subject]
-      truncate_float(annual_race_data)
+    if data.fetch(race).fetch(year).fetch(subject)
+      truncate_float(data.fetch(race).fetch(year).fetch(subject))
     else
       raise UnknownDataError
     end

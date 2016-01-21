@@ -1,9 +1,11 @@
 class District
   attr_reader :name
-  attr_accessor :data, :enrollment, :statewide_testing, :economic_profile
+  attr_accessor :data, :enrollment, :statewide_testing, :economic_profile, :statewide_test
 
   def initialize(data = {})
+    @data = data
     @name = data[:name].upcase
+    @statewide_test
 
   end
 

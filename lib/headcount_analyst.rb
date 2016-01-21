@@ -4,10 +4,11 @@ require_relative 'unknown_data_error'
 require_relative 'insufficient_information_error'
 
 class HeadcountAnalyst
-  attr_reader :district_repository
+  attr_reader :district_repository, :test_array
 
   def initialize(district_repository)
     @district_repository = district_repository
+    @test_array = district_repository.testing_repo.initial_testing_array
   end
 
   def kindergarten_participation_rate_variation(d_name1, d_name2)
@@ -87,12 +88,8 @@ class HeadcountAnalyst
     name_array.group_by do |district|
       kindergarten_participation_correlates_with_high_school_graduation(:for => district)
     end
-     district_num.fetch(true).count/ district_num.fetch(false).count
+     district_num.values.first.count/name_array.count
   end
-
-  # def example(opts = {})
-  # Hash#merge raises TypeError if _opts_ is not a Hash.
-  # Nothing checks if _opts_ contains unknown keys.
 
   def top_statewide_test_year_over_year_growth(opts = {})
     grade     = opts.fetch(:grade) if opts.has_key?(:grade)
@@ -118,16 +115,32 @@ class HeadcountAnalyst
     grade = grade_subject.fetch(:grade)
     subject = grade_subject.fetch(:subject)
     value = 0
-    testing = district_repository.statewide_testing.data.fetch(grade)
-    d =
-    district_repository.initial_testing_array.max_by do |district|
-      year_last = district_repository.statewide_testing.data.fetch(grade).fetch(last).fetch(:subject)
-      year_first = district_repository.initial_testing_array.data.fetch(grade).fetch(first).fetch(:subject)
-      first = district.proficient_for_subject_by_grade_in_year(subject, grade, year_first)
-      last = district.proficient_for_subject_by_grade_in_year(subject, grade, year_last)
-      value = (last - first)/(year_last-year_first)
+    test_array.each do |test_object|
+      find_valid(test_object.data, grade, subject)
     end
-    [d.name, value]
+  end
+
+    def find_valid(hash, grade, subject)
+      test_object.each do | k, v|
+        if test_object.fetch
+          test_object.data.fetch(grade)
+        binding.pry
+        !test_object.data.fetch(grade).fetch(k).nil?
+
+      end.sort
+    end
+      high = valid.first
+      high = valid.last
+      # test_array.max_by do |test_object|
+      # year_last = test_object.data.fetch(grade).keys.last
+      # year_first = test_object.data.fetch(grade).keys.first
+      # first = test_object.proficient_for_subject_by_grade_in_year(subject, grade, year_first) if first !=nil
+      # last = test_object.proficient_for_subject_by_grade_in_year(subject, grade, year_last) if last !=nil
+      #
+      # value = (last - first)/(year_last - year_first)
+
+    # end
+    # [d.name, value]
     # last = district_repository.initial_testing_array.data.fetch(grade).keys.last
     # first = district_repository.initial_testing_array.data.fetch(grade).keys.first
     # value = last - first

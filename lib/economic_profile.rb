@@ -5,8 +5,8 @@ class EconomicProfile
   attr_reader :name, :data
 
   def initialize(data= {})
-    @name = data.values.last.upcase
     @data = data
+    @name = data[:name]upcase
   end
 
   def median_household_income

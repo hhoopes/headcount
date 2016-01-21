@@ -45,6 +45,7 @@ class EconomicProfileRepository
 
   def create_new_instance(hash, location, data_type)
     new_instance = EconomicProfile.new({:name => location, data_type => hash})
+    binding.pry
     initial_eco_array << new_instance
     unlinked_eco << [location, new_instance]
   end
