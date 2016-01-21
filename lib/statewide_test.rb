@@ -27,18 +27,34 @@ class StatewideTest
   end
 
   def proficient_by_race_or_ethnicity(race)
-    binding.pry
-    if data.has_key?([race])
-     data.fetch([race])
+    if data.include?(race)
+      data.fetch(race)
     else
-       raise UnknownRaceError
+      raise UnknownRaceError
     end
   end
 
-end
+  def proficient_for_subject_by_grade_in_year(subject, grade, year)
+    data.fetch(grade)
+  end
 
-# |-- Statewide Testing: Gives access to testing data within the district, including:
-# |  | -- 3rd grade standardized test results
-# |  | -- 8th grade standardized test results
-# |  | -- Subject-specific test results by race and ethnicity
-# |  | -- Higher education remediation rates
+  def proficient_for_subject_by_race_in_year(subject, race, year)
+    # binding.pry
+    year_and_subj = data[(race)]
+    years = year_and_subj.map {|key, value| key}
+    subj = year_and_subj.map {|key, value| value}
+    if year_and_subj != nil && subj[0].keys.include?(subject) && years.include?(year)
+
+      annual_race_data = data.fetch(race)[year][subject]
+      truncate_float(annual_race_data)
+    else
+      raise UnknownDataError
+    end
+  end
+
+  def truncate_float(number)
+    (number * 1000).truncate/1000.to_f
+  end
+
+
+end
