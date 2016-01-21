@@ -75,21 +75,3 @@ class DistrictRepository
   end
 
 end
-
-
-
-#FOR ITERATION 1:
-#Instead of loading just one data file , we now want to specify the data directory and have it figure out what data it wants/needs:
-# dr = DistrictRepository.new
-# dr.load_data({ :enrollment => {  :kindergarten => "./data/Kindergartners in full-day program.csv" }})
-
-
-# district = dr.find_by_name("ACADEMY 20")
-#When DistrictRepository created, automatically creates EnrollmentRepository. Allows us to access enrollment data for district.
-#district.enrollment.kindergarten_participation_in_year(2010) # => 0.391
-
-# enrollment_repo.names.each do |d_name|
-#   ensure_district_exists d_name
-# end
-# initial_districts_array
-# end

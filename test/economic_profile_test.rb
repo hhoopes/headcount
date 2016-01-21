@@ -1,5 +1,4 @@
 require 'minitest'
-# require './test/test_helper'
 require './lib/economic_profile'
 require './lib/economic_profile_repository'
 require 'pry'

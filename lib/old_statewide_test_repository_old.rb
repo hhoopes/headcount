@@ -11,7 +11,7 @@ class StatewideTestRepository
     @unlinked_testing = []
     @formatter = DataFormatter.new
 
-  def load_data(request_hash) #entry point for directly creating a repo
+  def load_data(request_hash)
     request_hash.fetch(:statewide_testing).each do | data_type, file |
       load_testing(data_type, file)
     end
@@ -24,7 +24,7 @@ class StatewideTestRepository
              header_converters: :symbol
   end
 
-  def load_testing(data_type, file) #entry point for district repo
+  def load_testing(data_type, file)
     data_csv = parse_file(file)
     data_csv.each do |row|
       d_name = row[:location].upcase
@@ -33,13 +33,13 @@ class StatewideTestRepository
       subject = row[:score].to_s
 
       return if formatter.exclude_data.include?(percent)
-        # formatted_data = {:name => d_name, data_type => {year => {subject => percent}}}
+
         formatted_data = {subject => percent}
 
         t_object = find_by_name(d_name)
         if t_object
           add_data(year, data_type, formatted_data, t_object)
-        else # district doesn't exist, create instance
+        else
           create_new_statewide_test(formatted_data, d_name, year, data_type)
         end
       end
@@ -47,13 +47,13 @@ class StatewideTestRepository
   end
 
   def add_data(year, data_type, formatted_data, t_object)
-    if t_object.data[data_type].nil? #no data for that grade
+    if t_object.data[data_type].nil?
       t_object.data[data_type] = {year => formatted_data}
     else
-      if t_object.data[data_type][year].nil? #no data for that subject
+      if t_object.data[data_type][year].nil?
         t_object.data[data_type].merge!({year => formatted_data})
       else
-        t_object.data[data_type][year].merge!(formatted_data) #subject exists, merge other subjects
+        t_object.data[data_type][year].merge!(formatted_data)
       end
     end
   end
@@ -72,12 +72,3 @@ class StatewideTestRepository
 
 
 end
-
-
-#er.load_data({
-#   :enrollment => {
-#     :kindergarten => "./data/Kindergartners in full-day program.csv"
-#   }
-# })
-# enrollment = er.find_by_name("ACADEMY 20")
-# => <Enrollment>

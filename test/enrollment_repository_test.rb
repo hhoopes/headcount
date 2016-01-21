@@ -16,9 +16,6 @@ class EnrollmentRepositoryTest < Minitest::Test
     assert parsed.instance_of?(CSV)
   end
 
-  def test_adding_more_data_for_same_district_doesnt_overwite_first
-  end
-
   def test_can_create_enrollment_repo_from_direct_hash_data
     skip(msg = "Will work once we extract a new method in load_enrollment that takes over from the if-loop on")
     er = EnrollmentRepository.new #won't be this method

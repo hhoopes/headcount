@@ -12,10 +12,10 @@ class StatewideTestRepository
     @formatter = DataFormatter.new
   end
 
-  def load_data(request_hash) #take hash, return unlinked testing
+  def load_data(request_hash)
     testing = request_hash.fetch(:statewide_testing)
       testing.each do | data_type, file |
-      formatted = formatter.format_data(data_type, file) #give hash to formatter, get back a hash of data
+      formatted = formatter.format_data(data_type, file)
       sort_data(formatted)
       unlinked_testing
     end
@@ -65,12 +65,3 @@ class StatewideTestRepository
     }
   end
 end
-
-
-#er.load_data({
-#   :enrollment => {
-#     :kindergarten => "./data/Kindergartners in full-day program.csv"
-#   }
-# })
-# enrollment = er.find_by_name("ACADEMY 20")
-# => <Enrollment>
