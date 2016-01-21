@@ -97,7 +97,7 @@ meta two:true
    dr.load_data({:enrollment => {:kindergarten => "./data/subsets/kindergarten_enrollment.csv", :high_school_graduation => "./data/subsets/high_school_enrollment.csv"}})
    ha = HeadcountAnalyst.new(dr)
 
-    assert ha.kindergarten_participation_correlates_with_high_school_graduation(
+    refute ha.kindergarten_participation_correlates_with_high_school_graduation(
     :across => ['ACADEMY 20', 'CANON CITY RE-1', 'CENTENNIAL R-1', 'CENTER 26 JT'])
   end
 
