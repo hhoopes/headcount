@@ -17,13 +17,14 @@ class DataFormatterTest <Minitest::Test
       refute e.initial_enrollments_array.empty?
   end
 
-  def test_data_formatter_identifies_bad_data
+  def test_data_formatter_excludes_bad_data
+    skip
     data = [[:high_school_graduation, "ACADEMY 20", 2005 => 'LNE']]
 
     e = EnrollmentRepository.new
     assert e.initial_enrollments_array.empty?
-    e.format_data(:high_school_graduation, data)
-    refute e.initial_enrollments_array.empty?
+    e.sort_data(data)
+    assert e.initial_enrollments_array.empty?
   end
 
   def test_format_data_organizes_data_into_mapped_extracted
