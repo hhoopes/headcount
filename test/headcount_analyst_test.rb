@@ -62,7 +62,7 @@ class HeadcountAnalystTest < Minitest::Test
 
     assert_equal 0.641, ha.kindergarten_participation_against_high_school_graduation('ACADEMY 20')
   end
-  meta woo: true #error is related to statewide_correlation which calls on district_repository
+  
   def test_shows_if_hs_graduation_has_correlation_for_statewide
     dr = DistrictRepository.new
     dr.load_data({:enrollment => {:kindergarten => "./data/Kindergartners in full-day program.csv", :high_school_graduation => "./data/High school graduation rates.csv"}})
