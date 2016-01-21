@@ -14,12 +14,11 @@ class StatewideTest
   end
 
   def proficient_by_grade(grade)
-    # binding.pry
     if data.has_key?(convert_grade_to_symbol[grade])
      data.fetch(convert_grade_to_symbol[grade])
-   else
+    else
       raise UnknownDataError
-   end
+    end
   end
 
   def convert_grade_to_symbol
