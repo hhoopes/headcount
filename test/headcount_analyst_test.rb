@@ -49,7 +49,7 @@ class HeadcountAnalystTest < Minitest::Test
       assert_in_delta pair.last, pair.first, 0.005
     end
   end
-
+meta two:true
   def test_kindergarten_participation_against_hs_graduation_for_a_district_gives_correct_number
     dr = DistrictRepository.new
     dr.load_data({:enrollment => {
@@ -100,6 +100,58 @@ class HeadcountAnalystTest < Minitest::Test
     assert ha.kindergarten_participation_correlates_with_high_school_graduation(
     :across => ['ACADEMY 20', 'CANON CITY RE-1', 'CENTENNIAL R-1', 'CENTER 26 JT'])
   end
+
+
+  def test_top_statewide_test_with_no_grade_raises_two_kinds_of_errors
+    skip
+    dr = DistrictRepository.new
+    dr.load_data({
+      :statewide_testing => {
+        :third_grade => "./data/subsets/third_grade_proficient.csv",
+        :eighth_grade => "./data/subsets/eighth_grade_proficient.csv"}})
+
+    ha = HeadcountAnalyst.new(dr)
+    assert_raises InsufficientInformationError do
+      ha.top_statewide_test_year_over_year_growth()
+    end
+    assert_raises UnknownDataError do
+      ha.top_statewide_test_year_over_year_growth(grade: 10)
+    end
+  end
+
+  def test_can_specify_a_top_amount_of_leaders_and_return_data
+    dr = DistrictRepository.new
+    dr.load_data({
+      :statewide_testing => {
+        :third_grade => "./data/subsets/third_grade_proficient.csv",
+        :eighth_grade => "./data/subsets/eighth_grade_proficient.csv"}})
+
+    ha = HeadcountAnalyst.new(dr)
+    ha.top_statewide_test_year_over_year_growth(grade: 3, subject: :math)
+  end
+
+  def test_can_specify_an_average_of_all_grades
+  end
+meta current:true
+  def test_given_grade_subject_returns_single_leader_and_average_percentage_growth
+    dr = DistrictRepository.new
+    dr.load_data({
+      :statewide_testing => {
+        :third_grade => "./data/subsets/third_grade_proficient.csv",
+        :eighth_grade => "./data/subsets/eighth_grade_proficient.csv"}})
+
+    ha = HeadcountAnalyst.new(dr)
+    winner = ha.top_statewide_test_year_over_year_growth(grade: 3, subject: :math)
+    assert_equal [], winner
+  end
+
+  def test_weighted_grades_add_up_to_1
+
+  end
+
+  def test_can_weight_grades_in_creating_top_district
+  end
+
 
 
 end

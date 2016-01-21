@@ -6,7 +6,7 @@ require_relative 'economic_profile_repository'
 require 'pry'
 
 class DistrictRepository
-  attr_reader :initial_districts_array, :enrollment_repo, :testing_repo
+  attr_reader :initial_districts_array, :enrollment_repo, :testing_repo, :economic_repo
 
   def initialize(district_names = [])
     @initial_districts_array = []
@@ -42,7 +42,6 @@ class DistrictRepository
         existing_d_object.link_data(data_object, data_category)
       else
         new_district = District.new({:name => d_name})
-        # new_district.data.fetch(data_category) = data_object
         new_district.link_data(data_object, data_category)
         initial_districts_array << new_district
       end
@@ -67,7 +66,7 @@ class DistrictRepository
   def find_all_matching(search_string)
     search_results_array = []
     initial_districts_array.each do |district|
-      if district.name.include?(search_string.upcase)
+      if district.name.upcase.include?(search_string.upcase)
           search_results_array << district.name
       end
     end

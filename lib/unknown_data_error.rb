@@ -1,4 +1,3 @@
 class UnknownDataError < ArgumentError
 
-
 end

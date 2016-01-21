@@ -15,7 +15,7 @@ class StatewideTestRepositoryTest < Minitest::Test
         :third_grade => "./data/subsets/third_grade_proficient.csv"}})
     t_object = str.find_by_name("Colorado")
     assert_equal StatewideTest, t_object.class
-    assert t_object.data.fetch(:third_grade)
+    assert t_object.data.fetch(3)
   end
 
   def test_statewide_test_repository_takes_input_of_multiple_categories_and_does_stuff_with_it
@@ -25,8 +25,8 @@ class StatewideTestRepositoryTest < Minitest::Test
         :third_grade => "./data/subsets/third_grade_proficient.csv",
         :eighth_grade => "./data/subsets/eighth_grade_proficient.csv"}})
     t_object = str.find_by_name("Academy 20")
-    assert t_object.data.fetch(:third_grade)
-    assert t_object.data.fetch(:eighth_grade)
+    assert t_object.data.fetch(3)
+    assert t_object.data.fetch(8)
   end
 
   def test_ethnicity_data_formats_and_fetches_correctly

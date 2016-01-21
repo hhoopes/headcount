@@ -17,8 +17,8 @@ class EconomicProfileRepository
       eco.each do | data_type, file |
       formatted = formatter.format_data(data_type, file)
       sort_data(formatted)
-      unlinked_eco
     end
+    unlinked_eco
   end
 
   def sort_data(formatted)
@@ -45,12 +45,12 @@ class EconomicProfileRepository
 
   def create_new_instance(hash, location, data_type)
     new_instance = EconomicProfile.new({:name => location, data_type => hash})
+    binding.pry
     initial_eco_array << new_instance
     unlinked_eco << [location, new_instance]
   end
 
   def find_by_name(d_name)
-    binding.pry
     initial_eco_array.detect do |eco_instance|
       eco_instance.name.upcase == d_name.upcase
     end

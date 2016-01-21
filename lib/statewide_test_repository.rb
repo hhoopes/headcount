@@ -19,6 +19,7 @@ class StatewideTestRepository
       sort_data(formatted)
       unlinked_testing
     end
+    unlinked_testing
   end
 
   def sort_data(formatted)

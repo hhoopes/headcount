@@ -19,7 +19,7 @@ class StatewideTestTest < Minitest::Test
              2014 => {:math => 0.834, :reading => 0.831, :writing => 0.639}
            }
 
-    statewide_test = StatewideTest.new(:name => "Colorado", :third_grade => expected)
+    statewide_test = StatewideTest.new(:name => "Colorado", 3 => expected)
 
     actual = statewide_test.proficient_by_grade(3)
     assert_equal expected, actual
@@ -34,7 +34,7 @@ class StatewideTestTest < Minitest::Test
              2013 => {:math => 0.855, :reading => 0.859, :writing => 0.668},
              2014 => {:math => 0.834, :reading => 0.831, :writing => 0.639}
            }
-    statewide_test = StatewideTest.new(:name => "Colorado", :third_grade => expected)
+    statewide_test = StatewideTest.new(:name => "Colorado", 3 => expected)
 
     assert_raises UnknownDataError do
        statewide_test.proficient_by_grade(4)
@@ -71,6 +71,7 @@ meta roll: true
      str = StatewideTestRepository.new
      str.load_data(data)
      state = str.find_by_name('Colorado')
+     binding.pry
 
      assert_equal 0.697, state.proficient_for_subject_by_grade_in_year(:math, 3, 2008)
   end
