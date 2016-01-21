@@ -100,9 +100,8 @@ meta red: true
 
     assert_raises UnknownDataError do  economic_profile.free_or_reduced_price_lunch_percentage_in_year(1914) end
   end
-
+meta num: true
   def test_free_or_reduced_lunch_gives_number
-    skip
     data = {:median_household_income => {[2005, 2009] => 50000, [2008, 2014] => 60000},
         :children_in_poverty => {2012 => 0.1845},
         :free_or_reduced_price_lunch => {2014 => {:percentage => 0.023, :total => 100}},
@@ -111,11 +110,12 @@ meta red: true
        }
     economic_profile = EconomicProfile.new(data)
 
-    assert_equal 100, economic_profile.free_or_reduced_price_lunch_number_in_year(2012)
+    assert_equal 100, economic_profile.free_or_reduced_price_lunch_number_in_year(2014)
   end
 
+  #test by passing in data set as well
+meta luv: true
   def test_free_or_reduced_lunch_number_gives_error_for_wrong_year
-    skip
     data = {:median_household_income => {[2005, 2009] => 50000, [2008, 2014] => 60000},
         :children_in_poverty => {2012 => 0.1845},
         :free_or_reduced_price_lunch => {2014 => {:percentage => 0.023, :total => 100}},
@@ -124,11 +124,11 @@ meta red: true
        }
     economic_profile = EconomicProfile.new(data)
 
-    assert_equal UnknownDataError, economic_profile.free_or_reduced_price_lunch_number_in_year(2212)
+    assert_raises UnknownDataError do  economic_profile.free_or_reduced_price_lunch_number_in_year(2212)
+    end
   end
-
+meta title: true 
   def test_title_i_gives_correct_percent
-    skip
     data = {:median_household_income => {[2005, 2009] => 50000, [2008, 2014] => 60000},
         :children_in_poverty => {2012 => 0.1845},
         :free_or_reduced_price_lunch => {2014 => {:percentage => 0.023, :total => 100}},

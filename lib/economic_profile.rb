@@ -46,7 +46,21 @@ class EconomicProfile
     end
   end
 
+  def free_or_reduced_price_lunch_number_in_year(year)
+    # binding.pry
+     if found = check_key(year, :free_or_reduced_price_lunch)
+       data.fetch(:free_or_reduced_price_lunch)[year][:total]
+     else
+       raise UnknownDataError
+     end
+  end
+
+  def title_i_in_year(year)
+    
+  end
+
   def check_key(year, parameter)
+    # binding.pry
     year_data = data.fetch(parameter).keys
     year_data.include?(year)
   end
@@ -62,6 +76,7 @@ class EconomicProfile
   def truncate_float(number)
     (number * 1000).truncate/1000.to_f
   end
+
 
 
 
