@@ -38,10 +38,11 @@ class StatewideTest
   def truncate_float(number)
     (number * 1000).truncate/1000.to_f
   end
-end
 
-# |-- Statewide Testing: Gives access to testing data within the district, including:
-# |  | -- 3rd grade standardized test results
-# |  | -- 8th grade standardized test results
-# |  | -- Subject-specific test results by race and ethnicity
-# |  | -- Higher education remediation rates
+  def proficient_for_subject_by_grade_in_year(subject, grade, year)
+    binding.pry
+    data.fetch(grade)
+
+
+  end
+end

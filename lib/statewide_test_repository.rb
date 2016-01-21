@@ -46,6 +46,7 @@ class StatewideTestRepository
 
   def create_new_instance(hash, location, data_type)
     new_instance = StatewideTest.new({:name => location, data_type => hash})
+    binding.pry
     initial_testing_array << new_instance
     unlinked_testing << [location, new_instance]
   end
