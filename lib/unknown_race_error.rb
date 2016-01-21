@@ -1,0 +1,3 @@
+class UnknownRaceError < ArgumentError
+
+end
