@@ -6,7 +6,6 @@ require 'pry'
 class StatewideTestRepository
   attr_reader :initial_testing_array, :unlinked_testing, :formatter
 
-#key is #statewide_testing, method is statewide_test
   def initialize
     @initial_testing_array = []
     @unlinked_testing = []

@@ -1,6 +1,7 @@
 require 'minitest'
 # require './test/test_helper'
 require './lib/statewide_test'
+require './lib/statewide_test_repository'
 require 'pry'
 
 class StatewideTestTest < Minitest::Test
@@ -40,7 +41,9 @@ class StatewideTestTest < Minitest::Test
        statewide_test.proficient_by_grade(4)
      end
   end
+end
 
+class StatewideTestRepositoryIntegrationTest < Minitest::Test
   def test_proficient_by_race_or_ethnicity_gives_percent_proficiency_for_given_race
    data = {:statewide_testing => {:math => "./data/subsets/math_by_race.csv", :reading => "./data/subsets/reading_by_race.csv", :writing => "./data/subsets/writing_by_race.csv"}}
    str = StatewideTestRepository.new
@@ -54,7 +57,6 @@ class StatewideTestTest < Minitest::Test
     assert_equal proficiency_hash, state.proficient_by_race_or_ethnicity(:asian)
   end
 
-
   def test_proficient_by_race_returns_error_if_unknown_race
      data = {:statewide_testing => {:math => "./data/subsets/math_by_race.csv", :reading => "./data/subsets/reading_by_race.csv", :writing => "./data/subsets/writing_by_race.csv"}}
      str = StatewideTestRepository.new
@@ -66,7 +68,7 @@ class StatewideTestTest < Minitest::Test
   end
 
   def test_proficient_for_subject_by_grade_in_year_gives_correct_percent
-    skip
+    # skip
      data = {:statewide_testing => {:third_grade=> "./data/subsets/third_grade_proficient.csv"}}
      str = StatewideTestRepository.new
      str.load_data(data)
