@@ -1,5 +1,4 @@
 require 'minitest'
-# require './test/test_helper'
 require './lib/statewide_test_repository'
 require 'pry'
 

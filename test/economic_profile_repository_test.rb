@@ -1,5 +1,4 @@
 require 'minitest'
-# require './test/test_helper'
 require './lib/economic_profile_repository'
 require './lib/district_repository'
 require 'pry'
@@ -11,7 +10,7 @@ class EconomicProfileRepositoryTest < Minitest::Test
   end
 
   def test_economic_information_given_when_run_load_data_for_specific_school
-    skip 
+    skip
     epr = EconomicProfileRepository.new
     epr.load_data({
       :economic_profile => {
