@@ -88,8 +88,9 @@ meta s6: true
      str.load_data(data)
      state = str.find_by_name('Colorado')
 
-     assert_raises UnknownDataError state.proficient_for_subject_by_grade_in_year(:history, 3, 2008)
+     assert_raises UnknownDataError do  state.proficient_for_subject_by_grade_in_year(:history, 3, 2008)
     end
+  end
 meta s7: true
   def test_proficient_for_subject_by_race_returns_correct_percent
     data = {:statewide_testing => {:math => "./data/subsets/math_by_race.csv", :reading => "./data/subsets/reading_by_race.csv", :writing => "./data/subsets/writing_by_race.csv"}}
@@ -101,9 +102,12 @@ meta s7: true
   end
 meta s8: true
   def test_proficient_for_subject_by_race_returns_error_if_wrong_parameter
-    statewide_test = StatewideTest.new(:name => "Colorado", :third_grade => expected)
+    data = {:statewide_testing => {:math => "./data/subsets/math_by_race.csv", :reading => "./data/subsets/reading_by_race.csv", :writing => "./data/subsets/writing_by_race.csv"}}
+    str = StatewideTestRepository.new
+    str.load_data(data)
+    state = str.find_by_name('Colorado')
 
-    assert_raises UnknownDataError do  statewide_test.proficient_for_subject_by_race_in_year(:history, :asian, 2012)
+    assert_raises UnknownDataError do  state.proficient_for_subject_by_race_in_year(:history, :asian, 2012)
     end
   end
 meta s9: true

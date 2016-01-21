@@ -30,7 +30,7 @@ class StatewideTest
     if data.include?(race)
       data.fetch(race)
     else
-       raise UnknownRaceError
+      raise UnknownRaceError
     end
   end
 
@@ -39,8 +39,14 @@ class StatewideTest
   end
 
   def proficient_for_subject_by_race_in_year(subject, race, year)
-    annual_race_data = data.fetch(race)[year][subject]
-    truncate_float(annual_race_data)
+    year_and_subj = data[(race)]
+    years = year_and_subj.map {|key, value| key}
+    if data.include?(race) && years.include?(year) && years.find {|yr| yr == year}
+      annual_race_data = data.fetch(race)[year][subject]
+      truncate_float(annual_race_data)
+    else
+      raise UnknownDataError
+    end
   end
 
   def truncate_float(number)
