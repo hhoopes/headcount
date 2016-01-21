@@ -10,7 +10,7 @@ class StatewideTestRepository
   def initialize
     @initial_testing_array = []
     @unlinked_testing = []
-    @formatter = DataFormatter.new(:statewide_testing)
+    @formatter = DataFormatter.new
 
   def load_data(request_hash) #entry point for directly creating a repo
     request_hash.fetch(:statewide_testing).each do | data_type, file |
@@ -27,14 +27,13 @@ class StatewideTestRepository
 
   def load_testing(data_type, file) #entry point for district repo
     data_csv = parse_file(file)
-    binding.pry
     data_csv.each do |row|
       d_name = row[:location].upcase
       percent = row[:data]
       year = row[:timeframe].to_i
       subject = row[:score].to_s
 
-      return if formatter.bad_data.include?(percent)
+      return if formatter.exclude_data.include?(percent)
         # formatted_data = {:name => d_name, data_type => {year => {subject => percent}}}
         formatted_data = {subject => percent}
 

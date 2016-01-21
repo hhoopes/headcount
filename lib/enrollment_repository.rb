@@ -9,7 +9,7 @@ class EnrollmentRepository
   def initialize
     @initial_enrollments_array = []
     @unlinked_enrollments = []
-    @formatter = DataFomatter.new(:enrollment)
+    @formatter = DataFormatter.new
   end
 
   def load_data(request_hash) #entry point for directly creating a repo
