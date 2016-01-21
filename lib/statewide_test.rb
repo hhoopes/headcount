@@ -39,9 +39,12 @@ class StatewideTest
   end
 
   def proficient_for_subject_by_race_in_year(subject, race, year)
+    # binding.pry
     year_and_subj = data[(race)]
     years = year_and_subj.map {|key, value| key}
-    if data.include?(race) && years.include?(year) && years.find {|yr| yr == year}
+    subj = year_and_subj.map {|key, value| value}
+    if data.include?(race) && subj[0].keys.include?(subject) && years.include?(year)
+
       annual_race_data = data.fetch(race)[year][subject]
       truncate_float(annual_race_data)
     else
