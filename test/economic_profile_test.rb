@@ -1,20 +1,20 @@
 require 'minitest'
 # require './test/test_helper'
 require './lib/economic_profile'
+require './lib/economic_profile_repository'
 require 'pry'
 
 class EconomicProfileTest < Minitest::Test
 
   def test_economic_profile_creates_instance_of_economic_profile
-    skip
-    epr = EconomicProfileRepository.new
-    epr.instance_of?(EconomicProfileRepository)
-  end
-
-  def test_economic_profile_will_find_district_name
-    skip
-    epr = EconomicProfileRepository.new
-    epr.find_by_name()
+      data = {:median_household_income => {[2005, 2009] => 50000, [2008, 2014] => 60000},
+          :children_in_poverty => {2012 => 0.1845},
+          :free_or_reduced_price_lunch => {2014 => {:percentage => 0.023, :total => 100}},
+          :title_i => {2015 => 0.543},
+          :name => "ACADEMY 20"
+         }
+          ep = EconomicProfile.new(data)
+    ep.instance_of?(EconomicProfile)
   end
 
   def test_instance_of_eco_profile_contains_data_for_single_data
@@ -28,7 +28,7 @@ class EconomicProfileTest < Minitest::Test
         economic_profile = EconomicProfile.new(data)
         assert economic_profile.instance_of?(EconomicProfile)
   end
-  
+
   def test_median_household_income_given_in_method
       data = {:median_household_income => {[2005, 2009] => 50000, [2008, 2014] => 60000},
           :children_in_poverty => {2012 => 0.1845},
