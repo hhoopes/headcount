@@ -6,7 +6,6 @@ class District
     @data = data
     @name = data[:name].upcase
     @statewide_test
-
   end
 
   def link_data(data_object, data_key)
