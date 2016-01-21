@@ -124,6 +124,16 @@ class DistrictRepositoryTest < Minitest::Test
     assert_equal ["CENTENNIAL R-1", "CENTER 26 JT"], dr.find_all_matching("cen")
   end
 
+  def test_another_example_find_all_districts_that_match_name_fragment
+      dr = DistrictRepository.new
+      output = dr.load_data({
+      :enrollment => {
+        :kindergarten => "./data/subsets/kindergarten_enrollment.csv"
+        }
+      })
+    assert_equal 2, dr.find_all_matching("Ac").count
+  end
+
   def test_find_all_matching_returns_empty_array_if_no_matches
     dr = DistrictRepository.new
     output = dr.load_data({

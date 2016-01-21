@@ -18,7 +18,7 @@ class EnrollmentRepositoryTest < Minitest::Test
 
   def test_can_create_enrollment_repo_from_direct_hash_data
     skip(msg = "Will work once we extract a new method in load_enrollment that takes over from the if-loop on")
-    er = EnrollmentRepository.new 
+    er = EnrollmentRepository.new
     data1 = er.load_enrollment({
         :name => "Colorado",
         :enrollment => {:kindergarten =>
@@ -46,7 +46,6 @@ class EnrollmentRepositoryTest < Minitest::Test
     find_by_name_output = er.find_by_name("Marshmallows")
     assert_nil find_by_name_output
   end
-
 
   def test_find_by_name_returns_an_instance_of_enrollment
     er = EnrollmentRepository.new
@@ -88,7 +87,6 @@ class EnrollmentRepositoryTest < Minitest::Test
     assert_equal "BRUSH RE-2(J)", er.find_by_name(query).name
   end
 
-  meta t:true
   def test_load_data_will_take_second_data_file
     er = EnrollmentRepository.new
     er.load_data({
