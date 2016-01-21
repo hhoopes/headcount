@@ -77,7 +77,7 @@ class HeadcountAnalyst
           end
         else #one school
             variation = kindergarten_participation_against_high_school_graduation(d_name)
-            if 0.6 < variation < 1.5
+            if 0.6 < variation && variation < 1.5
                correlation = true
             end
       end
