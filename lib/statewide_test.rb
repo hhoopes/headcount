@@ -6,6 +6,7 @@ class StatewideTest
   attr_reader :name, :data
 
   def initialize(data = {})
+    # binding.pry
     @data = data
     @name = data[:name].upcase
   end
@@ -27,14 +28,29 @@ class StatewideTest
   end
 
   def proficient_by_race_or_ethnicity(race)
-    binding.pry
-    if data.has_key?([race])
-     data.fetch([race])
+    if data.fetch(race)
+      find_math_proficiency(race)
+      # find_reading_proficiency(race)
+      # find_writing_proficiency(race)
     else
        raise UnknownRaceError
     end
   end
 
+  def find_math_proficiency(race)
+    binding.pry
+    all_years_data = data.fetch(race).values
+    simple_data = all_years_data.map {|year_data| year_data.values}
+    clean_data = simple_data.inject(:+)
+    math_proficiency = clean_data.inject(0) do |sum, num|
+      sum + num
+    end/clean_data.size
+    truncate_float(math_proficiency)
+  end
+
+  def truncate_float(number)
+    (number * 1000).truncate/1000.to_f
+  end
 end
 
 # |-- Statewide Testing: Gives access to testing data within the district, including:

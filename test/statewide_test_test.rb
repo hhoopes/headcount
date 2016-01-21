@@ -7,8 +7,8 @@ class StatewideTestTest < Minitest::Test
 
 meta s: true
   def test_statewide_test_instantiates
-    str = StatewideTest.new({:name => "test"})
-    assert str.instance_of?(StatewideTest)
+    st = StatewideTest.new({:name => "test"})
+    assert st.instance_of?(StatewideTest)
   end
 meta s1: true
   def test_proficient_by_grade_returns_data_from_grade
@@ -48,20 +48,13 @@ meta s2: true
     #write test to pass in file
 meta twang:true
   def test_proficient_by_race_or_ethnicity_gives_percent_proficiency_for_given_race
-    skip
-     expected =  { 2011 => {math: 0.816, reading: 0.897, writing: 0.826},
-       2012 => {math: 0.818, reading: 0.893, writing: 0.808},
-       2013 => {math: 0.805, reading: 0.901, writing: 0.810},
-       2014 => {math: 0.800, reading: 0.855, writing: 0.789},
-       }
+    # skip
+     data = {:statewide_testing => {:math => "./data/subsets/math_by_race.csv", :reading => "./data/subsets/reading_by_race.csv", :writing => "./data/subsets/writing_by_race.csv"}}
+     str = StatewideTestRepository.new
+     str.load_data(data)
+     state = str.find_by_name('Colorado')
 
-      statewide_test = StatewideTest.new(expected)
-
-      actual = statewide_test.proficient_by_race_or_ethnicity(:asian)
-
-    #  actual.values.zip(expected.values).each do |pair|
-    #  assert_in_delta pair.last, pair.first, 0.005
-    assert_equal expected, actual
+    assert_equal 0.67, state.proficient_by_race_or_ethnicity(:asian)
   end
   #write test to pass in file
 meta s4: true
