@@ -4,7 +4,6 @@ class District
 
   def initialize(data = {})
     @name = data[:name].upcase
-
   end
 
   def link_data(data_object, data_key)

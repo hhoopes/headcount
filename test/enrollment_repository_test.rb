@@ -18,7 +18,7 @@ class EnrollmentRepositoryTest < Minitest::Test
 
   def test_can_create_enrollment_repo_from_direct_hash_data
     skip(msg = "Will work once we extract a new method in load_enrollment that takes over from the if-loop on")
-    er = EnrollmentRepository.new #won't be this method
+    er = EnrollmentRepository.new 
     data1 = er.load_enrollment({
         :name => "Colorado",
         :enrollment => {:kindergarten =>
