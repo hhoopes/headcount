@@ -40,4 +40,8 @@ class StatewideTestRepositoryTest < Minitest::Test
     assert t_object.data.fetch(:asian)
     assert_equal 3, str.initial_testing_array.length
   end
+<<<<<<< HEAD
+=======
+
+>>>>>>> headcount_analyst_cleanup
 end
