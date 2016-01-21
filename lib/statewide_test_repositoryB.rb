@@ -10,41 +10,46 @@ class StatewideTestRepositoryB
   def initialize
     @initial_testing_array = []
     @unlinked_testing = []
-    @formatter = DataFormatter.new(:statewide_testing)
+    @formatter = DataFormatter.new
   end
 
   def load_data(request_hash) #take hash, return unlinked testing
-    formatted = formatter.format_data(request_hash) #give hash to formatter, get back a hash of data
-    sort_data(formatted)
-    unlinked_testing
-  end
-
-  def sort_data(formatted)
-    data_type       = formatted.first
-    formatted_hash  = formatted.last
-    formatted_hash.each do |hash|
-        t_object = find_by_name(hash.fetch(:name))
-        if t_object
-          add_data(hash, t_object, data_type)
-        else
-          create_new_instance(hash)
-        end
+    request_hash.fetch(:statewide_testing).each do | data_type, file |
+      formatted = formatter.format_data(data_type, file) #give hash to formatter, get back a hash of data
+      sort_data(formatted)
+      unlinked_testing
     end
   end
 
-  def add_data(hash, t_object, data_type)
+  def sort_data(formatted)
+    formatted.each do |hash|
+      data_type       = hash.first
+      location        = hash[1]
+      formatted_hash  = hash.last
+      t_object = find_by_name(location)
+      if t_object
+        add_data(formatted_hash, t_object, data_type)
+      else
+        create_new_instance(formatted_hash, location, data_type)
+      end
+    end
     binding.pry
+  end
+
+  def add_data(hash, t_object, data_type)
+
     if t_object.data[data_type].nil?
       t_object.data[data_type] = hash
     else
+      if t_object.data[data_type].fetch(:year).nil?
       t_object.data[data_type].merge!(hash)
     end
   end
 
-  def create_new_instance(element)
-    new_instance = StatewideTest.new(element)
+  def create_new_instance(hash, location, data_type)
+    new_instance = StatewideTest.new({:name => location, data_type => hash})
     initial_testing_array << new_instance
-    unlinked_testing << [element.fetch(:name), new_instance]
+    unlinked_testing << [location, new_instance]
   end
 
   def find_by_name(d_name)

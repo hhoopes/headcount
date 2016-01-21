@@ -25,18 +25,12 @@ class DistrictRepository
     case data_category #decide which repo is responsible for new data. "Each" allows any and all required repos to get processed
       when :enrollment
         d_bundle = enrollment_repo.load_data(request_hash)
-        catalog_repos(d_bundle, data_category)
-        # create_relationships(data_category)
       when :statewide_testing
         d_bundle = testing_repo.load_data(request_hash)
-        catalog_repos(d_bundle, data_category)
-        # create_relationships(data_category)
       when :economic_profile
         d_bundle = economic_repo.load_data(request_hash)
-        catalog_repos(d_bundle, data_category)
-        # create_relationships(data_category)
       end
-
+    catalog_repos(d_bundle, data_category)
   end
 
   # def create_relationships(data_category)

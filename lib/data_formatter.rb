@@ -1,9 +1,9 @@
 class DataFormatter
   attr_reader :exclude_data, :data_category, :key_list
 
-  def initialize(data_category)
+  def initialize
     @exclude_data = ["LNE", "#VALUE!", nil, "N/A", "NA", "Eligible for Reduced Lunch", "Eligible for Free Lunch"]
-    @data_category = data_category
+    # @data_category = data_category
     @key_list = {
       :kindergarten                 => [:location, :data, :timeframe],
       :high_school_graduation       => [:location, :data, :timeframe],
@@ -19,13 +19,9 @@ class DataFormatter
       }
   end
 
-  def format_data(request_hash)
-    mapped = []
-    request_hash.fetch(data_category).each do | data_type, file |
-      extracted = extract_csv(data_type, file)
-      mapped = map_data(extracted, data_type)
-    end
-    mapped
+  def format_data(data_type, file)
+    extracted = extract_csv(data_type, file)
+    mapped = map_data(extracted, data_type)
   end
 
   def parse_file(file)
@@ -51,18 +47,20 @@ class DataFormatter
     array_of_hashes.map do | hash |
       case data_type
       when :kindergarten, :kindergarten_participation, :high_school_graduation, :children_in_poverty, :title_i
-        {data_type => {hash[:timeframe] => hash[:data]}}
+        [data_type, hash[:location].upcase, {hash[:timeframe].to_i => hash[:data].to_f}]
       when :third_grade, :eighth_grade
-        {data_type => {hash[:timeframe] => {hash[:score] => hash[:data]}}}
+        [data_type, hash[:location].upcase, {hash[:timeframe].to_i => {hash[:score] => hash[:data].to_f}}]
       when :math, :reading, :writing
-        {hash[:raceethnicity] => {hash[:timeframe] => {data_type => hash[:data]}}}
+        # data_type = :raceethnicity
+        # raceethnicity = hash.fetch(:data_type)
+        [hash[:raceethnicity], hash[:location].upcase, {hash[:timeframe].to_i => {math: hash[:data].to_f}}]
       when :median_household_income
-        {data_type => {hash[:timeframe].split => hash[:data]}}
+        [data_type, hash[:location].upcase, {hash[:timeframe].split => hash[:data]}]
       when :free_or_reduced_price_lunch
-        {data_type => {hash[:timeframe] => {format_lunch(hash[:dataformat]) => hash[:data]}}}
+        [data_type, hash[:location].upcase, {hash[:timeframe].to_i => {format_lunch(hash[:dataformat]) => hash[:data].to_f}}]
       end
     end
-    [data_type, hash[:location], formatted]
+    formatted
   end
 
   def format_lunch(dataformat)
