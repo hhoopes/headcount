@@ -17,8 +17,8 @@ class EconomicProfileRepository
       eco.each do | data_type, file |
       formatted = formatter.format_data(data_type, file)
       sort_data(formatted)
-      unlinked_eco
     end
+    unlinked_eco
   end
 
   def sort_data(formatted)

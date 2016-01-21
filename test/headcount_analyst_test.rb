@@ -11,11 +11,12 @@ class HeadcountAnalystTest < Minitest::Test
     ha = HeadcountAnalyst.new(dr)
     assert ha.instance_of? HeadcountAnalyst
   end
-
+meta tag:true
   def test_kindergarten_participation_rate_variation_takes_input_of_district_and_state_and_gives_variance
     dr = DistrictRepository.new
     dr.load_data({:enrollment => {:kindergarten => "./data/subsets/kindergarten_enrollment.csv"}})
     ha = HeadcountAnalyst.new(dr)
+    binding.pry
     variation = ha.kindergarten_participation_rate_variation('ACADEMY 20', :against => 'COLORADO')
 
     assert_equal 0.766, variation
@@ -49,13 +50,14 @@ class HeadcountAnalystTest < Minitest::Test
       assert_in_delta pair.last, pair.first, 0.005
     end
   end
-
+meta two:true
   def test_kindergarten_participation_against_hs_graduation_for_a_district_gives_correct_number
     dr = DistrictRepository.new
     dr.load_data({:enrollment => {
         :kindergarten => "./data/subsets/kindergarten_enrollment.csv",
         :high_school_graduation => "./data/subsets/high_school_enrollment.csv"}})
     ha = HeadcountAnalyst.new(dr)
+    binding.pry
 
     assert_equal 0.641, ha.kindergarten_participation_against_high_school_graduation('ACADEMY 20')
   end
@@ -119,7 +121,7 @@ class HeadcountAnalystTest < Minitest::Test
     end
   end
 
-meta current:true
+
 
   def test_can_specify_a_top_amount_of_leaders_and_return_data
     dr = DistrictRepository.new
@@ -134,7 +136,7 @@ meta current:true
 
   def test_can_specify_an_average_of_all_grades
   end
-
+meta current:true
   def test_given_grade_subject_returns_single_leader_and_average_percentage_growth
     dr = DistrictRepository.new
     dr.load_data({
@@ -143,6 +145,7 @@ meta current:true
         :eighth_grade => "./data/subsets/eighth_grade_proficient.csv"}})
 
     ha = HeadcountAnalyst.new(dr)
+    binding.pry
     winner = ha.top_statewide_test_year_over_year_growth(grade: 3, subject: :math)
     assert_equal [], winner
   end
