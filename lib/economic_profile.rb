@@ -82,9 +82,6 @@ class EconomicProfile
   end
 
 
-
-
-
 end
 
 

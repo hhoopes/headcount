@@ -5,16 +5,12 @@ require 'pry'
 
 class StatewideTestTest < Minitest::Test
 
+meta s: true
   def test_statewide_test_instantiates
     str = StatewideTest.new({:name => "test"})
     assert str.instance_of?(StatewideTest)
   end
-
-  def test_instance_of_statewide_test_contains_all_data_from_single_method
-    skip
-
-  end
-
+meta s1: true
   def test_proficient_by_grade_returns_data_from_grade
 
     expected = { 2008 => {:math => 0.857, :reading => 0.866, :writing => 0.671},
@@ -33,7 +29,7 @@ class StatewideTestTest < Minitest::Test
     # actual.values.zip(expected.values).each do |pair|
     # assert_in_delta pair.last, pair.first, 0.005
     end
-
+meta s2: true
   def test_proficient_by_grade_returns_error_if_wrong_year
     # skip
     expected = { 2008 => {:math => 0.857, :reading => 0.866, :writing => 0.671},
@@ -65,7 +61,7 @@ meta twang:true
     #  assert_in_delta pair.last, pair.first, 0.005
     assert_equal expected, actual
   end
-
+meta s4: true
   def test_proficient_by_race_returns_error_if_unknown_race
     skip
     statewide_test = StatewideTest.new
@@ -73,40 +69,40 @@ meta twang:true
 
     assert_equal "UnknownRaceError", actual
   end
-
+meta s5: true
   def test_proficient_for_subject_by_grade_in_year_gives_correct_percent
      skip
      statewide_test = StatewideTest.new(:name => "Colorado", :third_grade => expected)
      assert_equal 0.857, statewide_test.proficient_for_subject_by_grade_in_year(:math, 3, 2008)
   end
-
+meta s6: true
   def test_proficient_for_subject_by_grade_in_year_gives_correct_percent
     skip
     statewide_test = StatewideTest.new(:name => "Colorado", :third_grade => expected)
     assert_equal UnknownDataError, statewide_test.proficient_for_subject_by_grade_in_year(:science, 3, 2008)
   end
-
+meta s7: true
   def test_proficient_for_subject_by_race_returns_correct_percent
     skip
     statewide_test = StatewideTest.new(:name => "Colorado", :third_grade => expected)
 
     assert_equal 0.818, statewide_test.proficient_for_subject_by_race_in_year(:math, :asian, 2012)
   end
-
+meta s8: true
   def test_proficient_for_subject_by_race_returns_error_if_wrong_parameter
     skip
     statewide_test = StatewideTest.new(:name => "Colorado", :third_grade => expected)
 
     assert_equal UnknownDataError, statewide_test.proficient_for_subject_by_race_in_year(:history, :asian, 2012)
   end
-
+meta s9: true
   def test_proficient_for_subject_by_race_returns_error_if_multiple_wrong_parameters
     skip
     statewide_test = StatewideTest.new(:name => "Colorado", :third_grade => expected)
 
     assert_equal UnknownDataError, statewide_test.proficient_for_subject_by_race_in_year(:history, :cyborg, 2012)
   end
-
+meta s10: true
   def test_proficient_for_subject_by_race_returns_error_if_all_wrong_parameters
     skip
     statewide_test = StatewideTest.new(:name => "Colorado", :third_grade => expected)
