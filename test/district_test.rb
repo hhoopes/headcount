@@ -1,5 +1,6 @@
 require 'minitest'
 # require 'test/test_helper'
+require_relative '../lib/enrollment'
 require_relative '../lib/district'
 require 'pry'
 
@@ -25,11 +26,5 @@ class DistrictTest < Minitest::Test
     assert_equal hash, d.enrollment.kindergarten_participation_by_year
   end
 
-  def test_economic_profile_instance_created
-    skip
-    d = District.new({:name =>"ACADEMY 20"})
-    
-    assert d.instance_of?(EconomicProfile)
-  end
 
 end

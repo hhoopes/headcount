@@ -77,12 +77,4 @@ class EconomicProfile
     (number * 1000).truncate/1000.to_f
   end
 
-
 end
-
-
-# |-- Economic Profile: Gives access to economic information within the district, including:
-# |  | -- Median household income
-# |  | -- Rates of school-aged children living below the poverty line
-# |  | -- Rates of students qualifying for free or reduced price programs
-# |  | -- Rates of students qualifying for Title I assistance

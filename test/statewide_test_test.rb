@@ -66,19 +66,17 @@ class StatewideTestRepositoryIntegrationTest < Minitest::Test
     assert_raises UnknownRaceError do  state.proficient_by_race_or_ethnicity(:skaterboi)
     end
   end
-
+meta roll: true
   def test_proficient_for_subject_by_grade_in_year_gives_correct_percent
-    # skip
      data = {:statewide_testing => {:third_grade=> "./data/subsets/third_grade_proficient.csv"}}
      str = StatewideTestRepository.new
      str.load_data(data)
      state = str.find_by_name('Colorado')
 
-     assert_equal 0.857, state.proficient_for_subject_by_grade_in_year(:math, 3, 2008)
+     assert_equal 0.697, state.proficient_for_subject_by_grade_in_year(:math, 3, 2008)
   end
 
-  def test_proficient_for_subject_by_grade_in_year_gives_correct_percent
-    skip
+  def test_proficient_for_subject_by_grade_in_year_gives_error_if_wrong_parameters
      data = {:statewide_testing => {:third_grade=> "./data/subsets/third_grade_proficient.csv"}}
      str = StatewideTestRepository.new
      str.load_data(data)
@@ -89,7 +87,6 @@ class StatewideTestRepositoryIntegrationTest < Minitest::Test
   end
 
   def test_proficient_for_subject_by_race_returns_correct_percent
-    skip
     data = {:statewide_testing => {:math => "./data/subsets/math_by_race.csv", :reading => "./data/subsets/reading_by_race.csv", :writing => "./data/subsets/writing_by_race.csv"}}
     str = StatewideTestRepository.new
     str.load_data(data)
@@ -99,7 +96,6 @@ class StatewideTestRepositoryIntegrationTest < Minitest::Test
   end
 
   def test_proficient_for_subject_by_race_returns_error_if_wrong_parameter
-    skip
     data = {:statewide_testing => {:math => "./data/subsets/math_by_race.csv", :reading => "./data/subsets/reading_by_race.csv", :writing => "./data/subsets/writing_by_race.csv"}}
     str = StatewideTestRepository.new
     str.load_data(data)
