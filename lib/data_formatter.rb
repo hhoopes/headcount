@@ -53,7 +53,7 @@ class DataFormatter
       when :math, :reading, :writing
         # data_type = :raceethnicity
         # raceethnicity = hash.fetch(:data_type)
-        [hash[:raceethnicity], hash[:location].upcase, {hash[:timeframe].to_i => {math: hash[:data].to_f}}]
+        [format_ethnicity(hash[:race_ethnicity]), hash[:location].upcase, {hash[:timeframe].to_i => {math: hash[:data].to_f}}]
       when :median_household_income
         [data_type, hash[:location].upcase, {hash[:timeframe].split => hash[:data]}]
       when :free_or_reduced_price_lunch
@@ -72,4 +72,7 @@ class DataFormatter
     end
   end
 
+  def format_ethnicity(ethnicity)
+    ethnicity.gsub(" ", "").downcase.to_sym
+  end
 end

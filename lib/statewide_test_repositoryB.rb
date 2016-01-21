@@ -14,7 +14,8 @@ class StatewideTestRepositoryB
   end
 
   def load_data(request_hash) #take hash, return unlinked testing
-    request_hash.fetch(:statewide_testing).each do | data_type, file |
+    testing = request_hash.fetch(:statewide_testing)
+      testing.each do | data_type, file |
       formatted = formatter.format_data(data_type, file) #give hash to formatter, get back a hash of data
       sort_data(formatted)
       unlinked_testing
@@ -33,16 +34,15 @@ class StatewideTestRepositoryB
         create_new_instance(formatted_hash, location, data_type)
       end
     end
-    binding.pry
   end
 
   def add_data(hash, t_object, data_type)
-
     if t_object.data[data_type].nil?
       t_object.data[data_type] = hash
     else
-      if t_object.data[data_type].fetch(:year).nil?
-      t_object.data[data_type].merge!(hash)
+      deep_merge!(t_object.data.fetch(data_type), hash)
+      # if t_object.data[data_type].fetch(:year).nil?
+      # t_object.data[data_type].merge!(hash)
     end
   end
 
@@ -56,6 +56,16 @@ class StatewideTestRepositoryB
     initial_testing_array.detect do |testing_instance|
       testing_instance.name.upcase == d_name.upcase
     end
+  end
+
+  def deep_merge!(tgt_hash, src_hash)
+    tgt_hash.merge!(src_hash) { |key, oldval, newval|
+      if oldval.kind_of?(Hash) && newval.kind_of?(Hash)
+        deep_merge!(oldval, newval)
+      else
+        newval
+      end
+    }
   end
 end
 
