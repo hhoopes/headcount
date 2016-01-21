@@ -6,7 +6,6 @@ class StatewideTest
   attr_reader :name, :data
 
   def initialize(data = {})
-    # binding.pry
     @data = data
     @name = data[:name].upcase
   end
@@ -35,14 +34,18 @@ class StatewideTest
     end
   end
 
+  def proficient_for_subject_by_grade_in_year(subject, grade, year)
+    data.fetch(grade)
+  end
+
+  def proficient_for_subject_by_race_in_year(subject, race, year)
+    annual_race_data = data.fetch(race)[year][subject]
+    truncate_float(annual_race_data)
+  end
+
   def truncate_float(number)
     (number * 1000).truncate/1000.to_f
   end
 
-  def proficient_for_subject_by_grade_in_year(subject, grade, year)
-    binding.pry
-    data.fetch(grade)
 
-
-  end
 end
