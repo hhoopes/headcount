@@ -74,7 +74,7 @@ class HeadcountAnalyst
            correlation = true
          end
        end
-    else #key is :across
+    else
       d_array = d_hash.fetch(:across)
       results = group_correlation(d_array)
       correlation = true if results > 0.7

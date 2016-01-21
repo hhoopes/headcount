@@ -1,6 +1,7 @@
 require 'minitest'
 # require 'test/test_helper'
 require './lib/headcount_analyst'
+require './lib/district_repository'
 require 'pry'
 
 class HeadcountAnalystTest < Minitest::Test
@@ -13,7 +14,6 @@ class HeadcountAnalystTest < Minitest::Test
   end
 
   def test_kindergarten_participation_rate_variation_takes_input_of_district_and_state_and_gives_variance
-    skip
     dr = DistrictRepository.new
     dr.load_data({:enrollment => {:kindergarten => "./data/subsets/kindergarten_enrollment.csv"}})
     ha = HeadcountAnalyst.new(dr)
@@ -31,7 +31,6 @@ class HeadcountAnalystTest < Minitest::Test
   end
 
   def test_kindergarten_participation_rate_variation_takes_input_of_2_districts_and_gives_variance_with_different_school
-    skip
     dr = DistrictRepository.new
     dr.load_data({:enrollment => {:kindergarten => "./data/subsets/kindergarten_enrollment.csv"}})
     ha = HeadcountAnalyst.new(dr)
@@ -53,7 +52,6 @@ class HeadcountAnalystTest < Minitest::Test
   end
 
   def test_kindergarten_participation_against_hs_graduation_for_a_district_gives_correct_number
-    skip
     dr = DistrictRepository.new
     dr.load_data({:enrollment => {
         :kindergarten => "./data/subsets/kindergarten_enrollment.csv",
@@ -64,7 +62,6 @@ class HeadcountAnalystTest < Minitest::Test
   end
 
   def test_shows_if_hs_graduation_has_correlation_for_statewide
-    skip
     dr = DistrictRepository.new
     dr.load_data({:enrollment => {:kindergarten => "./data/Kindergartners in full-day program.csv", :high_school_graduation => "./data/High school graduation rates.csv"}})
     ha = HeadcountAnalyst.new(dr)
@@ -81,7 +78,6 @@ class HeadcountAnalystTest < Minitest::Test
   end
 
   def test_shows_false_if_there_is_no_correlation_with_district_and_state
-    skip
     dr = DistrictRepository.new
     dr.load_data({:enrollment => {:kindergarten => "./data/subsets/kindergarten_enrollment.csv", :high_school_graduation => "./data/subsets/high_school_enrollment.csv"}})
     ha = HeadcountAnalyst.new(dr)
@@ -90,7 +86,6 @@ class HeadcountAnalystTest < Minitest::Test
   end
 
   def test_shows_false_if_there_is_no_correlation_with_district_and_another_district
-    skip
     dr = DistrictRepository.new
     dr.load_data({:enrollment => {:kindergarten => "./data/subsets/kindergarten_enrollment.csv", :high_school_graduation => "./data/subsets/high_school_enrollment.csv"}})
     ha = HeadcountAnalyst.new(dr)
