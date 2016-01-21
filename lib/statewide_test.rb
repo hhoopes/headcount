@@ -1,5 +1,6 @@
 require 'pry'
 require 'unknown_data_error'
+require 'unknown_race_error'
 
 class StatewideTest
   attr_reader :name, :data
@@ -26,6 +27,7 @@ class StatewideTest
   end
 
   def proficient_by_race_or_ethnicity(race)
+    binding.pry
     if data.has_key?([race])
      data.fetch([race])
     else

@@ -47,23 +47,32 @@ meta s2: true
   end
 meta twang:true
   def test_proficient_by_race_or_ethnicity_gives_percent_proficiency_for_given_race
+    skip
      expected =  { 2011 => {math: 0.816, reading: 0.897, writing: 0.826},
        2012 => {math: 0.818, reading: 0.893, writing: 0.808},
        2013 => {math: 0.805, reading: 0.901, writing: 0.810},
        2014 => {math: 0.800, reading: 0.855, writing: 0.789},
        }
 
-      statewide_test = StatewideTest.new(:name => "Colorado", :third_grade => expected)
+      statewide_test = StatewideTest.new(expected)
+
       actual = statewide_test.proficient_by_race_or_ethnicity(:asian)
 
     #  actual.values.zip(expected.values).each do |pair|
     #  assert_in_delta pair.last, pair.first, 0.005
     assert_equal expected, actual
   end
+  #write test to pass in file
 meta s4: true
   def test_proficient_by_race_returns_error_if_unknown_race
     skip
-    statewide_test = StatewideTest.new
+   expected =  { 2011 => {math: 0.816, reading: 0.897, writing: 0.826},
+     2012 => {math: 0.818, reading: 0.893, writing: 0.808},
+     2013 => {math: 0.805, reading: 0.901, writing: 0.810},
+     2014 => {math: 0.800, reading: 0.855, writing: 0.789},
+     }
+
+    statewide_test = StatewideTest.new(expected)
     actual = statewide_test.proficient_by_race_or_ethnicity(:skaterboys)
 
     assert_raises UnknownRaceError do
@@ -72,14 +81,28 @@ meta s4: true
   end
 meta s5: true
   def test_proficient_for_subject_by_grade_in_year_gives_correct_percent
-     skip
-     statewide_test = StatewideTest.new(:name => "Colorado", :third_grade => expected)
+   skip
+   expected =  { 2011 => {math: 0.816, reading: 0.897, writing: 0.826},
+     2012 => {math: 0.818, reading: 0.893, writing: 0.808},
+     2013 => {math: 0.805, reading: 0.901, writing: 0.810},
+     2014 => {math: 0.800, reading: 0.855, writing: 0.789},
+     }
+
+    statewide_test = StatewideTest.new(expected)
+
      assert_equal 0.857, statewide_test.proficient_for_subject_by_grade_in_year(:math, 3, 2008)
   end
 meta s6: true
   def test_proficient_for_subject_by_grade_in_year_gives_correct_percent
     skip
-    statewide_test = StatewideTest.new(:name => "Colorado", :third_grade => expected)
+   expected =  { 2011 => {math: 0.816, reading: 0.897, writing: 0.826},
+     2012 => {math: 0.818, reading: 0.893, writing: 0.808},
+     2013 => {math: 0.805, reading: 0.901, writing: 0.810},
+     2014 => {math: 0.800, reading: 0.855, writing: 0.789},
+     }
+
+    statewide_test = StatewideTest.new(expected)
+    
     assert_raises UnknownDataError do  statewide_test.proficient_for_subject_by_grade_in_year(:science, 3, 2008)
     end
   end
