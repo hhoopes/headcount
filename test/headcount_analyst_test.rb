@@ -104,8 +104,38 @@ class HeadcountAnalystTest < Minitest::Test
     :across => ['ACADEMY 20', 'CANON CITY RE-1', 'CENTENNIAL R-1', 'CENTER 26 JT'])
   end
 
-  def top_statewide_test_with_no_grade_raises_insufficient_error
+  def test_top_statewide_test_with_no_grade_raises_insufficient_error
+    dr = DistrictRepository.new
+    dr.load_data({
+      :statewide_testing => {
+        :third_grade => "./data/subsets/third_grade_proficient.csv",
+        :eighth_grade => "./data/subsets/eighth_grade_proficient.csv"}})
+    ha = HeadcountAnalyst.new
+    assert_raises InsufficientInformationError do
+      ha.top_statewide_test_year_over_year_growth()
+    end
+  end
+
+  def test_other_grades_than_3_or_8_raises_unknown_data_error
+  end
+
+  def test_can_specify_a_top_amount_of_leaders_and_return_data
+  end
+
+  def test_can_specify_an_average_of_all_grades
+  end
+
+  def test_given_grade_subject_returns_single_leader_and_average_percentage_growth
 
   end
+
+  def test_weighted_grades_add_up_to_1
+
+  end
+
+  def test_can_weight_grades_in_creating_top_district
+  end
+
+
 
 end

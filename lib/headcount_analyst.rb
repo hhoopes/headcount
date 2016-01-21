@@ -1,5 +1,7 @@
 require 'pry'
 require_relative 'headcount_analyst'
+require_relative 'unknown_data_error'
+require_relative 'insufficient_information_error'
 
 class HeadcountAnalyst
   attr_reader :district_repository
@@ -92,7 +94,12 @@ class HeadcountAnalyst
      district_num.fetch(true).count/ district_num.fetch(false).count
   end
 
-  def top_statewide_test_year_over_year_growth(grade, subject =, )
+  def example(opts = {})
+  # Hash#merge raises TypeError if _opts_ is not a Hash.
+  # Nothing checks if _opts_ contains unknown keys.
+
+  def top_statewide_test_year_over_year_growth(opts = {})
+    raise InsufficientInformationError.new("A grade must be provided to answer this question")
 
   end
 
