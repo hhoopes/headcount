@@ -4,7 +4,7 @@ class District
   #an instance of this class looks like d = District.new({:name => "ACADEMY 20"})
   def initialize(data = {})
     @name = data[:name].upcase
-    
+
   end
 
   def link_data(data_object, data_key)

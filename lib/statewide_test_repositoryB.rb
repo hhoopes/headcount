@@ -3,7 +3,7 @@ require_relative './data_formatter'
 require 'csv'
 require 'pry'
 
-class StatewideTestRepositoryB
+class StatewideTestRepository
   attr_reader :initial_testing_array, :unlinked_testing, :formatter
 
 #key is #statewide_testing, method is statewide_test

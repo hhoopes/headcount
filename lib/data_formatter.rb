@@ -1,22 +1,8 @@
 class DataFormatter
-  attr_reader :exclude_data, :data_category, :key_list
+  attr_reader :exclude_data
 
   def initialize
     @exclude_data = ["LNE", "#VALUE!", nil, "N/A", "NA", "Eligible for Reduced Lunch", "Eligible for Free Lunch"]
-    # @data_category = data_category
-    @key_list = {
-      :kindergarten                 => [:location, :data, :timeframe],
-      :high_school_graduation       => [:location, :data, :timeframe],
-      :third_grade                  => [:location, :data, :timeframe, :score],
-      :eighth_grade                 => [:location, :data, :timeframe, :score],
-      :math                         => [:location, :data, :timeframe, :raceethnicity],
-      :reading                      => [:location, :data, :timeframe, :raceethnicity],
-      :writing                      => [:location, :data, :timeframe, :raceethnicity],
-      :median_household_income      => [:location, :data, :timeframe],
-      :children_in_poverty          => [:location, :data, :timeframe, :dataformat],
-      :free_or_reduced_price_lunch  => [:location, :data, :timeframe, :dataformat, :povertylevel],
-      :title_i                      => [:location, :data, :timeframe]
-      }
   end
 
   def format_data(data_type, file)
