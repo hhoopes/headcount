@@ -43,7 +43,7 @@ class StatewideTest
     year_and_subj = data[(race)]
     years = year_and_subj.map {|key, value| key}
     subj = year_and_subj.map {|key, value| value}
-    if data.include?(race) && subj[0].keys.include?(subject) && years.include?(year)
+    if year_and_subj != nil && subj[0].keys.include?(subject) && years.include?(year)
 
       annual_race_data = data.fetch(race)[year][subject]
       truncate_float(annual_race_data)
