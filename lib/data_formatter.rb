@@ -35,7 +35,7 @@ class DataFormatter
       when :kindergarten, :kindergarten_participation, :high_school_graduation, :children_in_poverty, :title_i
         [format_kindergarten(data_type), hash[:location].upcase, {hash[:timeframe].to_i => hash[:data].to_f}]
       when :third_grade, :eighth_grade
-        [data_type, hash[:location].upcase, {hash[:timeframe].to_i => {hash[:score] => hash[:data].to_f}}]
+        [format_number(data_type), hash[:location].upcase, {hash[:timeframe].to_i => {hash[:score].to_sym => hash[:data].to_f}}]
       when :math, :reading, :writing
         # data_type = :raceethnicity
         # raceethnicity = hash.fetch(:data_type)
@@ -47,6 +47,14 @@ class DataFormatter
       end
     end
     formatted
+  end
+
+  def format_number(num)
+    if num == :third_grade
+      3
+    elsif num == :eighth_grade
+      8
+    end
   end
 
   def format_lunch(dataformat)

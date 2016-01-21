@@ -54,10 +54,6 @@ class HeadcountAnalyst
     annual_enrollment_hash
   end
 
-  def get_district(d_name)
-    district_repository.find_by_name(d_name)
-  end
-
   def kindergarten_participation_against_high_school_graduation(d_name)
     kindergarten_variation  = calculate_variation(d_name, :kindergarten_participation)
     graduation_variation    = calculate_variation(d_name, :high_school_graduation)
@@ -94,13 +90,76 @@ class HeadcountAnalyst
      district_num.fetch(true).count/ district_num.fetch(false).count
   end
 
-  def example(opts = {})
+  # def example(opts = {})
   # Hash#merge raises TypeError if _opts_ is not a Hash.
   # Nothing checks if _opts_ contains unknown keys.
 
   def top_statewide_test_year_over_year_growth(opts = {})
-    raise InsufficientInformationError.new("A grade must be provided to answer this question")
+    grade     = opts.fetch(:grade) if opts.has_key?(:grade)
+    subject   = opts.fetch(:subject) if opts.has_key?(:subject)
+    top       = opts.fetch(:top) if opts.has_key?(:top)
+    weighting = opts.fetch(:weighting) if opts.has_key?(:weighting)
+    # raise_errors(opts)
+    if grade && weighting
+      calculate_weighting(grade: grade, weighting: weighting)
+    elsif grade && subject && top
+      calculate_multiple_leaders(grade: grade, subject: subject, top: top)
+    elsif grade && subject
+      calculate_single_leader(grade: grade, subject: subject)
+    else grade
+      calculate_whole_grade(grade: grade)
+    end
+  end
 
+  def calculate_weighting(grade_weighting)
+  end
+
+  def calculate_single_leader(grade_subject)
+    grade = grade_subject.fetch(:grade)
+    subject = grade_subject.fetch(:subject)
+    value = 0
+    d =
+    binding.pry
+    district_repository.initial_testing_array.max_by do |district|
+    last = district_repository.initial_testing_array.data.fetch(grade).keys.last
+    first = district_repository.initial_testing_array.data.fetch(grade).keys.first
+    prof_last = district_repository.initial_testing_array.data.fetch(grade).fetch(last).fetch(:subject)
+    prof_first = district_repository.initial_testing_array.data.fetch(grade).fetch(first).fetch(:subject)
+    value = last - first
+    (prof_last - prof_first)/(last - first)
+    end
+    [d.name, value]
+  end
+
+  def calculate_multiple_leaders(grade_subject_top)
+
+  end
+
+  def calculate_whole_grade(grade)
+  end
+
+
+# statewide_test.proficient_by_grade(3)
+# => { 2008 => {:math => 0.857, :reading => 0.866, :writing => 0.671},
+#      2009 => {:math => 0.824, :reading => 0.862, :writing => 0.706},
+#      2010 => {:math => 0.849, :reading => 0.864, :writing => 0.662},
+#      2011 => {:math => 0.819, :reading => 0.867, :writing => 0.678},
+#      2012 => {:math => 0.830, :reading => 0.870, :writing => 0.655},
+#      2013 => {:math => 0.855, :reading => 0.859, :writing => 0.668},
+#      2014 => {:math => 0.834, :reading => 0.831, :writing => 0.639}
+#    }
+
+  # def raise_errors(opts)
+  #   if !opts.has_key?[:grade]
+  #     raise InsufficientInformationError.new("A grade must be provided to answer this question")
+  #   end
+  #   if ![3, 8].include? opts.fetch[:grade]
+  #     raise UnknownDataError.new("#{opts.fetch[:grade]} is not a known grade")
+  #   end
+  # end
+
+  def get_district(d_name)
+    district_repository.find_by_name(d_name)
   end
 
   def truncate_float(number)

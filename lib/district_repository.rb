@@ -6,7 +6,7 @@ require_relative 'economic_profile_repository'
 require 'pry'
 
 class DistrictRepository
-  attr_reader :initial_districts_array, :enrollment_repo, :testing_repo
+  attr_reader :initial_districts_array, :enrollment_repo, :testing_repo, :economic_repo
 
   def initialize(district_names = [])
     @initial_districts_array = []

@@ -15,8 +15,8 @@ class StatewideTest
   end
 
   def proficient_by_grade(grade)
-    if data.has_key?(convert_grade_to_symbol[grade])
-     data.fetch(convert_grade_to_symbol[grade])
+    if data.has_key?(grade)
+     data.fetch(grade)
     else
       raise UnknownDataError
     end
