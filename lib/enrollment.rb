@@ -53,16 +53,5 @@ class Enrollment
   def truncate_float(number)
     (number * 1000).truncate/1000.to_f
   end
-#   Enrollment: Gives access to enrollment data within that district, including:
-# |  | -- Dropout rate information
-# |  | -- Kindergarten enrollment rates
-# |  | -- Online enrollment rates
-# |  | -- Overall enrollment rates
-# |  | -- Enrollment rates by race and ethnicity
-# |  | -- High school graduation rates by race and ethnicity
-# |  | -- Special education enrollment rates
 
-# ha.kindergarten_participation_rate_variation_trend('ACADEMY 20', :against => 'COLORADO')
-#dividing first by colorado number
-# end
 end
