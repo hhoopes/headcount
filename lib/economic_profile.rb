@@ -1,5 +1,6 @@
 require 'pry'
 require_relative 'unknown_data_error'
+
 class EconomicProfile
   attr_reader :name, :data
 
@@ -14,7 +15,6 @@ class EconomicProfile
 
   def median_household_income_in_year(year)
     found = check_key(year, :median_household_income)
-    # binding.pry
     if found
       found.inject(0) do |sum, range|
         sum + median_household_income.fetch(range)
@@ -25,10 +25,16 @@ class EconomicProfile
   end
 
   def check_key(year, parameter)
-    a = data.fetch(parameter)
-    k = a.keys
-    k.find_all do |yr|
-      year >= yr.first && year <= yr.last
+    year_data = data.fetch(parameter).keys
+    # binding.pry
+    if year_data[0].length > 1
+      year_data.find_all do |yr|
+        year >= yr.first && year <= yr.last
+      end
+    else
+      if year_data.include?(year)
+        true
+      end
     end
   end
 
@@ -38,8 +44,15 @@ class EconomicProfile
   end
 
   def children_in_poverty_in_year(year)
-    data.fetch(:children_in_poverty)
-    binding.pry
+    if found = check_key(year, :children_in_poverty)
+      truncate_float(data.fetch(:children_in_poverty)[year])
+    else
+      raise UnknownDataError
+    end
+  end
+
+  def truncate_float(number)
+    (number * 1000).truncate/1000.to_f
   end
 
 
