@@ -107,7 +107,8 @@ meta s10: true
     skip
     statewide_test = StatewideTest.new(:name => "Colorado", :third_grade => expected)
 
-    assert_equal UnknownDataError, statewide_test.proficient_for_subject_by_race_in_year(:history, :cyborg, 200)
+    assert_raises UnknownDataError do  statewide_test.proficient_for_subject_by_race_in_year(:history, :cyborg, 200
+    end
   end
 
 end
