@@ -45,6 +45,7 @@ meta s2: true
        statewide_test.proficient_by_grade(4)
      end
   end
+    #write test to pass in file
 meta twang:true
   def test_proficient_by_race_or_ethnicity_gives_percent_proficiency_for_given_race
     skip
@@ -102,7 +103,7 @@ meta s6: true
      }
 
     statewide_test = StatewideTest.new(expected)
-    
+
     assert_raises UnknownDataError do  statewide_test.proficient_for_subject_by_grade_in_year(:science, 3, 2008)
     end
   end

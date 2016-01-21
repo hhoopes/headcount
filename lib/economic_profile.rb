@@ -47,7 +47,6 @@ class EconomicProfile
   end
 
   def free_or_reduced_price_lunch_number_in_year(year)
-    # binding.pry
      if check_key(year, :free_or_reduced_price_lunch)
        data.fetch(:free_or_reduced_price_lunch)[year][:total]
      else
@@ -64,13 +63,11 @@ class EconomicProfile
   end
 
   def check_key(year, parameter)
-    # binding.pry
     year_data = data.fetch(parameter).keys
     year_data.include?(year)
   end
 
   def check_key_with_range(year, parameter)
-    # binding.pry
     year_data = data.fetch(parameter).keys
       year_data.find_all do |yr|
         year >= yr.first && year <= yr.last
