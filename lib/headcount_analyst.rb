@@ -100,7 +100,6 @@ class HeadcountAnalyst
     top       = opts.fetch(:top) if opts.has_key?(:top)
     weighting = opts.fetch(:weighting) if opts.has_key?(:weighting)
     # raise_errors(opts)
-    binding.pry
     if grade && weighting
       calculate_weighting(grade: grade, weighting: weighting)
     elsif grade && subject && top
@@ -119,20 +118,21 @@ class HeadcountAnalyst
     grade = grade_subject.fetch(:grade)
     subject = grade_subject.fetch(:subject)
     value = 0
-    binding.pry
+    testing = district_repository.statewide_testing.data.fetch(grade)
     d =
-
     district_repository.initial_testing_array.max_by do |district|
-      district.proficient_for_subject_by_grade_in_year(subject, grade, )
+      year_last = district_repository.statewide_testing.data.fetch(grade).fetch(last).fetch(:subject)
+      year_first = district_repository.initial_testing_array.data.fetch(grade).fetch(first).fetch(:subject)
+      first = district.proficient_for_subject_by_grade_in_year(subject, grade, year_first)
+      last = district.proficient_for_subject_by_grade_in_year(subject, grade, year_last)
+      value = (last - first)/(year_last-year_first)
     end
+    [d.name, value]
     # last = district_repository.initial_testing_array.data.fetch(grade).keys.last
     # first = district_repository.initial_testing_array.data.fetch(grade).keys.first
-    # prof_last = district_repository.initial_testing_array.data.fetch(grade).fetch(last).fetch(:subject)
-    # prof_first = district_repository.initial_testing_array.data.fetch(grade).fetch(first).fetch(:subject)
     # value = last - first
     # (prof_last - prof_first)/(last - first)
     # end
-    [d.name, value]
   end
 
   def calculate_multiple_leaders(grade_subject_top)

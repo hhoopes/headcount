@@ -16,7 +16,6 @@ meta tag:true
     dr = DistrictRepository.new
     dr.load_data({:enrollment => {:kindergarten => "./data/subsets/kindergarten_enrollment.csv"}})
     ha = HeadcountAnalyst.new(dr)
-    binding.pry
     variation = ha.kindergarten_participation_rate_variation('ACADEMY 20', :against => 'COLORADO')
 
     assert_equal 0.766, variation
@@ -57,7 +56,6 @@ meta two:true
         :kindergarten => "./data/subsets/kindergarten_enrollment.csv",
         :high_school_graduation => "./data/subsets/high_school_enrollment.csv"}})
     ha = HeadcountAnalyst.new(dr)
-    binding.pry
 
     assert_equal 0.641, ha.kindergarten_participation_against_high_school_graduation('ACADEMY 20')
   end
@@ -121,8 +119,6 @@ meta two:true
     end
   end
 
-
-
   def test_can_specify_a_top_amount_of_leaders_and_return_data
     dr = DistrictRepository.new
     dr.load_data({
@@ -145,7 +141,6 @@ meta current:true
         :eighth_grade => "./data/subsets/eighth_grade_proficient.csv"}})
 
     ha = HeadcountAnalyst.new(dr)
-    binding.pry
     winner = ha.top_statewide_test_year_over_year_growth(grade: 3, subject: :math)
     assert_equal [], winner
   end

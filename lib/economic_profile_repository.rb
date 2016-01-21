@@ -50,7 +50,6 @@ class EconomicProfileRepository
   end
 
   def find_by_name(d_name)
-    binding.pry
     initial_eco_array.detect do |eco_instance|
       eco_instance.name.upcase == d_name.upcase
     end
