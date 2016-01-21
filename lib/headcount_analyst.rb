@@ -1,3 +1,4 @@
+require 'pry'
 require_relative 'headcount_analyst'
 
 class HeadcountAnalyst
@@ -7,13 +8,13 @@ class HeadcountAnalyst
     @district_repository = district_repository
   end
 
-  def kindergarten_participation_rate_variation(d_name1, against_district)
-    d_2 = against_district.fetch(:against)
+  def kindergarten_participation_rate_variation(d_name1, d_name2)
+    d_2 = d_name2.fetch(:against)
     calculate_variation(d_name1, :kindergarten_participation, d_2)
   end
 
   def calculate_average_rate(d_object, data_type)
-    if d_object.enrollment.method(data_type).call  #alternative is to look up the enrollment object and fetch the key
+    if d_object.enrollment.method(data_type).call
       data = d_object.enrollment.data.fetch(data_type).values
       data.inject(0) do |memo, datum|
         memo + datum
@@ -21,8 +22,8 @@ class HeadcountAnalyst
     end
   end
 
-  def kindergarten_participation_rate_variation_trend(d_name1, against_district)
-    d_name2 = against_district.fetch(:against)
+  def kindergarten_participation_rate_variation_trend(d_name1, other_name)
+    d_name2 = other_name.fetch(:against)
     d_object1 = get_district(d_name1)
     d_object2 = get_district(d_name2)
     average1 = calculate_average_rate_for_all_years(d_object1, d_object2)
@@ -45,12 +46,12 @@ class HeadcountAnalyst
   def get_district(d_name)
     district_repository.find_by_name(d_name)
   end
-
+#possible
   def kindergarten_participation_against_high_school_graduation(d_name)
-    # binding.pry
     kindergarten_variation =  calculate_variation(d_name, :kindergarten_participation)
     graduation_variation =  calculate_variation(d_name, :high_school_graduation)
     kindergaten_graduation_variance = kindergarten_variation/ graduation_variation
+    truncate_float(kindergaten_graduation_variance)
   end
 
   def calculate_variation(d_name1, data_type, d_name2 = 'Colorado')
@@ -76,6 +77,7 @@ class HeadcountAnalyst
               kindergarten_participation_correlates_with_high_school_graduation(d_name)
           end
         else #one school
+          #possible
             variation = kindergarten_participation_against_high_school_graduation(d_name)
             if 0.6 < variation && variation < 1.5
                correlation = true
@@ -88,6 +90,7 @@ class HeadcountAnalyst
     district_num = district_repository.initial_districts_array.group_by do |district|
       kindergarten_participation_correlates_with_high_school_graduation(for: district.name) == true
     end
+    binding.pry
      state_variation = district_num.fetch(true).count/ district_num.fetch(false).count
   end
 
