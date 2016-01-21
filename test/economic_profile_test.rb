@@ -21,6 +21,7 @@ class EconomicProfileTest < Minitest::Test
   end
 #test for passing in file
 #test for data that has year that falls into more than 2 ranges
+meta katz: true
   def test_median_household_income_gives_error_if_year_does_not_exist
     data = {:median_household_income => {[2005, 2009] => 50000, [2008, 2014] => 60000},
           :children_in_poverty => {2012 => 0.1845},
@@ -30,7 +31,8 @@ class EconomicProfileTest < Minitest::Test
          }
     economic_profile = EconomicProfile.new(data)
 
-    assert_equal UnknownDataError, economic_profile.median_household_income_in_year(1880)
+    assert_raises UnknownDataError do  economic_profile.median_household_income_in_year(1880)
+    end
   end
 meta bowz: true
   def test_median_household_income_average_gives_correct_range
@@ -44,6 +46,7 @@ meta bowz: true
 
     assert_equal 55000, economic_profile.median_household_income_average
   end
+
 
 meta beta: true
   #test for passing in file
@@ -70,11 +73,11 @@ meta kid: true
        }
     economic_profile = EconomicProfile.new(data)
 
-    assert_equal UnknownDataError, economic_profile.children_in_poverty_in_year(2212)
+    assert_raises UnknownDataError do  economic_profile.children_in_poverty_in_year(2212)
+    end
   end
-
+meta free: true
   def test_free_or_reduced_lunch_gives_correct_percent
-    skip
     data = {:median_household_income => {[2005, 2009] => 50000, [2008, 2014] => 60000},
         :children_in_poverty => {2012 => 0.1845},
         :free_or_reduced_price_lunch => {2014 => {:percentage => 0.023, :total => 100}},
@@ -85,9 +88,8 @@ meta kid: true
 
     assert_equal 0.023, economic_profile.free_or_reduced_price_lunch_percentage_in_year(2014)
   end
-
+meta red: true
   def test_free_or_reduced_lunch_gives_error_with_wrong_year
-    skip
     data = {:median_household_income => {[2005, 2009] => 50000, [2008, 2014] => 60000},
         :children_in_poverty => {2012 => 0.1845},
         :free_or_reduced_price_lunch => {2014 => {:percentage => 0.023, :total => 100}},
@@ -96,7 +98,7 @@ meta kid: true
        }
     economic_profile = EconomicProfile.new(data)
 
-    assert_equal UnknownDataError, economic_profile.free_or_reduced_price_lunch_percentage_in_year(1914)
+    assert_raises UnknownDataError do  economic_profile.free_or_reduced_price_lunch_percentage_in_year(1914) end
   end
 
   def test_free_or_reduced_lunch_gives_number

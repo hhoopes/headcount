@@ -14,27 +14,14 @@ class EconomicProfile
   end
 
   def median_household_income_in_year(year)
-    found = check_key(year, :median_household_income)
-    if found
+    # binding.pry
+    found = check_key_with_range(year, :median_household_income)
+    if found.length > 0
       found.inject(0) do |sum, range|
         sum + median_household_income.fetch(range)
       end/found.length
     else
       raise UnknownDataError
-    end
-  end
-
-  def check_key(year, parameter)
-    year_data = data.fetch(parameter).keys
-    # binding.pry
-    if year_data[0].length > 1
-      year_data.find_all do |yr|
-        year >= yr.first && year <= yr.last
-      end
-    else
-      if year_data.include?(year)
-        true
-      end
     end
   end
 
@@ -51,9 +38,32 @@ class EconomicProfile
     end
   end
 
+  def free_or_reduced_price_lunch_percentage_in_year(year)
+    if found = check_key(year, :free_or_reduced_price_lunch)
+      data.fetch(:free_or_reduced_price_lunch)[year][:percentage]
+    else
+      raise UnknownDataError
+    end
+  end
+
+  def check_key(year, parameter)
+    year_data = data.fetch(parameter).keys
+    year_data.include?(year)
+  end
+
+  def check_key_with_range(year, parameter)
+    # binding.pry
+    year_data = data.fetch(parameter).keys
+      year_data.find_all do |yr|
+        year >= yr.first && year <= yr.last
+      end
+  end
+
   def truncate_float(number)
     (number * 1000).truncate/1000.to_f
   end
+
+
 
 
 end
