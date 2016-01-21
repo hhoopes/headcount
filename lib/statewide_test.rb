@@ -1,6 +1,6 @@
 require 'pry'
-require 'unknown_data_error'
-require 'unknown_race_error'
+require_relative 'unknown_data_error'
+require_relative 'unknown_race_error'
 
 class StatewideTest
   attr_reader :name, :data
