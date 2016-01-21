@@ -31,11 +31,12 @@ class StatewideTest
   end
 
   def proficient_for_subject_by_grade_in_year(subject, grade, year)
-    binding.pry
-    if self.data.fetch(grade).fetch(year).fetch(subject)
-      data = data.fetch(grade).fetch(year).fetch(subject)
+    if  data.has_key?(grade) &&
+        data.fetch(grade).has_key?(year) &&
+        data.fetch(grade).fetch(year).has_key?(subject)
+      found = data.fetch(grade).fetch(year).fetch(subject)
     end
-    if data.class == Fixnum
+    if found.class == Fixnum
       truncate_float(data.fetch(grade).fetch(year).fetch(subject))
       data
     else

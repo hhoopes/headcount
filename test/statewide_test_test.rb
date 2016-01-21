@@ -71,7 +71,6 @@ meta roll: true
      str = StatewideTestRepository.new
      str.load_data(data)
      state = str.find_by_name('Colorado')
-     binding.pry
 
      assert_equal 0.697, state.proficient_for_subject_by_grade_in_year(:math, 3, 2008)
   end
