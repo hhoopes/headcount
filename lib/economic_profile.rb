@@ -6,7 +6,7 @@ class EconomicProfile
 
   def initialize(data= {})
     @data = data
-    @name = data[:name]upcase
+    @name = data[:name].upcase
   end
 
   def median_household_income

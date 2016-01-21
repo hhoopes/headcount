@@ -65,13 +65,11 @@ class StatewideTestRepositoryIntegrationTest < Minitest::Test
     assert_raises UnknownRaceError do  state.proficient_by_race_or_ethnicity(:skaterboi)
     end
   end
-meta roll: true
   def test_proficient_for_subject_by_grade_in_year_gives_correct_percent
      data = {:statewide_testing => {:third_grade=> "./data/subsets/third_grade_proficient.csv"}}
      str = StatewideTestRepository.new
      str.load_data(data)
      state = str.find_by_name('Colorado')
-     binding.pry
 
      assert_equal 0.697, state.proficient_for_subject_by_grade_in_year(:math, 3, 2008)
   end
