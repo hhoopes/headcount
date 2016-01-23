@@ -96,6 +96,7 @@ class HeadcountAnalyst
     subject   = opts.fetch(:subject) if opts.has_key?(:subject)
     top       = opts.fetch(:top) if opts.has_key?(:top)
     weighting = opts.fetch(:weighting) if opts.has_key?(:weighting)
+    binding.pry
     # raise_errors(opts)
     if grade && weighting
       calculate_weighting(grade: grade, weighting: weighting)
