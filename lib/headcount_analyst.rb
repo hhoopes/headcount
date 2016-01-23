@@ -91,22 +91,53 @@ class HeadcountAnalyst
      district_num.values.first.count/name_array.count
   end
 
-  def top_statewide_test_year_over_year_growth(opts = {})
-    grade     = opts.fetch(:grade) if opts.has_key?(:grade)
-    subject   = opts.fetch(:subject) if opts.has_key?(:subject)
-    top       = opts.fetch(:top) if opts.has_key?(:top)
-    weighting = opts.fetch(:weighting) if opts.has_key?(:weighting)
-    # raise_errors(opts)
-    if grade && weighting
-      calculate_weighting(grade: grade, weighting: weighting)
-    elsif grade && subject && top
-      calculate_multiple_leaders(grade: grade, subject: subject, top: top)
-    elsif grade && subject
-      calculate_single_leader(grade: grade, subject: subject)
-    else grade
-      calculate_whole_grade(grade: grade)
+  def top_statewide_test_year_over_year_growth(grade = nil, subject)
+      binding.pry
+    grade = grade.fetch(:grade)
+    if grade == nil
+      raise InsufficientInformationError, "A grade must be provided to answer this question"
+    elsif grade == 9
+      raise UnknownDataError, "9 is not a known grade"
     end
   end
+
+  def top_statewide_test_year_over_year_growth(grade, top_num = 1, subject)
+    if top_num == 1
+      #find a single leader
+  #output: ha.top_statewide_test_year_over_year_growth(grade: 3, subject: :math)
+# if not subject, look for growth for all three subjects
+#you can weight subjects too: ha.top_statewide_test_year_over_year_growth(grade: 8, :weighting => {:math => 0.5, :reading => 0.5, :writing => 0.0})
+
+    else
+      #find multiple leaders
+
+
+    end
+    # Where 0.123 is their average percentage growth across years. If there are three years of proficiency data (year1, year2, year3), that's ((proficiency at year3) - (proficiency at year1)) / (year3 - year1).
+
+# => ['the top district name', 0.123]
+
+# => ['the top district name', 0.111]
+#weights must add up to one
+  end
+
+  # def top_statewide_test_year_over_year_growth(opts = {})
+  #   grade     = opts.fetch(:grade) if opts.has_key?(:grade)
+  #   subject   = opts.fetch(:subject) if opts.has_key?(:subject)
+  #   top       = opts.fetch(:top) if opts.has_key?(:top)
+  #   weighting = opts.fetch(:weighting) if opts.has_key?(:weighting)
+  #   binding.pry
+  #   # raise_errors(opts)
+  #   if grade && weighting
+  #     calculate_weighting(grade: grade, weighting: weighting)
+  #   elsif grade && subject && top
+  #     calculate_multiple_leaders(grade: grade, subject: subject, top: top)
+  #   elsif grade && subject
+  #     calculate_single_leader(grade: grade, subject: subject)
+  #   else grade
+  #     calculate_whole_grade(grade: grade)
+  #   end
+  # end
 
   def get_district(d_name)
     district_repository.find_by_name(d_name)

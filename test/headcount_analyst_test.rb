@@ -103,23 +103,44 @@ meta two:true
     :across => ['ACADEMY 20', 'CANON CITY RE-1', 'CENTENNIAL R-1', 'CENTER 26 JT'])
   end
 
-
-  def test_top_statewide_test_with_no_grade_raises_two_kinds_of_errors
-    skip
+  def test_top_statewide_test_with_no_grade_raises_error
     dr = DistrictRepository.new
     dr.load_data({
       :statewide_testing => {
         :third_grade => "./data/subsets/third_grade_proficient.csv",
         :eighth_grade => "./data/subsets/eighth_grade_proficient.csv"}})
-
+   #how does headcount_analyst get data? binding.pry doesn't show any info getting passed in
     ha = HeadcountAnalyst.new(dr)
-    assert_raises InsufficientInformationError do
-      ha.top_statewide_test_year_over_year_growth()
+    assert_raises InsufficientInformationError, "A grade must be provided to answer this question" do
+      ha.top_statewide_test_year_over_year_growth(subject: :math)
     end
-    assert_raises UnknownDataError do
-      ha.top_statewide_test_year_over_year_growth(grade: 10)
+
+  end
+meta grade: true
+  def test_get_error_if_unknown_grade_passed_in
+    dr = DistrictRepository.new
+    dr.load_data({
+      :statewide_testing => {
+        :third_grade => "./data/subsets/third_grade_proficient.csv",
+        :eighth_grade => "./data/subsets/eighth_grade_proficient.csv"}})
+  ha = HeadcountAnalyst.new(dr)
+    assert_raises UnknownDataError, "9 is not a known grade" do
+      ha.top_statewide_test_year_over_year_growth(grade: 9, subject: :math)
     end
   end
+
+    def test_get_error_if_unknown_grade_passed_in_for_12th_grade
+      skip
+      dr = DistrictRepository.new
+      dr.load_data({
+        :statewide_testing => {
+          :third_grade => "./data/subsets/third_grade_proficient.csv",
+          :eighth_grade => "./data/subsets/eighth_grade_proficient.csv"}})
+    ha = HeadcountAnalyst.new(dr)
+      assert_raises UnknownDataError, "#{grade} is not a known grade" do
+        ha.top_statewide_test_year_over_year_growth(grade: 12, subject: :math)
+      end
+    end
 
   def test_can_specify_a_top_amount_of_leaders_and_return_data
     skip
@@ -128,12 +149,42 @@ meta two:true
       :statewide_testing => {
         :third_grade => "./data/subsets/third_grade_proficient.csv",
         :eighth_grade => "./data/subsets/eighth_grade_proficient.csv"}})
-
+ #change data on assert_equal once get output
     ha = HeadcountAnalyst.new(dr)
-    ha.top_statewide_test_year_over_year_growth(grade: 3, subject: :math)
+    assert_equal ['top', 0.123], ha.top_statewide_test_year_over_year_growth(grade: 3, subject: :math)
+  end
+
+    def test_can_specify_a_top_amount_of_leaders_and_return_data_for_8th_grade
+      skip
+      dr = DistrictRepository.new
+      dr.load_data({
+        :statewide_testing => {
+          :third_grade => "./data/subsets/third_grade_proficient.csv",
+          :eighth_grade => "./data/subsets/eighth_grade_proficient.csv"}})
+   #change data on assert_equal once get output
+      ha = HeadcountAnalyst.new(dr)
+      assert_equal ['top', 0.123], ha.top_statewide_test_year_over_year_growth(grade: 8, subject: :math)
+    end
+
+  def test_if_grade_not_included_will_give_error
+    dr = DistrictRepository.new
+    dr.load_data({
+      :statewide_testing => {
+        :third_grade => "./data/subsets/third_grade_proficient.csv",
+        :eighth_grade => "./data/subsets/eighth_grade_proficient.csv"}})
+    assert_raises InsufficientInformationError, "A grade must be provided to answer this question" do
+      ha.top_statewide_test_year_over_year_growth(subject: :math)
+    end
   end
 
   def test_can_specify_an_average_of_all_grades
+    skip
+    dr = DistrictRepository.new
+    dr.load_data({
+      :statewide_testing => {
+        :third_grade => "./data/subsets/third_grade_proficient.csv",
+        :eighth_grade => "./data/subsets/eighth_grade_proficient.csv"}})
+    assert_equal ['top', 0.123, ha.top_statewide_test_year_over_year_growth(grade: 3, subject: :math)]
   end
 
   def test_given_grade_subject_returns_single_leader_and_average_percentage_growth
@@ -146,14 +197,51 @@ meta two:true
 
     ha = HeadcountAnalyst.new(dr)
     winner = ha.top_statewide_test_year_over_year_growth(grade: 3, subject: :math)
-    assert_equal [], winner
+    assert_equal ['top'. 123.45], winner
+  end
+
+  def test_can_give_multiple_leaders
+    skip
+    dr = DistrictRepository.new
+    dr.load_data({
+      :statewide_testing => {
+        :third_grade => "./data/subsets/third_grade_proficient.csv",
+        :eighth_grade => "./data/subsets/eighth_grade_proficient.csv"}})
+
+      assert_equal [['top district name', growth_1], ['second district name', growth_2], ['third district name', growth_3]], ha.top_statewide_test_year_over_year_growth(grade: 3, top: 3, subject: :math)
+  end
+
+  def test_can_show_growth_across_all_three_subjects
+    skip
+    dr = DistrictRepository.new
+    dr.load_data({
+      :statewide_testing => {
+        :third_grade => "./data/subsets/third_grade_proficient.csv",
+        :eighth_grade => "./data/subsets/eighth_grade_proficient.csv"}})
+
+    assert_equal ['the top district name', 0.111], ha.top_statewide_test_year_over_year_growth(grade: 3)
   end
 
   def test_weighted_grades_add_up_to_1
-
+    skip
+    dr = DistrictRepository.new
+    dr.load_data({
+      :statewide_testing => {
+        :third_grade => "./data/subsets/third_grade_proficient.csv",
+        :eighth_grade => "./data/subsets/eighth_grade_proficient.csv"}})
+    ha.top_statewide_test_year_over_year_growth(grade: 8, :weighting => {:math => 0.5, :reading => 0.5, :writing => 0.0})
+    assert_equal 1, weight_1 + weight_2 + weight_3
   end
 
   def test_can_weight_grades_in_creating_top_district
+    skip
+    dr = DistrictRepository.new
+    dr.load_data({
+      :statewide_testing => {
+        :third_grade => "./data/subsets/third_grade_proficient.csv",
+        :eighth_grade => "./data/subsets/eighth_grade_proficient.csv"}})
+
+    assert_equal ['the top district name', 0.111],  ha.top_statewide_test_year_over_year_growth(grade: 8, :weighting => {:math => 0.5, :reading => 0.5, :writing => 0.0})
   end
 
 end
