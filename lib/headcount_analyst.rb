@@ -92,11 +92,23 @@ class HeadcountAnalyst
   end
 
   def top_statewide_test_year_over_year_growth(grade = nil, subject)
-    binding.pry
+      binding.pry
+    grade = grade.fetch(:grade)
     if grade == nil
       raise InsufficientInformationError, "A grade must be provided to answer this question"
+    elsif grade == 9
+      raise UnknownDataError, "9 is not a known grade"
     end
+  end
 
+  def top_statewide_test_year_over_year_growth(grade, subject)
+    # Where 0.123 is their average percentage growth across years. If there are three years of proficiency data (year1, year2, year3), that's ((proficiency at year3) - (proficiency at year1)) / (year3 - year1).
+    #output: ha.top_statewide_test_year_over_year_growth(grade: 3, subject: :math)
+# => ['the top district name', 0.123]
+   # if not subject, look for growth for all three subjects
+   #you can weight subjects too: ha.top_statewide_test_year_over_year_growth(grade: 8, :weighting => {:math => 0.5, :reading => 0.5, :writing => 0.0})
+# => ['the top district name', 0.111]
+#weights must add up to one
   end
 
   # def top_statewide_test_year_over_year_growth(opts = {})
