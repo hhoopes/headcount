@@ -103,9 +103,7 @@ meta two:true
     :across => ['ACADEMY 20', 'CANON CITY RE-1', 'CENTENNIAL R-1', 'CENTER 26 JT'])
   end
 
-meta omg: true
-  def test_top_statewide_test_with_no_grade_raises_two_kinds_of_errors
-    # skip
+  def test_top_statewide_test_with_no_grade_raises_error
     dr = DistrictRepository.new
     dr.load_data({
       :statewide_testing => {
@@ -114,11 +112,23 @@ meta omg: true
    #how does headcount_analyst get data? binding.pry doesn't show any info getting passed in
     ha = HeadcountAnalyst.new(dr)
     assert_raises InsufficientInformationError, "A grade must be provided to answer this question" do
-      ha.top_statewide_test_year_over_year_growth()
+      ha.top_statewide_test_year_over_year_growth(subject: :math)
     end
     # assert_raises UnknownDataError do
     #   ha.top_statewide_test_year_over_year_growth(grade: 10)
     # end
+  end
+
+  def test_get_error_if_unknown_grade_passed_in
+    dr = DistrictRepository.new
+    dr.load_data({
+      :statewide_testing => {
+        :third_grade => "./data/subsets/third_grade_proficient.csv",
+        :eighth_grade => "./data/subsets/eighth_grade_proficient.csv"}})
+  ha = HeadcountAnalyst.new(dr)
+    assert_raises UnknownDataError, "9 is not a known grade" do
+      ha.top_statewide_test_year_over_year_growth(9)
+    end
   end
 
   def test_can_specify_a_top_amount_of_leaders_and_return_data
@@ -128,9 +138,9 @@ meta omg: true
       :statewide_testing => {
         :third_grade => "./data/subsets/third_grade_proficient.csv",
         :eighth_grade => "./data/subsets/eighth_grade_proficient.csv"}})
-
+ #change data on assert_equal once get output
     ha = HeadcountAnalyst.new(dr)
-    ha.top_statewide_test_year_over_year_growth(grade: 3, subject: :math)
+    assert_equal ['top', 0.123], ha.top_statewide_test_year_over_year_growth(grade: 3, subject: :math)
   end
 
   def test_can_specify_an_average_of_all_grades

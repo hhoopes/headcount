@@ -91,23 +91,31 @@ class HeadcountAnalyst
      district_num.values.first.count/name_array.count
   end
 
-  def top_statewide_test_year_over_year_growth(opts = {})
-    grade     = opts.fetch(:grade) if opts.has_key?(:grade)
-    subject   = opts.fetch(:subject) if opts.has_key?(:subject)
-    top       = opts.fetch(:top) if opts.has_key?(:top)
-    weighting = opts.fetch(:weighting) if opts.has_key?(:weighting)
+  def top_statewide_test_year_over_year_growth(grade = nil, subject)
     binding.pry
-    # raise_errors(opts)
-    if grade && weighting
-      calculate_weighting(grade: grade, weighting: weighting)
-    elsif grade && subject && top
-      calculate_multiple_leaders(grade: grade, subject: subject, top: top)
-    elsif grade && subject
-      calculate_single_leader(grade: grade, subject: subject)
-    else grade
-      calculate_whole_grade(grade: grade)
+    if grade == nil
+      raise InsufficientInformationError, "A grade must be provided to answer this question"
     end
+
   end
+
+  # def top_statewide_test_year_over_year_growth(opts = {})
+  #   grade     = opts.fetch(:grade) if opts.has_key?(:grade)
+  #   subject   = opts.fetch(:subject) if opts.has_key?(:subject)
+  #   top       = opts.fetch(:top) if opts.has_key?(:top)
+  #   weighting = opts.fetch(:weighting) if opts.has_key?(:weighting)
+  #   binding.pry
+  #   # raise_errors(opts)
+  #   if grade && weighting
+  #     calculate_weighting(grade: grade, weighting: weighting)
+  #   elsif grade && subject && top
+  #     calculate_multiple_leaders(grade: grade, subject: subject, top: top)
+  #   elsif grade && subject
+  #     calculate_single_leader(grade: grade, subject: subject)
+  #   else grade
+  #     calculate_whole_grade(grade: grade)
+  #   end
+  # end
 
   def get_district(d_name)
     district_repository.find_by_name(d_name)
