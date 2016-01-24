@@ -1,7 +1,6 @@
 require 'pry'
 require_relative 'headcount_analyst'
-require_relative 'unknown_data_error'
-require_relative 'insufficient_information_error'
+require_relative 'custom_errors'
 
 class HeadcountAnalyst
   attr_reader :district_repository, :test_array
@@ -37,22 +36,20 @@ class HeadcountAnalyst
     d_name2 = other_name.fetch(:against)
     d_object1 = get_district(d_name1)
     d_object2 = get_district(d_name2)
-    average1 = calculate_average_rate_for_all_years(d_object1, d_object2)
+    calculate_average_rate_for_all_years(d_object1, d_object2)
   end
 
   def calculate_average_rate_for_all_years(d_object1, d_object2)
-   if d_object1.enrollment.kindergarten_participation && d_object2.enrollment.kindergarten_participation
-     data_hash1 = d_object1.enrollment.kindergarten_participation
-     data_hash2 = d_object2.enrollment.kindergarten_participation
-       index = 0
-       annual_enrollment_hash = {}
-       while (index < 1) && (data_hash1.keys[0] == data_hash2.keys[0]) && (data_hash1.keys[0] != nil) do
-         annual_enrollment_hash =
-         data_hash1.merge(data_hash2){|key, first, second| truncate_float(first/second) }
-        index += 1
-      end
-   end
-    annual_enrollment_hash
+    if d_object1.enrollment.kindergarten_participation && d_object2.enrollment.kindergarten_participation
+      data_hash1 = d_object1.enrollment.kindergarten_participation
+      data_hash2 = d_object2.enrollment.kindergarten_participation
+      map = data_hash1.map do | key, value |
+        if data_hash2.has_key?(key)
+          new_value = value/data_hash2.fetch(key)
+          [key, truncate_float(new_value)]
+        end
+      end.to_h
+    end
   end
 
   def kindergarten_participation_against_high_school_graduation(d_name)
@@ -71,7 +68,7 @@ class HeadcountAnalyst
         correlation = true if results > 0.7
       else #one school
         variation = kindergarten_participation_against_high_school_graduation(d_name)
-        if 0.6 < variation && variation < 1.5
+        if !variation.nil? && 0.6 < variation && variation < 1.5
            correlation = true
          end
        end
@@ -91,18 +88,16 @@ class HeadcountAnalyst
      district_num.values.first.count/name_array.count
   end
 
-  def top_statewide_test_year_over_year_growth(grade = nil, subject)
-      binding.pry
+  def top_statewide_test_year_over_year_growth(grade, subject, top_num: 1)
     grade = grade.fetch(:grade)
     if grade == nil
       raise InsufficientInformationError, "A grade must be provided to answer this question"
-    elsif grade == 9
-      raise UnknownDataError, "9 is not a known grade"
-    end
-  end
-
-  def top_statewide_test_year_over_year_growth(grade, top_num = 1, subject)
+    elsif grade != 8 or grade != 3
+      raise UnknownDataError, "#{grade} is not a known grade"
+      end
     if top_num == 1
+
+
       #find a single leader
   #output: ha.top_statewide_test_year_over_year_growth(grade: 3, subject: :math)
 # if not subject, look for growth for all three subjects
@@ -144,7 +139,9 @@ class HeadcountAnalyst
   end
 
   def truncate_float(number)
-    (number * 1000).truncate/(1000.to_f)
+    if (number.is_a? Numeric) && !number.nan?
+      (number * 1000).floor/1000.0
+    end
   end
 
 end

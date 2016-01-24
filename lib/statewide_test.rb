@@ -1,9 +1,8 @@
 require 'pry'
-require_relative 'unknown_data_error'
-require_relative 'unknown_race_error'
+require_relative 'custom_errors'
 
 class StatewideTest
-  attr_reader :name, :data, :statewide_test
+  attr_reader :name, :data
 
   def initialize(data = {})
     @data = data
@@ -11,7 +10,7 @@ class StatewideTest
   end
 
   def statewide_test
-    data.fetch(:statewide_testing) if data.has_key?(:statewide_testing)
+    data.fetch(:statewide_test) if data.has_key?(:statewide_test)
   end
 
   def proficient_by_grade(grade)
@@ -30,23 +29,34 @@ class StatewideTest
     end
   end
 
-  def proficient_for_subject_by_grade_in_year(subject, grade, year)
-    if  data.has_key?(grade) &&
-        data.fetch(grade).has_key?(year) &&
-        data.fetch(grade).fetch(year).has_key?(subject)
-      found = data.fetch(grade).fetch(year).fetch(subject)
+  def path_valid?(key1, key2, key3)
+    if data.has_key?(key1) &&
+      data.fetch(key1).has_key?(key2) &&
+      data.fetch(key1).fetch(key2).has_key?(key3)
+      true
+    else false
     end
-    if found.class == Fixnum
-      truncate_float(data.fetch(grade).fetch(year).fetch(subject))
-      data
+  end
+
+  def proficient_for_subject_by_grade_in_year(subject, grade, year)
+    if path_valid?(grade, year, subject)
+      found = data.fetch(grade).fetch(year).fetch(subject)
+      if found.class == String
+        found
+      else found = truncate_float(found)
+      end
     else
       raise UnknownDataError
     end
   end
 
   def proficient_for_subject_by_race_in_year(subject, race, year)
-    if data.fetch(race).fetch(year).fetch(subject)
-      truncate_float(data.fetch(race).fetch(year).fetch(subject))
+    if path_valid?(race, year, subject)
+      found = data.fetch(race).fetch(year).fetch(subject)
+      if found.class == String
+        found
+      else found = truncate_float(found)
+      end
     else
       raise UnknownDataError
     end

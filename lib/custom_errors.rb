@@ -6,3 +6,7 @@ end
 class UnknownRaceError < ArgumentError
 
 end
+
+class UnknownDataError < ArgumentError
+
+end

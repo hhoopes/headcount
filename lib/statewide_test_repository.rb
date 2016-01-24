@@ -14,10 +14,9 @@ class StatewideTestRepository
 
   def load_data(request_hash)
     testing = request_hash.fetch(:statewide_testing)
-      testing.each do | data_type, file |
+    testing.each do | data_type, file |
       formatted = formatter.format_data(data_type, file)
       sort_data(formatted)
-      unlinked_testing
     end
     unlinked_testing
   end

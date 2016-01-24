@@ -38,6 +38,7 @@ class HeadcountAnalystTest < Minitest::Test
     assert_equal 0.638, variation
   end
 
+meta trend:true
   def test_kindergarten_participation_rate_variation_trend_tests_for_the_variation_each_year
     dr = DistrictRepository.new
     dr.load_data({:enrollment => {:kindergarten => "./data/subsets/kindergarten_enrollment.csv"}})
@@ -197,7 +198,7 @@ meta grade: true
 
     ha = HeadcountAnalyst.new(dr)
     winner = ha.top_statewide_test_year_over_year_growth(grade: 3, subject: :math)
-    assert_equal ['top'. 123.45], winner
+    assert_equal ['top', 123.45], winner
   end
 
   def test_can_give_multiple_leaders
