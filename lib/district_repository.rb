@@ -48,7 +48,6 @@ class DistrictRepository
         existing_d_object.link_data(data_object, data_category)
       else
         new_district = District.new({:name => d_name})
-        binding.pry
         new_district.link_data(data_object, data_category)
         initial_districts_array << new_district
       end
