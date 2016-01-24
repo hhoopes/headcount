@@ -1,12 +1,12 @@
 require 'pry'
-require_relative 'unknown_data_error'
+require_relative 'custom_errors'
 
 class EconomicProfile
   attr_reader :name, :data
 
   def initialize(data= {})
     @data = data
-    @name = data[:name].upcase
+    @name = data[:name].upcase if data.has_key?(:name)
   end
 
   def median_household_income
@@ -19,9 +19,8 @@ class EconomicProfile
       found.inject(0) do |sum, range|
         sum + median_household_income.fetch(range)
       end/found.length
-    else
-      raise UnknownDataError
     end
+    rescue UnknownDataError
   end
 
   def median_household_income_average
@@ -32,33 +31,29 @@ class EconomicProfile
   def children_in_poverty_in_year(year)
     if check_key(year, :children_in_poverty)
       truncate_float(data.fetch(:children_in_poverty)[year])
-    else
-      raise UnknownDataError
     end
+    rescue UnknownDataError
   end
 
   def free_or_reduced_price_lunch_percentage_in_year(year)
     if check_key(year, :free_or_reduced_price_lunch)
       data.fetch(:free_or_reduced_price_lunch)[year][:percentage]
-    else
-      raise UnknownDataError
     end
+    rescue UnknownDataError
   end
 
   def free_or_reduced_price_lunch_number_in_year(year)
-     if check_key(year, :free_or_reduced_price_lunch)
-       data.fetch(:free_or_reduced_price_lunch)[year][:total]
-     else
-       raise UnknownDataError
-     end
+    if check_key(year, :free_or_reduced_price_lunch)
+      data.fetch(:free_or_reduced_price_lunch)[year][:total]
+    end
+    rescue UnknownDataError
   end
 
   def title_i_in_year(year)
     if check_key(year, :title_i)
       data.fetch(:title_i)[year]
-    else
-      raise UnknownDataError
     end
+    rescue UnknownDataError
   end
 
   def check_key(year, parameter)

@@ -2,7 +2,7 @@ class DataFormatter
   attr_reader :exclude_data
 
   def initialize
-    @exclude_data = ["LNE", "#VALUE!", nil, "NA", "Eligible for Reduced Lunch", "Eligible for Free Lunch"]
+    @exclude_data = ["LNE", "#VALUE!", nil, "Eligible for Reduced Lunch", "Eligible for Free Lunch"]
   end
 
   def format_data(data_type, file)
@@ -35,16 +35,20 @@ class DataFormatter
       when :kindergarten, :kindergarten_participation, :high_school_graduation, :children_in_poverty, :title_i
         [format_kindergarten(data_type), hash[:location].upcase, {hash[:timeframe].to_i => hash[:data].to_f}]
       when :third_grade, :eighth_grade
-        [format_number(data_type), hash[:location].upcase, {hash[:timeframe].to_i => {hash[:score].downcase.to_sym => hash[:data].to_f}}]
+        [format_number(data_type), hash[:location].upcase, {hash[:timeframe].to_i => {hash[:score].downcase.to_sym => format_score(hash[:data])}}]
       when :math, :reading, :writing
-        [format_ethnicity(hash[:race_ethnicity]), hash[:location].upcase, {hash[:timeframe].to_i => {data_type => hash[:data].to_f}}]
+        [format_ethnicity(hash[:race_ethnicity]), hash[:location].upcase, {hash[:timeframe].to_i => {data_type => format_score(hash[:data])}}]
       when :median_household_income
-        [data_type, hash[:location].upcase, {hash[:timeframe].split => hash[:data]}]
+        [data_type, hash[:location].upcase, {format_timeframe(hash[:timeframe]) => hash[:data].to_i}]
       when :free_or_reduced_price_lunch
         [data_type, hash[:location].upcase, {hash[:timeframe].to_i => {format_lunch(hash[:dataformat]) => hash[:data].to_f}}]
       end
     end
     formatted
+  end
+
+  def format_timeframe(range)
+    range.split("-").map {|year| year.to_i}
   end
 
   def format_number(num)
@@ -65,7 +69,7 @@ class DataFormatter
   end
 
   def format_ethnicity(ethnicity)
-    ethnicity.gsub(" ", "").downcase.to_sym
+    ethnicity.gsub(/\W+/, "").downcase.to_sym
   end
 
   def format_kindergarten(data_type)
@@ -73,5 +77,12 @@ class DataFormatter
       :kindergarten_participation
     else data_type
     end
+  end
+
+  def format_score(number)
+    Float(number)
+      number.to_f
+    rescue
+      number
   end
 end

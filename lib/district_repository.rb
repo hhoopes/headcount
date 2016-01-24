@@ -21,16 +21,22 @@ class DistrictRepository
   end
 
   def load_data(request_hash)
-    data_category = request_hash.keys.first
-    case data_category
+    # data_category = request_hash.keys.first
+    request_hash.each do |data_category, value|
+      # binding.pry
+      case data_category
       when :enrollment
-        d_bundle = enrollment_repo.load_data(request_hash)
+        d_bundle = enrollment_repo.load_data(data_category => value)
+        catalog_repos(d_bundle, data_category)
       when :statewide_testing
-        d_bundle = testing_repo.load_data(request_hash)
+        d_bundle = testing_repo.load_data(data_category => value)
+        catalog_repos(d_bundle, data_category)
       when :economic_profile
-        d_bundle = economic_repo.load_data(request_hash)
+        d_bundle = economic_repo.load_data(data_category => value)
+        catalog_repos(d_bundle, data_category)
       end
-    catalog_repos(d_bundle, data_category)
+
+    end
   end
 
   def catalog_repos(d_bundle, data_category)
@@ -42,6 +48,7 @@ class DistrictRepository
         existing_d_object.link_data(data_object, data_category)
       else
         new_district = District.new({:name => d_name})
+        binding.pry
         new_district.link_data(data_object, data_category)
         initial_districts_array << new_district
       end
@@ -64,13 +71,9 @@ class DistrictRepository
   end
 
   def find_all_matching(search_string)
-    search_results_array = []
-    initial_districts_array.each do |district|
-      if district.name.upcase.include?(search_string.upcase)
-          search_results_array << district.name
-      end
+    initial_districts_array.select do |district|
+      district.name.upcase.include?(search_string.upcase)
     end
-    search_results_array
   end
 
 end
