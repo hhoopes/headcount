@@ -88,14 +88,21 @@ class HeadcountAnalyst
      district_num.values.first.count/name_array.count
   end
 
-  def top_statewide_test_year_over_year_growth(grade, subject, top_num: 1)
-    grade = grade.fetch(:grade)
-    if grade == nil
+  def top_statewide_test_year_over_year_growth(options)
+    if options.has_key?(:grade)
+      grade = options.fetch(:grade)
+    else
       raise InsufficientInformationError, "A grade must be provided to answer this question"
-    elsif grade != 8 or grade != 3
+    end
+    if grade != 8 or grade != 3
       raise UnknownDataError, "#{grade} is not a known grade"
-      end
+    end
+    if options.has_key?(:subject)
+        subject = options.fetch(:subject)
+    if options.has_key?(:top)
+      top = options.fetch(:top)
     if top_num == 1
+      #iterate over data looking for detect when path is valid and value is a float 
 
 
       #find a single leader
@@ -141,6 +148,15 @@ class HeadcountAnalyst
   def truncate_float(number)
     if (number.is_a? Numeric) && !number.nan?
       (number * 1000).floor/1000.0
+    end
+  end
+
+  def path_valid?(key1, key2, key3)
+    if data.has_key?(key1) &&
+      data.fetch(key1).has_key?(key2) &&
+      data.fetch(key1).fetch(key2).has_key?(key3)
+      true
+    else false
     end
   end
 

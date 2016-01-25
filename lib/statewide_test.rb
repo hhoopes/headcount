@@ -13,6 +13,15 @@ class StatewideTest
     data.fetch(:statewide_test) if data.has_key?(:statewide_test)
   end
 
+  def path_valid?(key1, key2, key3)
+    if data.has_key?(key1) &&
+      data.fetch(key1).has_key?(key2) &&
+      data.fetch(key1).fetch(key2).has_key?(key3)
+      true
+    else false
+    end
+  end
+
   def proficient_by_grade(grade)
     if data.has_key?(grade)
      data.fetch(grade)
@@ -26,15 +35,6 @@ class StatewideTest
       data.fetch(race)
     else
       raise UnknownRaceError
-    end
-  end
-
-  def path_valid?(key1, key2, key3)
-    if data.has_key?(key1) &&
-      data.fetch(key1).has_key?(key2) &&
-      data.fetch(key1).fetch(key2).has_key?(key3)
-      true
-    else false
     end
   end
 
