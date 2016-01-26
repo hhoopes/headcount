@@ -99,10 +99,15 @@ class HeadcountAnalyst
     end
     if options.has_key?(:subject)
         subject = options.fetch(:subject)
+    end
     if options.has_key?(:top)
-      top = options.fetch(:top)
-    if top_num == 1
-      #iterate over data looking for detect when path is valid and value is a float 
+      top = options.fetch(:top) || 1
+    end
+    # if top_num == 1 && path_valid?(grade, subject)
+    #
+    # end
+  end
+      #iterate over data looking for detect when path is valid and value is a float
 
 
       #find a single leader
@@ -110,18 +115,15 @@ class HeadcountAnalyst
 # if not subject, look for growth for all three subjects
 #you can weight subjects too: ha.top_statewide_test_year_over_year_growth(grade: 8, :weighting => {:math => 0.5, :reading => 0.5, :writing => 0.0})
 
-    else
       #find multiple leaders
 
 
-    end
     # Where 0.123 is their average percentage growth across years. If there are three years of proficiency data (year1, year2, year3), that's ((proficiency at year3) - (proficiency at year1)) / (year3 - year1).
 
 # => ['the top district name', 0.123]
 
 # => ['the top district name', 0.111]
 #weights must add up to one
-  end
 
   # def top_statewide_test_year_over_year_growth(opts = {})
   #   grade     = opts.fetch(:grade) if opts.has_key?(:grade)
@@ -151,10 +153,12 @@ class HeadcountAnalyst
     end
   end
 
-  def path_valid?(key1, key2, key3)
-    if data.has_key?(key1) &&
+  def path_valid?(key1, key2, key3 = nil)
+    if (data.has_key?(key1) &&
+      data.fetch(key1).has_key?(key2) && !key3.nil?) ||
+      (data.has_key?(key1) &&
       data.fetch(key1).has_key?(key2) &&
-      data.fetch(key1).fetch(key2).has_key?(key3)
+      data.fetch(key1).fetch(key2).has_key?(key3))
       true
     else false
     end
