@@ -122,7 +122,8 @@ class HeadcountAnalyst
       first = verify_year_single(scores, subject).first
       last = verify_year_single(scores, subject).last
       next if first.nil? || last.nil?
-      [district.name, truncate_float(calculate_years_growth(first, last, subject: subject))]
+      range = [subject, first, last]
+      [district.name, truncate_float(calculate_years_growth(range))]
     end.reject{|district|district.nil? || district.last.nil?}.sort_by {|district| district.last}
     if top == 1
       highest.last
@@ -137,33 +138,49 @@ class HeadcountAnalyst
     end.sort_by{| year, score | year}
   end
 
-  def calculate_years_growth(first, last, options = {})
-    if !options.nil? && options.has_key?(:subject)
-      subjects = [options.fetch(:subject)]
-    else
-      subjects = [:math, :reading, :writing]
+  def verify_year_mult(subject, hash)
+    return_values = []
+    hash.each do | year, scores |
+      if scores.has_key?(subject) && (scores.fetch(subject).is_a?(Numeric))
+        return_values << {year => scores}
+      end
     end
+    return_values
+  end
+
+  def calculate_years_growth(range, options = {})
+    # if !options.nil? && options.has_key?(:subject)
+    #   subjects = [options.fetch(:subject)]
+    # else
+    # end
     if !options.nil? && options.has_key?(:weighting) && !options.fetch(:weighting).nil?
       weighting = options.fetch(:weighting)
     else
       weighting = {math:1/3.0, reading: 1/3.0, writing: 1/3.0}
     end
-    subjects.inject(0) do |memo, subject|
-      memo + ((last.last.fetch(subject) - first.last.fetch(subject))/(last.first - first.first))* weighting.fetch(subject)
-    end
-
+      subject = range.first
+      earliest = range[1]
+      latest = range.last
+      ((latest.last.fetch(subject) - earliest.last.fetch(subject))/(latest.first - earliest.first))* weighting.fetch(subject)
+      # ((latest.values.first.fetch(subject) - earliest.values.first.fetch(subject))/(latest.keys.first - earliest.keys.first))* weighting.fetch(subject)
 
   end
 
   def mult_subject(grade, weighting, top)
+    index = 0
     highest =
     test_array.map do |district|
       next unless district.data.has_key?(grade)
       scores = district.data.fetch(grade)
-      first = verify_year_mult(scores).first
-      last = verify_year_mult(scores).last
-      next if first.nil? || last.nil?
-      [district.name, truncate_float(calculate_years_growth(first, last, :weighting=> weighting))]
+      subjects = [:math, :reading, :writing]
+      subject_total = subjects.inject(0) do |memo = 0, subject|
+        earliest = verify_year_single(scores, subject).first
+        latest = verify_year_single(scores, subject).last
+        next if earliest.nil? || latest.nil? || earliest == latest
+        memo = 0 if memo.nil?
+        memo + calculate_years_growth([subject, earliest, latest], :weighting=> weighting)
+      end
+      [district.name, truncate_float(subject_total)]
     end.reject{|district|district.nil? || district.last.nil?}.sort_by {|district| district.last}
 
     if top == 1
@@ -171,50 +188,8 @@ class HeadcountAnalyst
     else
        top = highest[-top..-1]
     end
-    binding.pry
   end
 
-  def verify_year_mult(hash)
-    hash.select do | year, scores |
-      scores.has_key?(:math) && scores.has_key?(:writing) && scores.has_key?(:reading) && (scores.fetch(:math).is_a?(Numeric)) && (scores.fetch(:writing).is_a?(Numeric)) && (scores.fetch(:reading).is_a?(Numeric))
-    end.sort_by{|year| year}
-  end
-
-      #iterate over data looking for detect when path is valid and value is a float
-
-
-      #find a single leader
-  #output: ha.top_statewide_test_year_over_year_growth(grade: 3, subject: :math)
-# if not subject, look for growth for all three subjects
-#you can weight subjects too: ha.top_statewide_test_year_over_year_growth(grade: 8, :weighting => {:math => 0.5, :reading => 0.5, :writing => 0.0})
-
-      #find multiple leaders
-
-
-    # Where 0.123 is their average percentage growth across years. If there are three years of proficiency data (year1, year2, year3), that's ((proficiency at year3) - (proficiency at year1)) / (year3 - year1).
-
-# => ['the top district name', 0.123]
-
-# => ['the top district name', 0.111]
-#weights must add up to one
-
-  # def top_statewide_test_year_over_year_growth(opts = {})
-  #   grade     = opts.fetch(:grade) if opts.has_key?(:grade)
-  #   subject   = opts.fetch(:subject) if opts.has_key?(:subject)
-  #   top       = opts.fetch(:top) if opts.has_key?(:top)
-  #   weighting = opts.fetch(:weighting) if opts.has_key?(:weighting)
-  #   binding.pry
-  #   # raise_errors(opts)
-  #   if grade && weighting
-  #     calculate_weighting(grade: grade, weighting: weighting)
-  #   elsif grade && subject && top
-  #     calculate_multiple_leaders(grade: grade, subject: subject, top: top)
-  #   elsif grade && subject
-  #     calculate_single_leader(grade: grade, subject: subject)
-  #   else grade
-  #     calculate_whole_grade(grade: grade)
-  #   end
-  # end
 
   def get_district(d_name)
     district_repository.find_by_name(d_name)
@@ -223,17 +198,6 @@ class HeadcountAnalyst
   def truncate_float(number)
     if (number.is_a? Numeric) && !number.nan?
       (number * 1000).floor/1000.0
-    end
-  end
-
-  def path_valid?(key1, key2, key3 = nil)
-    if (data.has_key?(key1) &&
-      data.fetch(key1).has_key?(key2) && !key3.nil?) ||
-      (data.has_key?(key1) &&
-      data.fetch(key1).has_key?(key2) &&
-      data.fetch(key1).fetch(key2).has_key?(key3))
-      true
-    else false
     end
   end
 

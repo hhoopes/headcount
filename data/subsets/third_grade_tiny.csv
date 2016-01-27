@@ -1,13 +1,27 @@
 Location,Score,TimeFrame,DataFormat,Data
+Lame School,Math,2008,Percent,N/A
+Lame School,Math,2010,Percent,N/A
+Lame School,Reading,2008,Percent,N/A
+Lame School,Reading,2010,Percent,N/A
+Lame School,Writing,2008,Percent,N/A
+Lame School,Writing,2010,Percent,N/A
+No Data School,Math,2008,Percent,0
+No Data School,Math,2010,Percent,1
+No Data School,Reading,2008,Percent,N/A
+No Data School,Reading,2010,Percent,N/A
+No Data School,Writing,2008,Percent,N/A
+No Data School,Writing,2010,Percent,1
 Worst School,Math,2008,Percent,1.0
 Worst School,Math,2009,Percent,0
 Best School,Math,2008,Percent,0.0
-Best School,Math,2009,Percent,1.0
+Best School,Math,2009,Percent,0.0
 Worst School,Reading,2008,Percent,1.0
 Worst School,Reading,2009,Percent,0
 Best School,Reading,2008,Percent,0.0
 Best School,Reading,2009,Percent,1.0
+Best School,Reading,2010,Percent,1.0
 Worst School,Writing,2008,Percent,1.0
 Worst School,Writing,2009,Percent,0
 Best School,Writing,2008,Percent,0.0
 Best School,Writing,2009,Percent,1.0
+Best School,Writing,2010,Percent,1.0

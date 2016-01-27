@@ -126,6 +126,7 @@ meta grade: true
     end
   end
 
+meta test:true
   def test_can_specify_a_top_amount_of_leaders_and_return_data
     dr = DistrictRepository.new
     dr.load_data({
@@ -133,7 +134,7 @@ meta grade: true
         :third_grade => "./data/subsets/third_grade_proficient.csv",
         :eighth_grade => "./data/subsets/eighth_grade_proficient.csv"}})
     ha = HeadcountAnalyst.new(dr)
-    assert_equal ["COLORADO", 0.003], ha.top_statewide_test_year_over_year_growth(grade: 3, subject: :math)
+    assert_equal ["COLORADO", 0.001], ha.top_statewide_test_year_over_year_growth(grade: 3, subject: :math)
   end
 
   def test_can_specify_a_top_leaders_and_return_data_for_8th_grade
@@ -144,7 +145,7 @@ meta grade: true
         :third_grade => "./data/subsets/third_grade_proficient.csv",
         :eighth_grade => "./data/subsets/eighth_grade_proficient.csv"}})
     ha = HeadcountAnalyst.new(dr)
-    assert_equal ["BUENA VISTA R-31", 0.028], ha.top_statewide_test_year_over_year_growth(grade: 8, subject: :math)
+    assert_equal ["BUENA VISTA R-31", 0.009], ha.top_statewide_test_year_over_year_growth(grade: 8, subject: :math)
   end
 
   def test_if_grade_not_included_will_give_error
@@ -166,7 +167,7 @@ meta grade: true
         :third_grade => "./data/subsets/third_grade_proficient.csv",
         :eighth_grade => "./data/subsets/eighth_grade_proficient.csv"}})
     ha = HeadcountAnalyst.new(dr)
-    assert_equal ["COLORADO", 0.002], ha.top_statewide_test_year_over_year_growth(grade: 3)
+    assert_equal ["BETHUNE R-5", 0.049], ha.top_statewide_test_year_over_year_growth(grade: 3)
   end
 meta mult:true
   def test_can_give_multiple_leaders
@@ -176,7 +177,7 @@ meta mult:true
         :third_grade => "./data/subsets/third_grade_proficient.csv",
         :eighth_grade => "./data/subsets/eighth_grade_proficient.csv"}})
     ha = HeadcountAnalyst.new(dr)
-    assert_equal [["ACADEMY 20", -0.004], ["CANON CITY RE-1", 0.001], ["COLORADO", 0.003]], ha.top_statewide_test_year_over_year_growth(grade: 3, top: 3, subject: :math)
+    assert_equal [["ACADEMY 20", -0.002], ["CANON CITY RE-1", 0.0], ["COLORADO", 0.001]], ha.top_statewide_test_year_over_year_growth(grade: 3, top: 3, subject: :math)
   end
 
 
@@ -193,15 +194,15 @@ meta mult:true
     end
   end
 meta best:true
-  def test_weighting_scores_with_two_districts_returns_correct_values
+  def test_weighting_scores_with_only_two_districts_and_mismatched_years_and_mismatched_subjects_returns_correct_values
     dr = DistrictRepository.new
     dr.load_data({
       :statewide_testing => {
         :third_grade => "./data/subsets/third_grade_tiny.csv"}})
     ha = HeadcountAnalyst.new(dr)
-    assert_equal ["BEST SCHOOL", 1.0],  ha.top_statewide_test_year_over_year_growth(grade: 3, :weighting => {:math => 0.5, :reading => 0.5, :writing => 0.0})
+    assert_equal ["BEST SCHOOL", 0.25],  ha.top_statewide_test_year_over_year_growth(grade: 3, :weighting => {:math => 0.5, :reading => 0.5, :writing => 0.0})
   end
-
+meta blue:true
   def test_can_weight_grades_in_creating_top_district
     dr = DistrictRepository.new
     dr.load_data({
@@ -209,7 +210,7 @@ meta best:true
         :third_grade => "./data/subsets/third_grade_proficient.csv",
         :eighth_grade => "./data/subsets/eighth_grade_proficient.csv"}})
     ha = HeadcountAnalyst.new(dr)
-    assert_equal ["BUENA VISTA R-31", 0.009],  ha.top_statewide_test_year_over_year_growth(grade: 8, :weighting => {:math => 0.5, :reading => 0.5, :writing => 0.0})
+    assert_equal ["BRIGHTON 27J", 0.016],  ha.top_statewide_test_year_over_year_growth(grade: 8, :weighting => {:math => 0.5, :reading => 0.5, :writing => 0.0})
   end
 
 end
