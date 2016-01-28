@@ -32,7 +32,7 @@ class DataFormatter
     formatted =
     array_of_hashes.map do | hash |
       case data_type
-      when :kindergarten, :kindergarten_participation, :high_school_graduation, :children_in_poverty, :title_i
+      when :kindergarten, :kindergarten_participation, :high_school_graduation, :title_i
         [format_kindergarten(data_type), hash[:location].upcase, {hash[:timeframe].to_i => hash[:data].to_f}]
       when :third_grade, :eighth_grade
         [format_number(data_type), hash[:location].upcase, {hash[:timeframe].to_i => {hash[:score].downcase.to_sym => format_score(hash[:data])}}]
@@ -40,7 +40,7 @@ class DataFormatter
         [format_ethnicity(hash[:race_ethnicity]), hash[:location].upcase, {hash[:timeframe].to_i => {data_type => format_score(hash[:data])}}]
       when :median_household_income
         [data_type, hash[:location].upcase, {format_timeframe(hash[:timeframe]) => hash[:data].to_i}]
-      when :free_or_reduced_price_lunch
+      when :free_or_reduced_price_lunch, :children_in_poverty
         [data_type, hash[:location].upcase, {hash[:timeframe].to_i => {format_lunch(hash[:dataformat]) => hash[:data].to_f}}]
       end
     end

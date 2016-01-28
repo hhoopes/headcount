@@ -70,9 +70,11 @@ class DistrictRepository
   end
 
   def find_all_matching(search_string)
-    initial_districts_array.select do |district|
-      district.name.upcase.include?(search_string.upcase)
+    results = []
+    initial_districts_array.each do |district|
+      results << district.name if district.name.upcase.include?(search_string.upcase)
     end
+    results
   end
 
 end

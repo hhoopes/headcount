@@ -34,6 +34,12 @@ class Enrollment
     truncate_float(search) if !search.nil?
   end
 
+  def graduation_rate_average
+    all_year = (data.fetch(:high_school_graduation).values)
+    avg = all_year.inject(:+)/all_year.length
+    truncate_float(avg)
+  end
+
   def graduation_rate_by_year
     high_school_graduation.each do |year, data|
         [year, truncate_float(data)]
